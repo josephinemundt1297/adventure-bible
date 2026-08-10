@@ -205,3 +205,56 @@ XP erhalten
   ↓
 Fortschritt sehen
 ```
+
+Der MVP soll diesen Loop verständlich und vollständig demonstrieren.
+
+Nicht jedes langfristig geplante System muss Teil des MVP sein.
+
+Nicht-Ziele des MVP
+
+Der MVP muss nicht vollständig enthalten:
+
+komplexe AI
+umfangreiche Mustererkennung
+vollständiges Inventarsystem
+komplexes Achievement-System
+umfassende Statistiken
+vollständige Kalenderintegration
+Voice Input
+Backend
+Authentifizierung
+Multiplayer
+komplexe RPG-Mechaniken
+
+Diese Systeme können später ergänzt werden.
+
+Langfristige Vision
+
+Die langfristige Adventure Bible kann unter anderem umfassen:
+
+intelligente Quest-Empfehlungen
+Mustererkennung
+Routinen
+Kalender
+Statistiken
+Achievements
+Inventar
+Buffs und Debuffs
+Journal
+Voice Input
+KI-Unterstützung
+Backend und Persistenz
+
+Diese Vision darf den MVP nicht unnötig vergrößern.
+
+Entwicklungsregel
+
+Wenn eine neue Idee auftaucht, wird zuerst geprüft:
+
+1. Unterstützt sie den zentralen Produkt-Loop?
+2. Ist sie für den MVP notwendig?
+3. Verbessert sie die Nutzererfahrung deutlich?
+4. Erzeugt sie mehr Komplexität als Nutzen?
+
+Wenn sie nicht notwendig ist, wird sie dokumentiert
+und für später zurückgestellt.
