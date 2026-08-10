@@ -1,6 +1,6 @@
 # Adventure Bible – Agentic Programming
 
-Adventure Bible uses an agent-assisted development workflow.
+Adventure Bible uses a controlled, evidence-based Agentic Programming workflow.
 
 The goal is not maximum autonomous code generation. The goal is controlled, testable and traceable development.
 
@@ -12,27 +12,41 @@ The goal is not maximum autonomous code generation. The goal is controlled, test
 
 Start with `AGENTS.md`, then read only the documentation relevant to the current task.
 
-Key references:
+### Product
 
-- `docs/PROJECT.md` – product vision
-- `docs/FEATURES.md` – feature scope
+- `docs/PROJECT.md` – product vision and principles
+- `docs/FEATURES.md` – feature scope and MVP boundary
+
+### Design and quality
+
 - `docs/DESIGN.md` – UI and UX
 - `docs/ACCESSIBILITY.md` – accessibility
-- `docs/SECURITY.md` – security
+- `docs/SECURITY.md` – security and authentication
+
+### Technical
+
 - `docs/ARCHITECTURE.md` – technical architecture
 - `docs/ROADMAP.md` – current MVP plan
-- `docs/AGENTIC.md` – detailed agentic workflow
+
+### Agentic workflow
+
+- `docs/AGENTIC.md` – detailed workflow and phase gates
+- `docs/agentic/PROJECT_CONTEXT.md` – evidence-based project context
+- `docs/agentic/` – task, bug, test, review and prompt templates
 - `docs/SKILLS.md` – available project skills
+- `skills/` – reusable agent skills
 
 ## Standard task loop
 
 ```text
 Understand
 → Inspect
+→ Scope
 → Plan
+→ Acceptance criteria
+→ Test / Verification
 → Implement
-→ Test
-→ Verify
+→ Checks
 → Review diff
 → Report
 ```
@@ -41,20 +55,26 @@ Understand
 
 The agent must not silently:
 
-- expand MVP scope
-- weaken accessibility
-- weaken security
-- add dependencies without a reason
-- remove or bypass tests
-- expose secrets
-- treat assumptions as requirements
+- expand MVP scope;
+- weaken accessibility;
+- weaken security;
+- add dependencies without a reason and justification;
+- remove or bypass tests;
+- expose secrets;
+- treat assumptions as requirements;
+- replace Unicode support with unnecessary ASCII-only validation;
+- invent authentication or credential storage outside the documented architecture.
 
 ## Quality gates
 
 A feature is not complete merely because the code compiles.
 
-Relevant tests, linting, build checks, accessibility checks and manual verification must be considered before declaring work complete.
+Relevant tests, linting, type checks, build checks, accessibility checks, security checks and manual verification must be considered before declaring work complete.
+
+## Templates
+
+For repeatable work, use the appropriate template under `docs/agentic/` rather than improvising a new process.
 
 ## Workflow source
 
-The detailed workflow will be adapted from the project's provided Agentic Programming workflow and maintained in `docs/AGENTIC.md`.
+The workflow in `docs/AGENTIC.md` is adapted from the provided `agentic-programming-workflow` package and customized for Adventure Bible.
