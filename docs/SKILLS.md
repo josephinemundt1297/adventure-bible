@@ -12,17 +12,39 @@ Sie ergänzen `AGENTS.md`, ersetzen aber keine Projektregeln.
 
 Ein Skill muss:
 
-- einen klaren Zweck besitzen,
-- einen definierten Input und Output haben,
-- die relevanten Projektregeln referenzieren,
-- überprüfbare Ergebnisse erzeugen,
-- Security und Accessibility berücksichtigen, wenn relevant.
+- einen klaren Zweck besitzen;
+- einen definierten Input und Output haben;
+- die relevanten Projektregeln referenzieren;
+- überprüfbare Ergebnisse erzeugen;
+- Security und Accessibility berücksichtigen, wenn relevant;
+- keine Produktanforderung erfinden.
 
-Ein Skill darf keine Produktanforderung erfinden.
+Skills dürfen nicht:
+
+- `AGENTS.md` überschreiben;
+- Security-Regeln abschwächen;
+- Accessibility umgehen;
+- Secrets verlangen oder ausgeben;
+- ungefragt den MVP-Scope erweitern;
+- unnötige Dependencies installieren.
 
 ---
 
-# 2. Geplante Skills
+# 2. Implementierte Skills
+
+## `agentic-project-workflow`
+
+Pfad: `skills/agentic-project-workflow/SKILL.md`
+
+Verwendet den kontrollierten Workflow für Analyse, Planung, Akzeptanzkriterien, TDD, kleine Implementierungen, Debugging, Refactoring, Review und Abschlussberichte.
+
+Dieser Skill ist die Grundlage für Agentic Programming im Repository.
+
+---
+
+# 3. Geplante projektspezifische Skills
+
+Diese Skills werden nur angelegt, wenn die konkrete Implementierung einen wiederverwendbaren Bedarf dafür zeigt.
 
 ## UI / Design
 
@@ -38,8 +60,6 @@ Prüft und implementiert mobile-first Layouts für Smartphone, Tablet und Deskto
 
 Prüft eine UI auf die Regeln aus `docs/ACCESSIBILITY.md`.
 
----
-
 ## React
 
 ### `react-feature`
@@ -50,8 +70,6 @@ Plant und implementiert ein klar abgegrenztes React-Feature einschließlich Test
 
 Erstellt oder erweitert Verhaltenstests mit der im Projekt verwendeten Testumgebung.
 
----
-
 ## Domain
 
 ### `quest-logic`
@@ -61,8 +79,6 @@ Implementiert oder testet Quest-Zustände, Quest-Abschluss und adaptive Quest-Au
 ### `state-model`
 
 Arbeitet mit User-State, HP/Zustand und der zugehörigen Domain-Logik.
-
----
 
 ## Qualität
 
@@ -76,7 +92,7 @@ Prüft sicherheitsrelevante Änderungen anhand von `docs/SECURITY.md`.
 
 ---
 
-# 3. Skill-Priorität
+# 4. Skill-Priorität
 
 Wenn mehrere Skills relevant sind, werden nur die notwendigen Skills verwendet.
 
@@ -84,6 +100,8 @@ Beispiel:
 
 ```text
 Feature ändern
+↓
+agentic-project-workflow
 ↓
 react-feature
 ↓
@@ -100,7 +118,7 @@ Nicht jeder Skill muss bei jeder Änderung ausgeführt werden.
 
 ---
 
-# 4. Skill-Ausführung
+# 5. Skill-Ausführung
 
 Ein Skill soll möglichst:
 
@@ -111,23 +129,4 @@ Ein Skill soll möglichst:
 5. relevante Tests ausführen
 6. Ergebnis berichten
 
----
-
-# 5. Skill-Grenzen
-
-Skills dürfen nicht:
-
-- `AGENTS.md` überschreiben
-- Security-Regeln abschwächen
-- Accessibility umgehen
-- Secrets verlangen oder ausgeben
-- ungefragt den MVP-Scope erweitern
-- unnötige Dependencies installieren
-
----
-
-# 6. Status
-
-Die Liste oben beschreibt die geplanten Skills.
-
-Die konkreten Skill-Dateien werden erst aus dem vorgesehenen Agentic-Programming-Workflow abgeleitet und anschließend unter `skills/` abgelegt.
+Skills dürfen den verbindlichen Agentic-Workflow nicht umgehen.
