@@ -1,5 +1,3 @@
-cat > docs/PROJECT.md <<'EOF'
-
 # Adventure Bible – Project
 
 ## Vision
