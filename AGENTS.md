@@ -8,6 +8,7 @@
 - **UI:** DaisyUI
 - **Testing:** Vitest + React Testing Library
 - **Ziel:** React-Abschlussprojekt
+- **Authentifizierung (Backend-Phase):** Clerk
 
 Adventure Bible verwandelt den Alltag in ein persönliches Abenteuer.
 
@@ -30,9 +31,10 @@ relevanten Dokumente gelesen werden.
 - `docs/DESIGN.md` – visuelle und UX-Regeln
 - `docs/ACCESSIBILITY.md` – Accessibility-Regeln
 
-### Technik
+### Technik & Sicherheit
 
 - `docs/ARCHITECTURE.md` – technische Architektur
+- `docs/SECURITY.md` – Sicherheitsregeln und Authentifizierung
 - `docs/ROADMAP.md` – aktueller Entwicklungsstand
 
 ### Agentic Workflow
@@ -82,6 +84,56 @@ Die Prüfung des Ergebnisses bleibt trotzdem verpflichtend.
 - Keine Drive-by-Refactorings.
 - Loading-, Error-, Empty- und Success-Zustände bewusst behandeln.
 - Accessibility ist Bestandteil jeder UI-Änderung.
+
+---
+
+# Unicode, Sprache und Benutzereingaben
+
+Adventure Bible verwendet Unicode und muss Benutzereingaben mit
+internationalen Zeichen grundsätzlich unterstützen.
+
+Beispiele sind unter anderem:
+
+- deutsche Umlaute: `ä`, `ö`, `ü`, `Ä`, `Ö`, `Ü`
+- `ß`
+- Akzente und diakritische Zeichen
+- verschiedene lateinische Schriftsysteme
+- kyrillische Zeichen
+- griechische Zeichen
+- CJK-Zeichen
+- arabische Zeichen
+- Emojis und andere gültige Unicode-Zeichen, sofern das Feld sie erlaubt
+
+Es darf keine unnötige ASCII-only-Validierung geben.
+
+User-generated Content darf nicht pauschal auf `[a-zA-Z0-9]` beschränkt werden.
+
+Freitext wird kontextabhängig validiert und sicher verarbeitet.
+
+Unicode-Unterstützung bedeutet nicht automatisch Mehrsprachigkeit.
+Internationalisierung und Übersetzungen werden als eigene Funktion geplant.
+
+---
+
+# Sicherheit
+
+Sicherheit darf nicht dadurch hergestellt werden, dass legitime Sonderzeichen
+oder andere internationale Zeichen pauschal verboten werden.
+
+Insbesondere gilt:
+
+- Client-seitige Validierung ist keine Sicherheitsgrenze.
+- Vertrauensgrenzen liegen auf der Server-Seite.
+- User Input ist grundsätzlich nicht vertrauenswürdig.
+- Keine dynamischen SQL-Abfragen durch String-Konkatenation.
+- Datenbankzugriffe müssen parametriert bzw. anderweitig sicher aufgebaut werden.
+- Output muss kontextabhängig sicher verarbeitet werden.
+- Secrets gehören niemals in den Quellcode oder ins Repository.
+- `.env*`-Dateien mit Secrets dürfen nicht committed werden.
+- Authentifizierungsdaten werden nicht selbst in einer Adventure-Bible-Datenbank gespeichert, wenn Clerk diese Aufgabe übernimmt.
+- Sensible Daten dürfen nicht nur durch clientseitiges Verstecken geschützt werden.
+
+Für konkrete Sicherheitsentscheidungen ist `docs/SECURITY.md` verbindlich.
 
 ---
 
@@ -145,6 +197,7 @@ Bei jeder UI-Änderung sind mindestens zu berücksichtigen:
 - Statusinformationen nicht ausschließlich über Farbe
 - reduzierte Bewegung bei `prefers-reduced-motion`
 - sinnvolle Screenreader-Struktur
+- Unicode-fähige und gut lesbare Textdarstellung
 
 Kognitive Accessibility ist besonders wichtig.
 
