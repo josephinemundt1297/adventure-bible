@@ -182,6 +182,54 @@ nicht als Standard für jede Interaktion.
 
 ---
 
+## Unicode und internationale Zeichen
+
+Adventure Bible behandelt Unicode als normalen Bestandteil der Anwendung.
+
+Benutzernamen, Charakternamen, Quest-Titel, Beschreibungen und andere
+geeignete User-Inhalte dürfen internationale Zeichen enthalten.
+
+Dazu gehören unter anderem:
+
+- Umlaute und `ß`
+- Akzente und diakritische Zeichen
+- kyrillische, griechische, arabische und CJK-Zeichen
+- Emojis, sofern das jeweilige Feld sie erlaubt
+
+Die Anwendung darf legitime Sonderzeichen nicht pauschal ablehnen,
+nur weil sie technisch einfacher zu validieren wären.
+
+Unicode-Unterstützung ist Bestandteil der technischen Basis.
+
+Mehrsprachigkeit und Übersetzungen sind dagegen ein separates Feature
+und werden später bewusst geplant.
+
+---
+
+## Sicherheit und Authentifizierung
+
+Sicherheit wird als Produktanforderung behandelt und nicht erst mit dem
+Backend nachträglich ergänzt.
+
+Für die spätere Authentifizierungsintegration ist **Clerk** vorgesehen.
+
+Clerk soll die Authentifizierung und Session-Verwaltung übernehmen,
+anstatt dass Adventure Bible Passwörter selbst verwaltet.
+
+Die spätere Adventure-Bible-Datenbank soll ausschließlich die Daten speichern,
+die die Anwendung tatsächlich benötigt. Authentifizierungsgeheimnisse und
+Passwörter gehören nicht in die eigene Anwendungsdatenbank, wenn diese
+Verantwortung bei Clerk liegt.
+
+User Input wird auch bei Unicode-Zeichen als nicht vertrauenswürdig behandelt.
+Sicherheit entsteht nicht durch das Verbot von Sonderzeichen, sondern durch
+sichere Verarbeitung, kontextgerechte Ausgabe, sichere Datenbankzugriffe,
+Authentifizierung und serverseitige Autorisierung.
+
+Die detaillierten Sicherheitsregeln stehen in `docs/SECURITY.md`.
+
+---
+
 ## MVP
 
 Der React-MVP konzentriert sich auf den zentralen Produkt-Loop:
@@ -246,6 +294,7 @@ Die langfristige Adventure Bible kann unter anderem umfassen:
 - Voice Input
 - KI-Unterstützung
 - Backend und Persistenz
+- Clerk-basierte Authentifizierung
 
 Diese Vision darf den MVP nicht unnötig vergrößern.
 
