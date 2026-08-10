@@ -18,8 +18,7 @@ Die App passt sich an den Menschen an – nicht der Mensch an die App.
 
 ## Verbindliche Dokumentation
 
-Vor Änderungen an Code oder Projektstruktur müssen die für die Aufgabe
-relevanten Dokumente gelesen werden.
+Vor Änderungen an Code oder Projektstruktur müssen die für die Aufgabe relevanten Dokumente gelesen werden.
 
 ### Produkt
 
@@ -39,11 +38,17 @@ relevanten Dokumente gelesen werden.
 
 ### Agentic Workflow
 
+- `docs/AGENTIC.md` – verbindlicher Agentic-Workflow
 - `docs/agentic/` – Arbeitsprozess, Templates und Checklisten
 - `skills/` – projektspezifische Skills
 
-Nicht jedes Dokument muss für jede Aufgabe gelesen werden.
-Lies nur den Kontext, der für die konkrete Aufgabe relevant ist.
+### Entwicklungsdokumentation
+
+- `docs/DEVELOPMENT_LOG.md` – persönliches Entwicklungs- und Lerntagebuch
+
+Das Development Log ist eine besondere Dokumentation: Technische Fakten dürfen unterstützt werden, persönliche Reflexionen und Aussagen über Josis eigene Entscheidungen oder Learnings dürfen jedoch nicht vom Agenten erfunden werden.
+
+Nicht jedes Dokument muss für jede Aufgabe gelesen werden. Lies nur den Kontext, der für die konkrete Aufgabe relevant ist.
 
 ---
 
@@ -89,8 +94,7 @@ Die Prüfung des Ergebnisses bleibt trotzdem verpflichtend.
 
 # Unicode, Sprache und Benutzereingaben
 
-Adventure Bible verwendet Unicode und muss Benutzereingaben mit
-internationalen Zeichen grundsätzlich unterstützen.
+Adventure Bible verwendet Unicode und muss Benutzereingaben mit internationalen Zeichen grundsätzlich unterstützen.
 
 Beispiele sind unter anderem:
 
@@ -110,15 +114,13 @@ User-generated Content darf nicht pauschal auf `[a-zA-Z0-9]` beschränkt werden.
 
 Freitext wird kontextabhängig validiert und sicher verarbeitet.
 
-Unicode-Unterstützung bedeutet nicht automatisch Mehrsprachigkeit.
-Internationalisierung und Übersetzungen werden als eigene Funktion geplant.
+Unicode-Unterstützung bedeutet nicht automatisch Mehrsprachigkeit. Internationalisierung und Übersetzungen werden als eigene Funktion geplant.
 
 ---
 
 # Sicherheit
 
-Sicherheit darf nicht dadurch hergestellt werden, dass legitime Sonderzeichen
-oder andere internationale Zeichen pauschal verboten werden.
+Sicherheit darf nicht dadurch hergestellt werden, dass legitime Sonderzeichen oder andere internationale Zeichen pauschal verboten werden.
 
 Insbesondere gilt:
 
@@ -148,14 +150,11 @@ Bei Logik-, Feature- und Bugfix-Arbeit:
 5. Test erfolgreich ausführen.
 6. Erst danach refaktorieren.
 
-Tests prüfen bevorzugt beobachtbares Verhalten statt
-interner Implementierungsdetails.
+Tests prüfen bevorzugt beobachtbares Verhalten statt interner Implementierungsdetails.
 
-Tests dürfen nicht gelöscht, übersprungen oder abgeschwächt werden,
-nur damit das Projekt einen grünen Testlauf erhält.
+Tests dürfen nicht gelöscht, übersprungen oder abgeschwächt werden, nur damit das Projekt einen grünen Testlauf erhält.
 
-Wenn ein automatisierter Test nicht sinnvoll möglich ist,
-müssen konkrete manuelle Prüfschritte dokumentiert werden.
+Wenn ein automatisierter Test nicht sinnvoll möglich ist, müssen konkrete manuelle Prüfschritte dokumentiert werden.
 
 ---
 
@@ -170,11 +169,9 @@ Adventure Bible ist:
 - spielerisch
 - aber nicht überladen
 
-Die App soll sich auf Smartphone und Desktop wie dieselbe Anwendung
-anfühlen.
+Die App soll sich auf Smartphone und Desktop wie dieselbe Anwendung anfühlen.
 
-Desktop darf zusätzlichen Platz nutzen, darf die Anwendung aber
-nicht in eine klassische Website verwandeln.
+Desktop darf zusätzlichen Platz nutzen, darf die Anwendung aber nicht in eine klassische Website verwandeln.
 
 Die App soll dem Nutzer immer eine klare nächste Handlung anbieten.
 
@@ -201,15 +198,13 @@ Bei jeder UI-Änderung sind mindestens zu berücksichtigen:
 
 Kognitive Accessibility ist besonders wichtig.
 
-Die App darf den Nutzer nicht durch unnötige Komplexität,
-Informationsflut oder zu viele gleichwertige Aktionen überfordern.
+Die App darf den Nutzer nicht durch unnötige Komplexität, Informationsflut oder zu viele gleichwertige Aktionen überfordern.
 
 ---
 
 # Produktprinzipien
 
-Diese Regeln dürfen nicht durch technische oder spielerische
-Entscheidungen unterlaufen werden:
+Diese Regeln dürfen nicht durch technische oder spielerische Entscheidungen unterlaufen werden:
 
 1. Die App passt sich dem Nutzer an.
 2. Energie ist eine Ressource.
@@ -236,8 +231,7 @@ Ohne ausdrückliche Freigabe nicht verändern:
 
 Keine destruktiven Änderungen ohne ausdrückliche Zustimmung.
 
-Wenn Ursache oder Auswirkung einer Änderung unklar ist:
-zuerst analysieren und Unsicherheit offenlegen.
+Wenn Ursache oder Auswirkung einer Änderung unklar ist: zuerst analysieren und Unsicherheit offenlegen.
 
 ---
 
