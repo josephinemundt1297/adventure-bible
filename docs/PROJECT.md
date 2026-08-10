@@ -1,3 +1,5 @@
+cat > docs/PROJECT.md <<'EOF'
+
 # Adventure Bible – Project
 
 ## Vision
@@ -8,18 +10,18 @@ Die Anwendung ist ein Habit Tracker mit spielerischen RPG-Elementen.
 Der RPG-Aspekt soll Motivation und Orientierung schaffen, nicht zusätzlichen
 Druck erzeugen.
 
-> **Dein Leben. Dein Abenteuer. Deine Regeln.**
+> Dein Leben. Dein Abenteuer. Deine Regeln.
 
 ---
 
-# Grundidee
+## Grundidee
 
 Klassische Habit Tracker erwarten vom Nutzer, dass er sich an ein
 festgelegtes System anpasst.
 
 Adventure Bible verfolgt den umgekehrten Ansatz:
 
-> **Die App passt sich an den Nutzer an.**
+> Die App passt sich an den Nutzer an.
 
 Der aktuelle Zustand des Nutzers beeinflusst,
 welche Aufgaben sinnvoll erscheinen und wie Fortschritt dargestellt wird.
@@ -31,9 +33,9 @@ wie eine große Aufgabe an einem energiereichen Tag.
 
 ---
 
-# Leitprinzipien
+## Leitprinzipien
 
-## 1. Die App passt sich an den Nutzer an
+### 1. Die App passt sich an den Nutzer an
 
 Es gibt nicht für jeden Tag dieselbe optimale Routine.
 
@@ -42,7 +44,7 @@ die vorhandenen Ressourcen und die Situation des Nutzers.
 
 ---
 
-## 2. Energie ist eine Ressource
+### 2. Energie ist eine Ressource
 
 Energie ist begrenzt.
 
@@ -53,7 +55,7 @@ Stattdessen soll sie helfen, mit vorhandener Energie sinnvoll umzugehen.
 
 ---
 
-## 3. Kleine Schritte zählen
+### 3. Kleine Schritte zählen
 
 Fortschritt muss nicht groß sein.
 
@@ -62,7 +64,7 @@ wenn die verfügbaren Ressourcen begrenzt sind.
 
 ---
 
-## 4. Fortschritt statt Perfektion
+### 4. Fortschritt statt Perfektion
 
 Nicht erledigte Aufgaben sind nicht automatisch ein Fehlschlag.
 
@@ -71,7 +73,7 @@ nicht Schuld oder Versagen erzeugen.
 
 ---
 
-## 5. Regeneration ist eine Quest
+### 5. Regeneration ist eine Quest
 
 Schlaf, Pause, Essen, Trinken und andere Formen der Regeneration
 sind keine verlorene Zeit.
@@ -80,7 +82,7 @@ Sie sind Bestandteil des persönlichen Fortschritts.
 
 ---
 
-## 6. Der Nutzer bestimmt den Weg
+### 6. Der Nutzer bestimmt den Weg
 
 Adventure Bible unterstützt Entscheidungen.
 
@@ -91,9 +93,9 @@ Empfehlungen bleiben Empfehlungen.
 
 ---
 
-# Kernsysteme
+## Kernsysteme
 
-## HP / Zustand
+### HP / Zustand
 
 Der aktuelle Zustand des Nutzers kann mehrere Bereiche umfassen:
 
@@ -114,7 +116,7 @@ Sie sind keine medizinische Diagnose.
 
 ---
 
-## XP
+### XP
 
 Erledigte Aktivitäten können XP vergeben.
 
@@ -125,11 +127,11 @@ verständlich sein.
 
 Beispiel:
 
-`Quest abgeschlossen → +20 XP → Fortschrittsanzeige aktualisiert`
+Quest abgeschlossen → +20 XP → Fortschrittsanzeige aktualisiert
 
 ---
 
-## Quests
+### Quests
 
 Adventure Bible unterscheidet unter anderem:
 
@@ -145,7 +147,7 @@ ohne dass dies automatisch als persönliches Versagen gewertet wird.
 
 ---
 
-# Anpassung
+## Anpassung
 
 Die langfristige Vision umfasst eine Anwendung,
 die aus dem Verhalten des Nutzers Muster erkennen kann.
@@ -163,7 +165,7 @@ nicht den Nutzer bewerten oder diagnostizieren.
 
 ---
 
-# UX-Prinzipien
+## UX-Prinzipien
 
 Adventure Bible soll möglichst wenig Eingabe benötigen,
 aber möglichst hilfreiche Informationen liefern.
@@ -182,72 +184,76 @@ nicht als Standard für jede Interaktion.
 
 ---
 
-# MVP
+## MVP
 
 Der React-MVP konzentriert sich auf den zentralen Produkt-Loop:
 
-```text
 Profil
-  ↓
+↓
 Charakter
-  ↓
+↓
 Dashboard
-  ↓
+↓
 aktuellen Zustand einschätzen
-  ↓
+↓
 passende Quest sehen
-  ↓
+↓
 Quest durchführen
-  ↓
+↓
 Quest abschließen
-  ↓
+↓
 XP erhalten
-  ↓
+↓
 Fortschritt sehen
-```
 
 Der MVP soll diesen Loop verständlich und vollständig demonstrieren.
 
 Nicht jedes langfristig geplante System muss Teil des MVP sein.
 
-Nicht-Ziele des MVP
+---
+
+## Nicht-Ziele des MVP
 
 Der MVP muss nicht vollständig enthalten:
 
-komplexe AI
-umfangreiche Mustererkennung
-vollständiges Inventarsystem
-komplexes Achievement-System
-umfassende Statistiken
-vollständige Kalenderintegration
-Voice Input
-Backend
-Authentifizierung
-Multiplayer
-komplexe RPG-Mechaniken
+- komplexe AI
+- umfangreiche Mustererkennung
+- vollständiges Inventarsystem
+- komplexes Achievement-System
+- umfassende Statistiken
+- vollständige Kalenderintegration
+- Voice Input
+- Backend
+- Authentifizierung
+- Multiplayer
+- komplexe RPG-Mechaniken
 
 Diese Systeme können später ergänzt werden.
 
-Langfristige Vision
+---
+
+## Langfristige Vision
 
 Die langfristige Adventure Bible kann unter anderem umfassen:
 
-intelligente Quest-Empfehlungen
-Mustererkennung
-Routinen
-Kalender
-Statistiken
-Achievements
-Inventar
-Buffs und Debuffs
-Journal
-Voice Input
-KI-Unterstützung
-Backend und Persistenz
+- intelligente Quest-Empfehlungen
+- Mustererkennung
+- Routinen
+- Kalender
+- Statistiken
+- Achievements
+- Inventar
+- Buffs und Debuffs
+- Journal
+- Voice Input
+- KI-Unterstützung
+- Backend und Persistenz
 
 Diese Vision darf den MVP nicht unnötig vergrößern.
 
-Entwicklungsregel
+---
+
+## Entwicklungsregel
 
 Wenn eine neue Idee auftaucht, wird zuerst geprüft:
 
