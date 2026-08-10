@@ -201,6 +201,30 @@ eine gut lesbare Standardschrift verwenden.
 
 Lesbarkeit hat Vorrang vor Atmosphäre.
 
+Schriften müssen die benötigten Unicode-Zeichen unterstützen.
+Die Wahl einer dekorativen Schrift darf nicht dazu führen,
+dass Umlaute, Akzente, andere Schriftsysteme oder Emojis fehlen oder als Kästchen erscheinen.
+
+---
+
+## Unicode und Textlängen
+
+Die UI muss mit unterschiedlichen Zeichen und Textlängen umgehen können.
+
+Insbesondere dürfen Layouts nicht davon ausgehen, dass Texte nur aus
+kurzen deutschen Wörtern oder ASCII-Zeichen bestehen.
+
+Zu berücksichtigen sind unter anderem:
+
+- Umlaute und `ß`
+- Akzente und diakritische Zeichen
+- internationale Namen
+- längere Übersetzungen in zukünftigen Sprachversionen
+- CJK-Zeichen
+- RTL-Schriften als zukünftige Internationalisierungsanforderung
+
+Text darf nicht durch feste Breiten oder abgeschnittene Labels unbedienbar werden.
+
 ---
 
 ## Komponenten
