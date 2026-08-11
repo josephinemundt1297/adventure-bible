@@ -78,6 +78,9 @@ sind keine verlorene Zeit.
 
 Sie sind Bestandteil des persönlichen Fortschritts.
 
+Das wird im zentralen Produkt-Loop durch das **Lagerfeuer** als bewusste
+Recovery-Option nach einem Mini HP-Check sichtbar gemacht.
+
 ---
 
 ### 6. Der Nutzer bestimmt den Weg
@@ -88,6 +91,47 @@ Die Anwendung schreibt dem Nutzer nicht vor,
 wie sein Tag auszusehen hat.
 
 Empfehlungen bleiben Empfehlungen.
+
+---
+
+## Zentraler Produkt-Loop
+
+Adventure Bible arbeitet nicht mit einer statischen Aufgabenliste als
+Hauptinteraktion. Der Nutzer durchläuft einen adaptiven Zyklus:
+
+```text
+App öffnen / neuer Abenteuerzyklus
+          ↓
+   großer HP-Check
+          ↓
+ HP-Zustand berechnen
+          ↓
+ Quest-Auswahl passend zu den HP
+          ↓
+     Quest erledigen
+          ↓
+ XP / Quest Points / Reward
+          ↓
+     Mini HP-Check
+          ↓
+    ┌──────────────┐
+    │              │
+ Neue Quest     Lagerfeuer
+    │              │
+    └──────┬───────┘
+           ↓
+      nächster Zustand
+```
+
+Der große HP-Check ist strukturiert: Für jeden HP-Bereich gibt es drei
+Fragen mit jeweils fünf Antwortmöglichkeiten. Daraus wird der aktuelle
+Ausgangszustand berechnet.
+
+Der Mini HP-Check ist bewusst subjektiver: Der Nutzer schätzt sich nach
+einer Quest pro Bereich selbst über einen Regler ein.
+
+Der Vergleich zwischen Ausgangszustand und aktuellem Zustand soll langfristig
+sichtbar machen, wie sich Aktivitäten auf den Nutzer auswirken.
 
 ---
 
@@ -105,8 +149,12 @@ Der aktuelle Zustand des Nutzers kann mehrere Bereiche umfassen:
 - Ernährung
 - Regeneration
 
-Der Zustand wird über einfache Einschätzungen erfasst
-und kann im Tagesverlauf aktualisiert werden.
+Der **große HP-Check** verwendet pro Bereich drei Fragen mit jeweils fünf
+Antwortmöglichkeiten. Die Antworten werden zu Bereichswerten und einem
+Gesamtzustand zusammengeführt.
+
+Der **Mini HP-Check** verwendet nach einer Quest Regler, über die der Nutzer
+seinen aktuellen Zustand selbst einschätzt.
 
 Die Werte dienen der Orientierung und Anpassung.
 
@@ -114,9 +162,9 @@ Sie sind keine medizinische Diagnose.
 
 ---
 
-### XP
+### XP und Quest Points
 
-Erledigte Aktivitäten können XP vergeben.
+Erledigte Aktivitäten können XP und Quest Points vergeben.
 
 XP machen Fortschritt sichtbar.
 
@@ -125,7 +173,9 @@ verständlich sein.
 
 Beispiel:
 
-Quest abgeschlossen → +20 XP → Fortschrittsanzeige aktualisiert
+```text
+Quest abgeschlossen → +20 XP → Reward → Mini HP-Check
+```
 
 ---
 
@@ -140,8 +190,23 @@ Adventure Bible unterscheidet unter anderem:
 
 Quests können zeitlich geplant, empfohlen oder spontan erstellt werden.
 
+Die Quest-Auswahl wird durch den aktuellen HP-Zustand beeinflusst.
+
 Eine Quest kann verschoben oder bewusst nicht durchgeführt werden,
 ohne dass dies automatisch als persönliches Versagen gewertet wird.
+
+---
+
+### Lagerfeuer
+
+Nach dem Mini HP-Check kann der Nutzer eine neue Quest wählen oder zum
+Lagerfeuer gehen.
+
+Das Lagerfeuer ist eine bewusste Recovery-Mechanik und kein Zeichen des
+Scheiterns.
+
+Es macht das Prinzip sichtbar, dass Regeneration ein legitimer Bestandteil
+des Fortschritts ist.
 
 ---
 
@@ -157,6 +222,7 @@ Beispiele:
 - funktionierende Routinen
 - häufige Überforderung bei bestimmten Aufgabentypen
 - passende Questgrößen
+- tatsächliche Quest-Auswirkungen auf HP
 
 Die Anwendung soll Muster beschreiben,
 nicht den Nutzer bewerten oder diagnostizieren.
@@ -176,6 +242,10 @@ Bevorzugt werden:
 - Slider oder einfache Bewertungen
 - wiederkehrende Vorschläge
 - später optional Spracheingabe
+
+Der große HP-Check darf bewusst etwas ausführlicher sein, weil er die
+Grundlage für die adaptive Quest-Auswahl bildet. Der Mini HP-Check muss dagegen
+so kurz wie möglich bleiben.
 
 Freitext wird dort verwendet, wo er echten Mehrwert bietet,
 nicht als Standard für jede Interaktion.
@@ -238,19 +308,19 @@ Profil
 ↓
 Charakter
 ↓
-Dashboard
+Großer HP-Check
 ↓
-aktuellen Zustand einschätzen
+HP-Zustand berechnen
 ↓
 passende Quest sehen
 ↓
 Quest durchführen
 ↓
-Quest abschließen
+XP / Quest Points / Reward
 ↓
-XP erhalten
+Mini HP-Check
 ↓
-Fortschritt sehen
+Neue Quest oder Lagerfeuer
 
 Der MVP soll diesen Loop verständlich und vollständig demonstrieren.
 
