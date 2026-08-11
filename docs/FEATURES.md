@@ -12,25 +12,33 @@ Eine Funktion darf nicht nur deshalb in den MVP aufgenommen werden, weil sie in 
 
 # 1. MVP
 
-Der MVP soll den zentralen Adventure-Bible-Loop demonstrieren:
+Der MVP demonstriert den zentralen Adventure-Bible-Loop:
 
 ```text
-Profil erstellen
-      ↓
-Charakter kennenlernen / konfigurieren
-      ↓
-aktuellen Zustand einschätzen
-      ↓
-passende Aktivitäten und Quests erhalten
-      ↓
-Quest durchführen
-      ↓
-Quest abschließen
-      ↓
-XP / Fortschritt erhalten
-      ↓
-aktuellen Fortschritt sehen
+App öffnen / neuer Abenteuerzyklus
+          ↓
+   großer HP-Check
+          ↓
+ HP-Zustand berechnen
+          ↓
+ Quest-Auswahl passend zu den HP
+          ↓
+     Quest erledigen
+          ↓
+ XP / Quest Points / Reward
+          ↓
+     Mini HP-Check
+          ↓
+    ┌──────────────┐
+    │              │
+ Neue Quest     Lagerfeuer
+    │              │
+    └──────┬───────┘
+           ↓
+      nächster Zustand
 ```
+
+Der HP-Check ist dabei kein medizinisches Messinstrument und kein Zwangssystem. Er dient dazu, den Nutzer bewusst wahrnehmen zu lassen, welche Ressourcen gerade verfügbar sind, und die Quest-Auswahl daran anzupassen.
 
 ## 1.1 Profil-Erstellung
 
@@ -66,54 +74,68 @@ Er dient als motivierende Darstellung des persönlichen Fortschritts.
 
 ---
 
-## 1.3 Tageszustand / HP-Check
+## 1.3 Großer HP-Check
 
-Der Nutzer kann seinen aktuellen Zustand einschätzen.
+Der große HP-Check bildet den strukturierten Ausgangszustand eines neuen Abenteuerzyklus ab.
 
-Der Check soll schnell durchführbar sein und keine medizinische Diagnose simulieren.
+Für jeden definierten HP-Bereich werden **3 konkrete Fragen** gestellt.
 
-Mögliche Bereiche sind beispielsweise:
+Jede Frage besitzt **5 Antwortmöglichkeiten**.
+
+Die Antworten werden zu einem Wert für den jeweiligen Bereich zusammengeführt. Aus den Bereichswerten entsteht der aktuelle HP-Gesamtzustand.
+
+### Anforderungen
+
+- Jeder HP-Bereich besitzt im MVP drei Fragen.
+- Jede Frage bietet fünf klar unterscheidbare Antwortmöglichkeiten.
+- Die Antwortwerte sind technisch eindeutig und testbar.
+- Aus den Antworten wird ein nachvollziehbarer Bereichswert berechnet.
+- Aus den Bereichswerten kann ein Gesamtzustand abgeleitet werden.
+- Der Nutzer erhält eine verständliche Zusammenfassung seines Zustands.
+- Der Check stellt keine medizinische Diagnose dar.
+- Zustände werden nicht ausschließlich über Farbe kommuniziert.
+
+### Aktuelle HP-Bereiche
+
+Die bestehenden Produktdefinitionen sehen folgende Bereiche vor:
 
 - Körper
 - Energie
 - Konzentration
 - Stimmung
+- Muskelzustand
+- Ernährung
 - Regeneration
 
-Nicht jeder Bereich muss im MVP zwingend separat dargestellt werden.
-
-### Anforderungen
-
-- Zustand kann mit einfachen Eingaben erfasst werden.
-- Werte können im Tagesverlauf erneut angepasst werden.
-- Informationen werden verständlich dargestellt.
-- Zustände werden nicht ausschließlich über Farbe kommuniziert.
-- Der Check beeinflusst die Auswahl oder Darstellung passender Aktivitäten.
+Die genaue Gewichtung der Bereiche wird vor der Implementierung als technische Produktentscheidung festgelegt und getestet.
 
 ---
 
-## 1.4 Dashboard / Home
+## 1.4 Adaptive Quest-Auswahl
 
-Home ist der zentrale Einstiegspunkt nach dem Onboarding.
+Der berechnete HP-Zustand beeinflusst die Quest-Auswahl.
 
-Das Dashboard soll nicht möglichst viele Informationen anzeigen.
+Die App soll nicht einfach eine identische Aufgabenliste anzeigen, sondern aus verfügbaren Quests passende Kandidaten auswählen oder priorisieren.
 
-Es soll dem Nutzer vor allem helfen, die nächste sinnvolle Aktion zu erkennen.
+Beispiel:
 
-### Inhalte
+```text
+niedrige Energie
+      ↓
+leichte / kurze / regenerative Quests
+```
 
-- Begrüßung / aktueller Kontext
-- aktueller Zustand
-- relevanter Fortschritt
-- eine passende nächste Aktivität oder Quest
-- wichtige aktive Quests
-- Hauptnavigation
+statt:
 
-### Grundregel
+```text
+niedrige Energie
+      ↓
+dieselbe Quest-Auswahl wie bei hoher Energie
+```
 
-Der Nutzer soll auf Home möglichst schnell verstehen:
+Der MVP verwendet dafür eine einfache, deterministische und testbare Regel- oder Scoring-Logik. Eine KI ist dafür nicht erforderlich.
 
-> Was ist gerade wichtig und was kann ich jetzt tun?
+Empfehlungen bleiben Empfehlungen. Der Nutzer behält die Entscheidungshoheit.
 
 ---
 
@@ -152,33 +174,115 @@ Das bewusste Nicht-Erledigen darf nicht automatisch als persönliches Versagen d
 
 ---
 
-## 1.6 Adaptive Quest-Auswahl
+## 1.6 Quest Reward
 
-Adventure Bible soll nicht jedem Nutzer jederzeit dieselben Aufgaben zeigen.
+Eine abgeschlossene Quest kann eine Belohnung auslösen.
 
-Der aktuelle Zustand des Nutzers soll bei der Auswahl oder Priorisierung berücksichtigt werden.
+Im MVP gehören insbesondere dazu:
 
-Beispiel:
+- XP
+- Quest Points
+- sichtbares Abschlussfeedback
 
-```text
-wenig Energie
-    ↓
-kleine / leichte / regenerative Aufgabe
-```
-
-statt:
-
-```text
-wenig Energie
-    ↓
-gleiche Aufgabenliste wie an jedem anderen Tag
-```
-
-Der MVP kann diese Anpassung mit einfachen regelbasierten Kriterien simulieren. Eine komplexe KI ist dafür nicht erforderlich.
+Die konkrete Reward-Struktur soll klein und verständlich bleiben.
 
 ---
 
-## 1.7 Plan
+## 1.7 Mini HP-Check
+
+Nach dem Abschluss einer Quest folgt ein kurzer HP-Check.
+
+Der Mini HP-Check ist bewusst anders aufgebaut als der große HP-Check.
+
+Für jeden HP-Bereich kann der Nutzer seinen aktuellen Zustand **selbst auf einer Skala per Regler einschätzen**.
+
+Es gibt keine drei Fragen pro Bereich.
+
+### Zweck
+
+Der Mini HP-Check beantwortet:
+
+> Wie geht es mir nach dieser Quest gerade?
+
+Damit kann der Nutzer unmittelbar wahrnehmen, ob eine Quest Energie gekostet, erhalten oder möglicherweise zurückgegeben hat.
+
+### Anforderungen
+
+- Jeder relevante HP-Bereich besitzt einen zugänglichen Regler.
+- Der aktuelle Wert ist verständlich erkennbar.
+- Die Skala ist nicht ausschließlich farbcodiert.
+- Tastaturbedienung funktioniert.
+- Der Nutzer kann den Check schnell abschließen.
+- Die Werte können mit dem vorherigen Zustand verglichen werden.
+
+---
+
+## 1.8 Lagerfeuer / Regeneration
+
+Nach dem Mini HP-Check kann der Nutzer bewusst eine Pause wählen.
+
+Das Lagerfeuer ist eine eigene Recovery-Mechanik und kein „Nichtstun“-Fehlerzustand.
+
+```text
+Quest
+  ↓
+Reward
+  ↓
+Mini HP-Check
+  ↓
+Lagerfeuer
+  ↓
+Regeneration
+```
+
+Das Lagerfeuer soll das Grundprinzip sichtbar machen:
+
+> Regeneration ist Bestandteil des Fortschritts.
+
+Die konkrete Berechnung der Regeneration wird später festgelegt. Der MVP muss zunächst den bewussten Übergang in einen Erholungszustand darstellen können.
+
+---
+
+## 1.9 Dashboard / Home
+
+Home ist der zentrale Einstiegspunkt nach dem Onboarding.
+
+Home soll nicht als statische Quest-Liste funktionieren.
+
+Der zentrale Inhalt verändert sich abhängig vom aktuellen Zustand des Adventure-Bible-Loops.
+
+Mögliche Zustände sind:
+
+- großer HP-Check erforderlich
+- HP-Zustand vorhanden
+- Quest-Empfehlung
+- aktive Quest
+- Reward nach Quest-Abschluss
+- Mini HP-Check
+- Lagerfeuer / Regeneration
+
+### Grundregel
+
+Der Nutzer soll auf Home möglichst schnell verstehen:
+
+> Was ist gerade der nächste sinnvolle Schritt?
+
+---
+
+## 1.10 Hauptnavigation
+
+Die Hauptnavigation des MVP bleibt reduziert:
+
+- **Home** – aktueller Zustand und nächster Schritt
+- **Quests** – Aufgaben und Quest-Liste
+- **Plan** – geplante Aktivitäten
+- **Ich** – Profil und persönliche Informationen
+
+Der HP-Check ist **kein eigener Hauptnavigation-Punkt**. Er ist ein Bestandteil des zentralen Nutzerflusses.
+
+---
+
+## 1.11 Plan
 
 Der Nutzer kann relevante Aufgaben bzw. Quests zeitlich einordnen.
 
@@ -195,7 +299,7 @@ Der MVP benötigt keinen vollständigen Kalender.
 
 ---
 
-## 1.8 XP und Fortschritt
+## 1.12 XP und Fortschritt
 
 Abgeschlossene Quests können XP vergeben.
 
@@ -204,26 +308,14 @@ XP machen Fortschritt sichtbar und unterstützen das Game Feeling.
 ### Anforderungen
 
 - Abschluss einer Quest kann XP vergeben.
+- Quest Points können den Quest-Fortschritt ergänzen.
 - Fortschritt wird unmittelbar sichtbar.
 - XP werden verständlich dargestellt.
 - Fortschritt darf nicht mit persönlichem Wert gleichgesetzt werden.
 
 ---
 
-## 1.9 Hauptnavigation
-
-Die Hauptnavigation des MVP bleibt reduziert:
-
-- **Home** – aktueller Zustand und nächste Aktion
-- **Quests** – Aufgaben und Quest-Liste
-- **Plan** – geplante Aktivitäten
-- **Ich** – Profil und persönliche Informationen
-
-Weitere Funktionen werden nicht automatisch zu weiteren Hauptnavigation-Punkten.
-
----
-
-## 1.10 Profilbereich / „Ich“
+## 1.13 Profilbereich / „Ich“
 
 Der Nutzer kann sein Profil und persönliche Einstellungen einsehen.
 
@@ -254,10 +346,11 @@ Diese Funktionen gehören zum Produkt, sind aber nicht notwendig, um den React-M
 
 ## 2.2 Detaillierter Tagesverlauf
 
-- mehrere Zustandschecks pro Tag
-- Verlauf des Energielevels
+- mehrere große HP-Checks pro Tag bzw. Abenteuerzyklen
+- Mini-HP-Verläufe nach Quests
+- Verlauf der einzelnen HP-Bereiche
 - Tageszusammenfassung
-- Vergleich zwischen geplantem und tatsächlichem Tag
+- Vergleich zwischen Ausgangszustand und Quest-Auswirkungen
 
 ---
 
@@ -277,7 +370,8 @@ Achievements sollen Motivation unterstützen und keine Pflicht erzeugen.
 - XP-Verlauf
 - Quest-Abschlüsse
 - Gewohnheitsverläufe
-- Energie- und Aktivitätsmuster
+- HP-/Energieverläufe
+- Quest-Auswirkungen
 - persönliche Fortschrittsübersichten
 
 Statistiken müssen verständlich bleiben und dürfen den Nutzer nicht mit Daten überladen.
@@ -321,6 +415,7 @@ Mögliche Muster:
 - passende Questgrößen
 - funktionierende Routinen
 - wiederkehrende Überforderung
+- tatsächliche Quest-Auswirkungen auf HP
 
 Die Anwendung beschreibt Muster und schlägt Anpassungen vor. Sie bewertet den Nutzer nicht.
 
@@ -419,12 +514,15 @@ Der MVP gilt funktional als erfolgreich, wenn ein Nutzer:
 
 1. ein Profil erstellen kann,
 2. seinen Charakter sehen kann,
-3. seinen aktuellen Zustand einschätzen kann,
-4. eine passende Quest angezeigt bekommt,
-5. eine Quest starten und abschließen kann,
-6. dafür Fortschritt bzw. XP erhält,
-7. seinen Fortschritt nachvollziehen kann,
-8. zwischen Home, Quests, Plan und Ich navigieren kann.
+3. den großen HP-Check mit 3 Fragen pro Bereich und 5 Antwortmöglichkeiten pro Frage durchführen kann,
+4. daraus einen nachvollziehbaren HP-Zustand erhält,
+5. passende Quests angezeigt bekommt,
+6. eine Quest starten und abschließen kann,
+7. dafür XP / Quest Points erhält,
+8. anschließend einen Mini HP-Check mit Reglern durchführen kann,
+9. zwischen einer weiteren Quest und dem Lagerfeuer wählen kann,
+10. seinen Fortschritt nachvollziehen kann,
+11. zwischen Home, Quests, Plan und Ich navigieren kann.
 
 Dabei muss die Anwendung:
 
