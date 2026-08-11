@@ -225,6 +225,7 @@ Beispiele:
 - Badge
 - Input
 - Progress Indicator
+- Slider
 
 DaisyUI-Komponenten können bereits einen Großteil dieser Rolle übernehmen.
 
@@ -238,6 +239,7 @@ Beispiele:
 - QuestMeta
 - FormField
 - ProgressSummary
+- HpSlider
 
 ## Organisms
 
@@ -249,6 +251,7 @@ Beispiele:
 - CharacterSummary
 - StateOverview
 - AppNavigation
+- HpCheckSection
 
 ## Templates / Pages
 
@@ -264,9 +267,9 @@ Beispiel:
 
 ```text
 features/
-└── quests/
+└── state/
     └── components/
-        └── questRecommendationPanel.tsx
+        └── hpCheckQuestionGroup.tsx
 ```
 
 Erst bei tatsächlichem Wiederverwendungsbedarf wird geprüft, ob eine Extraktion in einen Shared-/Atomic-Bereich sinnvoll ist.
@@ -302,6 +305,8 @@ MVP-Ziele:
 
 Profil-Erstellung und andere Onboarding-Schritte dürfen einen eigenen Flow besitzen.
 
+Der HP-Check ist **kein eigener Hauptnavigation-Punkt**. Er ist Teil des Home-/Quest-Flows.
+
 Die Routing-Lösung muss Deep Links und direkte Navigation auf gültige App-Bereiche ermöglichen.
 
 ---
@@ -318,6 +323,28 @@ Gemeinsamer App-State wird nur dort verwendet, wo mehrere unabhängige Bereiche 
 
 Keine zusätzliche State-Management-Library ohne konkreten Bedarf.
 
+Der zentrale Adventure-Bible-Flow ist ein expliziter UI-/Domain-Zustand:
+
+```text
+idle
+  ↓
+largeHpCheck
+  ↓
+questSelection
+  ↓
+questActive
+  ↓
+questComplete
+  ↓
+reward
+  ↓
+miniHpCheck
+  ├── newQuest → questSelection
+  └── campfire → resting
+```
+
+Diese Zustände sollen nicht ausschließlich aus zufälligen Boolean-Kombinationen zusammengesetzt werden, wenn dadurch ungültige Zustände möglich werden.
+
 ---
 
 # 9. Domain Models
@@ -328,17 +355,33 @@ Wichtige Domain-Konzepte sind unter anderem:
 
 - Profile
 - Character
-- UserState
+- HpArea
+- HpQuestion
+- HpAnswer
+- HpState
 - Quest
 - QuestType
 - QuestStatus
+- QuestReward
 - XP / Progress
 - PlanItem
 - Habit
 
-Typen werden in TypeScript explizit modelliert.
+### HP-Domain
 
-Die konkrete Datenstruktur wird vor Implementierung der jeweiligen Features festgelegt.
+Der große HP-Check basiert auf:
+
+```text
+HpArea
+  └── 3 HpQuestions
+        └── 5 possible answers
+```
+
+Die Berechnungslogik für Bereichswerte und Gesamt-HP gehört in testbare Domain-/Application-Logik und nicht in die React-Komponente.
+
+Der Mini HP-Check verwendet pro Bereich einen selbst eingeschätzten Slider-Wert.
+
+Großer Check und Mini Check sind daher zwei unterschiedliche Eingabemodelle, die auf dasselbe HP-Domainmodell wirken können.
 
 ---
 
@@ -347,22 +390,42 @@ Die konkrete Datenstruktur wird vor Implementierung der jeweiligen Features fest
 Die adaptive Auswahl der Quests gehört zur Anwendungslogik und nicht direkt in die UI-Komponente.
 
 ```text
-UserState
-   ↓
+UserState / HpState
+       ↓
 Quest candidates
-   ↓
+       ↓
 filter / score
-   ↓
-recommended quest
+       ↓
+recommended quests
 ```
 
 Die Logik muss deterministisch und testbar sein.
 
 Im MVP wird keine KI benötigt.
 
+HP-Werte dürfen Empfehlungen beeinflussen, aber nicht als harte moralische oder technische Zugangssperre missbraucht werden.
+
 ---
 
-# 11. Datenzugriff im MVP
+# 11. HP-Berechnung
+
+Die Berechnung des großen HP-Checks wird als reine, testbare Funktion modelliert, sobald die genaue Gewichtung festgelegt wurde.
+
+Sie soll mindestens:
+
+1. Antworten des großen Checks entgegennehmen,
+2. pro HP-Bereich einen nachvollziehbaren Wert berechnen,
+3. daraus einen Gesamtzustand ableiten.
+
+Die Berechnung muss deterministisch sein.
+
+Die konkrete Formel wird als eigene Entscheidung dokumentiert, bevor sie als Produktlogik implementiert wird.
+
+Der Mini HP-Check verändert den Zustand auf Grundlage der subjektiven Slider-Werte und kann später zusätzlich für Verlauf und Mustererkennung verwendet werden.
+
+---
+
+# 12. Datenzugriff im MVP
 
 Der MVP kann mit statischen Mock-Daten oder einer lokalen Datenquelle arbeiten.
 
@@ -372,7 +435,7 @@ UI-Komponenten sollen nicht direkt überall auf Rohdaten zugreifen.
 
 ---
 
-# 12. Backend-Vorbereitung
+# 13. Backend-Vorbereitung
 
 Nach dem React-Modul ist eine Backend-Erweiterung vorgesehen.
 
@@ -402,7 +465,7 @@ Die Anwendung darf später nicht allein auf clientseitige Authentifizierung vert
 
 ---
 
-# 13. Datenbank
+# 14. Datenbank
 
 Die Datenbank wird erst im Backend-Modul eingeführt.
 
@@ -414,6 +477,10 @@ Bei der späteren Modellierung müssen mindestens berücksichtigt werden:
 - eindeutige IDs
 - Zeitstempel
 - Beziehungen zwischen User, Profile, Character und Quests
+- HP-Checks und deren Zeitpunkte
+- Ergebnisse der großen HP-Checks
+- Ergebnisse der Mini HP-Checks
+- Quest-Auswirkungen auf den Zustand
 - Unicode-fähige Textfelder
 - Validierung
 - sichere Queries
@@ -422,7 +489,7 @@ Datenbankzugriffe dürfen niemals durch String-Konkatenation aus User Input erze
 
 ---
 
-# 14. Authentifizierung und Secrets
+# 15. Authentifizierung und Secrets
 
 Clerk wird für die spätere Benutzer-Authentifizierung bevorzugt.
 
@@ -438,7 +505,7 @@ Siehe `docs/SECURITY.md`.
 
 ---
 
-# 15. Unicode und Internationalisierung
+# 16. Unicode und Internationalisierung
 
 Alle Texte werden als Unicode behandelt.
 
@@ -458,7 +525,7 @@ Spätere Internationalisierung soll über Locale-aware Lösungen erfolgen und ni
 
 ---
 
-# 16. Sicherheitsgrenzen
+# 17. Sicherheitsgrenzen
 
 Frontend-Eingaben sind grundsätzlich untrusted.
 
@@ -475,7 +542,7 @@ Bei späterem Backend:
 
 ---
 
-# 17. Komponentenregeln
+# 18. Komponentenregeln
 
 Komponenten sollen eine klare Verantwortung besitzen.
 
@@ -504,7 +571,7 @@ Feature-spezifische Komponenten bleiben beim jeweiligen Feature.
 
 ---
 
-# 18. Import- und Abhängigkeitsrichtung
+# 19. Import- und Abhängigkeitsrichtung
 
 Abhängigkeiten sollen möglichst in eine verständliche Richtung fließen:
 
@@ -524,14 +591,18 @@ Zirkuläre Abhängigkeiten sind zu vermeiden.
 
 ---
 
-# 19. Testing Architecture
+# 20. Testing Architecture
 
 Tests werden möglichst nahe an der jeweiligen Funktion organisiert.
 
 Zu testen sind insbesondere:
 
-- Domain-/Business-Logik
+- HP-Berechnung
+- große HP-Check-Validierung
+- Mini-HP-Slider-Verhalten
 - adaptive Quest-Auswahl
+- Reward-Verarbeitung
+- Campfire-/Recovery-Übergang
 - Formvalidierung
 - zentrale User Flows
 - Accessibility-relevantes Verhalten
@@ -540,7 +611,7 @@ Tests sollen beobachtbares Verhalten prüfen.
 
 ---
 
-# 20. Dependency-Regel
+# 21. Dependency-Regel
 
 Neue Dependencies werden nur hinzugefügt, wenn:
 
@@ -553,7 +624,7 @@ Insbesondere werden keine Libraries nur für eine einzelne kleine UI-Aufgabe hin
 
 ---
 
-# 21. Architektur-Definition-of-Done
+# 22. Architektur-Definition-of-Done
 
 Eine technische Entscheidung gilt erst als abgeschlossen, wenn:
 
@@ -567,3 +638,4 @@ Eine technische Entscheidung gilt erst als abgeschlossen, wenn:
 - [ ] Naming Conventions eingehalten werden
 - [ ] Feature-Grenzen nachvollziehbar bleiben
 - [ ] Atomic Design nur dort eingesetzt wird, wo es tatsächlichen Nutzen bringt
+- [ ] der HP-Zustandsfluss keine ungültigen Zustände zulässt
