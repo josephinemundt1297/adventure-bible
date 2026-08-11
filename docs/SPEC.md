@@ -23,11 +23,29 @@ Adventure Bible ist eine adaptive Habit- und Life-Management-Anwendung mit spiel
 
 Der Nutzer verwaltet seinen Alltag nicht als starre Checkliste, sondern als persönliches Abenteuer.
 
-Der zentrale Grundgedanke lautet:
-
-> Die App passt sich an den Nutzer an – nicht der Nutzer an die App.
-
 Die Anwendung soll langfristig Aufgaben, Gewohnheiten, Energie, Planung und persönlichen Fortschritt miteinander verbinden.
+
+Der zentrale Produktzyklus ist:
+
+```text
+Abenteuerzyklus starten
+        ↓
+Großer HP-Check
+        ↓
+HP-Zustand berechnen
+        ↓
+passende Quest-Auswahl
+        ↓
+Quest erledigen
+        ↓
+Reward
+        ↓
+Mini HP-Check
+        ↓
+Neue Quest ODER Lagerfeuer
+```
+
+Der Zyklus soll Selbstwahrnehmung und Anpassung fördern, ohne den Nutzer zu bevormunden.
 
 ---
 
@@ -74,13 +92,13 @@ Der Charakter ist keine Bewertung des persönlichen Wertes oder der Leistungsfä
 
 ---
 
-# 4. Zustand / HP-System
+# 4. HP-System und großer HP-Check
 
 Adventure Bible besitzt ein persönliches Zustandsmodell.
 
-Mögliche Zustandsbereiche:
+Mögliche HP-Bereiche sind:
 
-- körperlicher Zustand
+- Körper
 - Energie
 - Konzentration
 - Stimmung
@@ -88,26 +106,37 @@ Mögliche Zustandsbereiche:
 - Ernährung
 - Regeneration
 
-Der Nutzer kann seinen Zustand selbst einschätzen und im Tagesverlauf aktualisieren.
+Der **große HP-Check** bildet den strukturierten Ausgangszustand eines neuen Abenteuerzyklus ab.
 
-Die Werte dienen der Anpassung der Anwendung und stellen keine medizinische Diagnose dar.
+Für jeden HP-Bereich werden:
+
+- 3 konkrete Fragen gestellt,
+- jeweils mit 5 Antwortmöglichkeiten.
+
+Die Antworten werden zu einem Wert für den jeweiligen Bereich zusammengeführt. Aus den Bereichswerten wird ein Gesamtzustand abgeleitet.
+
+Die Berechnung muss nachvollziehbar, deterministisch und testbar sein.
+
+Die genaue Gewichtung der Bereiche und Fragen wird als eigene Produkt-/Technikentscheidung festgelegt, bevor die Logik implementiert wird.
+
+Die HP-Werte dienen der Anpassung der Anwendung und stellen keine medizinische Diagnose dar.
 
 ---
 
-# 5. Energie als Ressource
+# 5. HP als Entscheidungsgrundlage
 
-Energie ist eine zentrale Ressource des Systems.
+Der berechnete HP-Zustand beeinflusst die Auswahl und Priorisierung geeigneter Quests.
 
-Die Anwendung soll langfristig berücksichtigen, dass nicht jeder Tag und nicht jede Tageszeit dieselbe Leistungsfähigkeit bietet.
+Die Anwendung soll beispielsweise bei niedriger Energie:
 
-Ein niedriger Energiezustand kann beispielsweise dazu führen, dass:
+- kleinere Aufgaben bevorzugen,
+- kürzere Quests empfehlen,
+- Recovery Quests berücksichtigen,
+- große Aufgaben gegebenenfalls in kleinere Schritte zerlegen.
 
-- kleinere Aufgaben bevorzugt werden,
-- Recovery Quests vorgeschlagen werden,
-- große Aufgaben in kleinere Schritte zerlegt werden,
-- geplante Aufgaben neu priorisiert werden.
+HP sind keine Zugangsbeschränkung im Sinne eines „Du darfst diese Quest nicht machen“.
 
-Das System darf niedrige Energie nicht als Versagen interpretieren.
+Die Anwendung soll Empfehlungen anpassen, während der Nutzer die Entscheidung behält.
 
 ---
 
@@ -133,6 +162,7 @@ Eine Quest kann langfristig enthalten:
 - Zeitrahmen
 - Status
 - XP-Belohnung
+- Quest Points
 - optionale Gegenstände oder Achievements
 
 Mögliche Status:
@@ -155,7 +185,7 @@ Die Anwendung soll langfristig passende Quests empfehlen.
 
 Die Empfehlung kann berücksichtigen:
 
-- aktuellen Zustand
+- aktuellen HP-Zustand
 - verfügbare Energie
 - Zeit
 - Priorität
@@ -173,7 +203,75 @@ Empfehlungen bleiben Empfehlungen. Der Nutzer behält die Entscheidungshoheit.
 
 ---
 
-# 8. Habit-System
+# 8. Quest Reward
+
+Nach Abschluss einer Quest erhält der Nutzer eine sichtbare Belohnung.
+
+Mögliche Rewards:
+
+- XP
+- Quest Points
+- Fortschritt
+- später kosmetische oder spielerische Gegenstände
+
+Der Reward soll unmittelbar verständlich machen, dass die abgeschlossene Aktivität als Fortschritt zählt.
+
+---
+
+# 9. Mini HP-Check
+
+Nach einer abgeschlossenen Quest folgt ein kurzer HP-Check.
+
+Der Mini HP-Check ist bewusst anders als der große HP-Check.
+
+Statt Fragen beantwortet der Nutzer für jeden relevanten HP-Bereich die Frage:
+
+> Wie geht es mir gerade?
+
+Dafür wird pro Bereich ein **Regler / Slider** verwendet, auf dem sich der Nutzer selbst einschätzt.
+
+Der Mini HP-Check dient dazu, die tatsächliche Wirkung einer Quest auf den aktuellen Zustand sichtbar zu machen.
+
+Beispiel:
+
+```text
+Quest abgeschlossen
+      ↓
+Mini HP-Check
+      ↓
+Energie: 70 → 52
+Stimmung: 60 → 68
+      ↓
+Nutzer entscheidet
+```
+
+Der Mini HP-Check muss schnell, zugänglich und nicht belastend sein.
+
+---
+
+# 10. Lagerfeuer / Regeneration
+
+Nach dem Mini HP-Check kann der Nutzer bewusst das **Lagerfeuer** wählen.
+
+Das Lagerfeuer ist eine Recovery-Mechanik und kein Fehler- oder Leerlaufzustand.
+
+Es repräsentiert bewusste Regeneration.
+
+Mögliche langfristige Funktionen:
+
+- Ruhephase
+- Energie-Regeneration
+- Trink-/Essenspause
+- kurze Reflexion
+- spätere Rückkehr in den Quest-Zyklus
+
+Die konkrete Regenerationsberechnung wird später festgelegt.
+
+Das Lagerfeuer darf nicht als Belohnung dafür dargestellt werden, dass der Nutzer „nicht genug geschafft“ hat.
+
+---
+
+# 11. Habit-System
 
 Adventure Bible soll langfristig wiederkehrende Gewohnheiten unterstützen.
 
@@ -194,7 +292,7 @@ Das System soll mit Unterbrechungen umgehen können, ohne automatisch eine negat
 
 ---
 
-# 9. Planung
+# 12. Planung
 
 Der Plan verbindet Quests, Habits und Termine.
 
@@ -213,7 +311,7 @@ Der Plan soll flexibel bleiben und keine starre Tagesroutine erzwingen.
 
 ---
 
-# 10. Kalenderintegration
+# 13. Kalenderintegration
 
 Eine spätere Kalenderintegration kann externe Termine berücksichtigen.
 
@@ -229,9 +327,9 @@ Die Anwendung soll externe Termine nicht ungefragt verändern.
 
 ---
 
-# 11. XP und Level
+# 14. XP, Quest Points und Level
 
-Abgeschlossene Aktivitäten können XP vergeben.
+Abgeschlossene Aktivitäten können XP und Quest Points vergeben.
 
 XP können langfristig zu Leveln führen.
 
@@ -243,11 +341,11 @@ Mögliche Systeme:
 - Fortschrittsmeilensteine
 - kosmetische Freischaltungen
 
-XP dienen der Visualisierung von Fortschritt und nicht der Bewertung des Nutzers.
+XP und Quest Points dienen der Visualisierung von Fortschritt und nicht der Bewertung des Nutzers.
 
 ---
 
-# 12. Achievements
+# 15. Achievements
 
 Langfristig können Achievements besondere Fortschritte sichtbar machen.
 
@@ -263,7 +361,7 @@ Achievements sollen optional und nicht drucksteigernd sein.
 
 ---
 
-# 13. Inventar und Belohnungen
+# 16. Inventar und Belohnungen
 
 Ein späteres Inventarsystem kann spielerische Belohnungen verwalten.
 
@@ -279,7 +377,7 @@ Diese Systeme dürfen die Kernbedienung nicht unnötig komplizieren.
 
 ---
 
-# 14. Journal und Reflexion
+# 17. Journal und Reflexion
 
 Der Nutzer soll langfristig persönliche Reflexionen festhalten können.
 
@@ -297,7 +395,7 @@ Journal-Inhalte gehören dem Nutzer und müssen entsprechend geschützt werden.
 
 ---
 
-# 15. Statistiken und Verlauf
+# 18. Statistiken und Verlauf
 
 Langfristig soll Adventure Bible Entwicklungen sichtbar machen können.
 
@@ -306,7 +404,9 @@ Mögliche Auswertungen:
 - XP-Verlauf
 - Quest-Abschlüsse
 - Habit-Verlauf
+- HP-Verlauf
 - Energieverlauf
+- Veränderungen vor und nach Quests
 - Aktivitätsmuster
 - geplante vs. tatsächliche Aktivitäten
 - persönliche Fortschritte
@@ -315,7 +415,7 @@ Statistiken sollen verständlich und sparsam eingesetzt werden.
 
 ---
 
-# 16. Personalisierung und Mustererkennung
+# 19. Personalisierung und Mustererkennung
 
 Die Anwendung soll langfristig aus freiwillig erfassten Nutzungsdaten Muster erkennen können.
 
@@ -327,12 +427,13 @@ Beispiele:
 - funktionierende Routinen
 - wiederkehrende Überforderung
 - bevorzugte Quest-Arten
+- Quest-Auswirkungen auf HP
 
 Muster werden als Unterstützung dargestellt und nicht als Diagnose oder Urteil.
 
 ---
 
-# 17. KI-Unterstützung
+# 20. KI-Unterstützung
 
 KI kann langfristig unterstützend eingesetzt werden für:
 
@@ -350,7 +451,7 @@ Die Anwendung soll transparent machen, wenn eine Empfehlung durch ein KI-System 
 
 ---
 
-# 18. Voice Input
+# 21. Voice Input
 
 Langfristig können Nutzer Aufgaben und Zustände per Sprache erfassen.
 
@@ -364,7 +465,7 @@ Vor dem Speichern muss der Nutzer die erkannten Inhalte überprüfen können.
 
 ---
 
-# 19. Benachrichtigungen
+# 22. Benachrichtigungen
 
 Langfristig können optionale Erinnerungen unterstützt werden.
 
@@ -382,7 +483,7 @@ Die Anwendung soll keine aggressive oder manipulative Notification-Strategie ver
 
 ---
 
-# 20. Backend und Persistenz
+# 23. Backend und Persistenz
 
 Nach dem React-Modul soll Adventure Bible durch ein Backend erweitert werden.
 
@@ -403,7 +504,7 @@ Die konkrete Datenbank und Backend-Technologie wird im Backend-Modul bewusst ent
 
 ---
 
-# 21. Datenschutz und Dateneigentum
+# 24. Datenschutz und Dateneigentum
 
 Persönliche Daten, Journal-Inhalte, Zustandsdaten und Nutzungsverläufe sind sensible Anwendungsdaten.
 
@@ -420,7 +521,7 @@ Konkrete Sicherheitsregeln stehen in `docs/SECURITY.md`.
 
 ---
 
-# 22. Unicode und Internationalisierung
+# 25. Unicode und Internationalisierung
 
 Alle geeigneten Nutzerinhalte müssen Unicode unterstützen.
 
@@ -446,7 +547,7 @@ Unicode-Unterstützung und Mehrsprachigkeit sind getrennte Anforderungen.
 
 ---
 
-# 23. Accessibility
+# 26. Accessibility
 
 Alle langfristigen Systeme müssen die Accessibility-Prinzipien aus `docs/ACCESSIBILITY.md` einhalten.
 
@@ -465,7 +566,7 @@ Insbesondere müssen berücksichtigt werden:
 
 ---
 
-# 24. Nicht-Ziele
+# 27. Nicht-Ziele
 
 Adventure Bible soll langfristig kein System werden, das:
 
@@ -479,7 +580,7 @@ Adventure Bible soll langfristig kein System werden, das:
 
 ---
 
-# 25. Priorisierung
+# 28. Priorisierung
 
 Die langfristige Vision wird in dieser Reihenfolge bewertet:
 
