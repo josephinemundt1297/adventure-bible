@@ -1,14 +1,17 @@
 import "./App.css";
-import { AppShell } from "./app/appShell";
+import { routeTree } from "./routeTree.gen";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+
+const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 function App() {
-  return (
-    <AppShell>
-      <div className="flex min-h-screen items-center justify-center">
-        <h1 className="text-2xl font-bold">Adventure Bible</h1>
-      </div>
-    </AppShell>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
