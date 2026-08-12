@@ -8,7 +8,7 @@ const state = [
 export function HomeDashboard() {
   return (
     <div className="space-y-4">
-      <header className="flex items-start justify-between gap-3">
+      <header className="pt-4 flex items-start justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Guten Morgen, Josi!</h1>
           <p className="mt-1 text-sm text-base-content/65">Bereit für dein Abenteuer?</p>
