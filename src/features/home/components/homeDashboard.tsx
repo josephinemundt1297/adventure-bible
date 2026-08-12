@@ -20,7 +20,7 @@ export function HomeDashboard() {
             className="btn btn-ghost btn-sm btn-square"
             aria-label="Benachrichtigungen"
           >
-            <span aria-hidden="true">♧</span>
+            <span aria-hidden="true">🔔</span>
           </button>
           <button
             type="button"
