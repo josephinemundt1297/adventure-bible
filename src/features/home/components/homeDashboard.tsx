@@ -8,25 +8,17 @@ const state = [
 export function HomeDashboard() {
   return (
     <div className="space-y-4">
-      <header className="pt-4 flex items-start justify-between gap-3">
+      <header className="flex items-start justify-between gap-3 pt-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Guten Morgen, Josi!</h1>
           <p className="mt-1 text-sm text-base-content/65">Bereit für dein Abenteuer?</p>
         </div>
 
         <div className="flex shrink-0 gap-1" aria-label="Schnellaktionen">
-          <button
-            type="button"
-            className="btn btn-ghost btn-sm btn-square"
-            aria-label="Benachrichtigungen"
-          >
+          <button type="button" className="btn btn-ghost btn-sm btn-square" aria-label="Benachrichtigungen">
             <span aria-hidden="true">🔔</span>
           </button>
-          <button
-            type="button"
-            className="btn btn-ghost btn-sm btn-square"
-            aria-label="Einstellungen"
-          >
+          <button type="button" className="btn btn-ghost btn-sm btn-square" aria-label="Einstellungen">
             <span aria-hidden="true">⚙</span>
           </button>
         </div>
@@ -37,14 +29,14 @@ export function HomeDashboard() {
           Dein Status
         </h2>
 
-        <div className="mt-3 space-y-3">
+        <div className="mt-4 space-y-4">
           {state.map((item) => (
             <div key={item.label}>
-              <div className="mb-1 flex items-center gap-2 text-sm">
+              <div className="mb-2 flex min-h-6 items-center gap-2 text-sm">
                 <span aria-hidden="true" className="w-5 text-center text-base">
                   {item.icon}
                 </span>
-                <span className="flex-1">{item.label}</span>
+                <span className="flex-1 font-medium">{item.label}</span>
                 <span className="tabular-nums text-xs font-medium text-base-content/65">
                   {item.value}/100
                 </span>
