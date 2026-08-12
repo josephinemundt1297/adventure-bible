@@ -1,70 +1,88 @@
+const state = [
+  { label: "Energie", value: 58, icon: "⚡" },
+  { label: "Fokus", value: 62, icon: "🎯" },
+  { label: "Stimmung", value: 70, icon: "🙂" },
+  { label: "Körper", value: 54, icon: "❤️" },
+] as const;
+
 export function HomeDashboard() {
-  const state = [
-    { label: "Energie", value: 58 },
-    { label: "Fokus", value: 62 },
-    { label: "Stimmung", value: 70 },
-    { label: "Körper", value: 54 },
-  ];
-
   return (
-    <section className="mx-auto flex w-full max-w-md flex-col gap-5 px-5 py-6">
-      <header>
-        <p className="text-sm text-base-content/65">Bereit für dein Abenteuer?</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight">Guten Morgen, Josi!</h1>
-      </header>
-
-      <section className="card border border-base-300 bg-base-100 shadow-sm" aria-labelledby="status-heading">
-        <div className="card-body gap-4 p-5">
-          <div>
-            <h2 id="status-heading" className="card-title text-lg">
-              Dein Status
-            </h2>
-            <p className="mt-1 text-sm text-base-content/60">
-              Ein kurzer Blick auf deinen aktuellen Zustand.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {state.map((item) => (
-              <div key={item.label}>
-                <div className="mb-1 flex items-center justify-between gap-3 text-sm">
-                  <span>{item.label}</span>
-                  <span className="tabular-nums text-base-content/65">{item.value}/100</span>
-                </div>
-                <progress
-                  className="progress progress-primary h-2 w-full"
-                  value={item.value}
-                  max="100"
-                  aria-label={`${item.label}: ${item.value} von 100`}
-                />
-              </div>
-            ))}
-          </div>
+    <div className="space-y-4">
+      <header className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight">Guten Morgen, Josi!</h1>
+          <p className="mt-1 text-sm text-base-content/65">Bereit für dein Abenteuer?</p>
         </div>
-      </section>
 
-      <section className="card border border-base-300 bg-base-100 shadow-sm" aria-labelledby="quest-heading">
-        <div className="card-body gap-4 p-5">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-base-content/55">
-              Empfohlene Quest
-            </p>
-            <h2 id="quest-heading" className="mt-1 text-xl font-semibold">Trink 2L Wasser</h2>
-            <p className="mt-1 text-sm text-base-content/65">
-              Eine kleine Aufgabe für heute. Du bestimmst selbst, ob jetzt der richtige Moment ist.
-            </p>
-          </div>
-
-          <div className="flex items-center justify-between gap-4 rounded-xl bg-base-200 px-4 py-3 text-sm">
-            <span>Belohnung</span>
-            <span className="font-semibold">+20 XP</span>
-          </div>
-
-          <button type="button" className="btn btn-primary w-full">
-            Starten
+        <div className="flex shrink-0 gap-1" aria-label="Schnellaktionen">
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm btn-square"
+            aria-label="Benachrichtigungen"
+          >
+            <span aria-hidden="true">♧</span>
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm btn-square"
+            aria-label="Einstellungen"
+          >
+            <span aria-hidden="true">⚙</span>
           </button>
         </div>
+      </header>
+
+      <section className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm" aria-labelledby="status-heading">
+        <h2 id="status-heading" className="text-xs font-semibold uppercase tracking-wide text-base-content/60">
+          Dein Status
+        </h2>
+
+        <div className="mt-3 space-y-3">
+          {state.map((item) => (
+            <div key={item.label}>
+              <div className="mb-1 flex items-center gap-2 text-sm">
+                <span aria-hidden="true" className="w-5 text-center text-base">
+                  {item.icon}
+                </span>
+                <span className="flex-1">{item.label}</span>
+                <span className="tabular-nums text-xs font-medium text-base-content/65">
+                  {item.value}/100
+                </span>
+              </div>
+              <progress
+                className="progress progress-primary h-1.5 w-full"
+                value={item.value}
+                max="100"
+                aria-label={`${item.label}: ${item.value} von 100`}
+              />
+            </div>
+          ))}
+        </div>
       </section>
-    </section>
+
+      <section className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm" aria-labelledby="quest-heading">
+        <div className="flex items-start gap-3">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-base-200 text-lg" aria-hidden="true">
+            🧙
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold leading-tight text-base-content/65">
+              Empfohlene Quest
+              <br />
+              für dich
+            </p>
+            <h2 id="quest-heading" className="mt-2 text-base font-semibold">Trink 2L Wasser</h2>
+
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <span className="text-xs font-medium text-base-content/65">+20 XP</span>
+              <button type="button" className="btn btn-primary btn-sm min-h-10 px-5">
+                Starten
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
