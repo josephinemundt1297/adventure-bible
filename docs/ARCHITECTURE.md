@@ -6,6 +6,8 @@ Dieses Dokument beschreibt die technische Architektur des aktuellen React-MVPs u
 
 Architekturentscheidungen sollen den MVP klein halten, aber keine unnötigen Sackgassen für Backend, Authentifizierung oder Persistenz erzeugen.
 
+Architekturprinzipien sollen praktisch bleiben und keine künstliche Komplexität erzeugen.
+
 ---
 
 # 1. Aktueller Stack
@@ -68,14 +70,17 @@ Die Architektur soll keine Backend-Schicht simulieren, die aktuell noch nicht be
 
 Die Anwendung wird bevorzugt nach Features organisiert und nicht ausschließlich nach technischen Dateitypen.
 
-Beispiel:
-
 ```text
 src/
 ├── app/
-│   ├── app.tsx
-│   ├── router.tsx
+│   ├── appShell.tsx
 │   └── providers.tsx
+├── routes/
+│   ├── __root.tsx
+│   ├── index.tsx
+│   ├── quests.tsx
+│   ├── plan.tsx
+│   └── profile.tsx
 ├── components/
 │   ├── ui/
 │   └── layout/
@@ -90,9 +95,19 @@ src/
 ├── lib/
 ├── types/
 ├── assets/
-├── app.tsx
+├── App.tsx
 └── main.tsx
 ```
+
+### Routing boundary
+
+TanStack Router wird im MVP mit **File-Based Routing** verwendet. Die Route-Definitionen liegen deshalb unter `src/routes/`.
+
+`src/app/` enthält Application-Infrastruktur wie die App-Shell und Provider. `src/routes/` enthält ausschließlich die Zuordnung und Struktur der navigierbaren Screens und Flows.
+
+Diese Trennung hält die Routing-Struktur einheitlich und ermöglicht später auch verschachtelte bzw. nicht in der Hauptnavigation sichtbare Routen, ohne die Application-Infrastruktur mit Route-Definitionen zu vermischen.
+
+Nicht in der Hauptnavigation sichtbare Routen sind keine Sicherheitsgrenze. Zugriffsschutz wird bei Bedarf über Authentifizierung und serverseitige Autorisierung umgesetzt.
 
 Die konkrete Struktur darf während der Implementierung angepasst werden, wenn der Code dadurch klarer wird.
 
@@ -294,7 +309,7 @@ wenn diese Struktur keinen realen Wiederverwendungsbedarf löst.
 
 # 7. Routing
 
-Routing soll die Hauptbereiche der App eindeutig abbilden.
+Routing bildet die Hauptbereiche der App eindeutig ab.
 
 MVP-Ziele:
 
@@ -308,6 +323,10 @@ Profil-Erstellung und andere Onboarding-Schritte dürfen einen eigenen Flow besi
 Der HP-Check ist **kein eigener Hauptnavigation-Punkt**. Er ist Teil des Home-/Quest-Flows.
 
 Die Routing-Lösung muss Deep Links und direkte Navigation auf gültige App-Bereiche ermöglichen.
+
+Nicht in der Hauptnavigation sichtbare Routen dürfen für interne Flows verwendet werden, wenn sie die Produktstruktur vereinfachen und keine unnötige Navigationsebene erzeugen.
+
+Diese Sichtbarkeitseigenschaft ersetzt keine Authentifizierung oder Autorisierung.
 
 ---
 
@@ -578,6 +597,8 @@ Abhängigkeiten sollen möglichst in eine verständliche Richtung fließen:
 ```text
 app
  ↓
+routes
+ ↓
 features
  ↓
 shared components / lib
@@ -593,49 +614,32 @@ Zirkuläre Abhängigkeiten sind zu vermeiden.
 
 # 20. Testing Architecture
 
-Tests werden möglichst nahe an der jeweiligen Funktion organisiert.
+Tests werden möglichst nahe an der zu testenden Funktionalität organisiert.
 
-Zu testen sind insbesondere:
+Reine Domain- und Application-Logik wird bevorzugt mit Unit-Tests geprüft.
 
-- HP-Berechnung
-- große HP-Check-Validierung
-- Mini-HP-Slider-Verhalten
-- adaptive Quest-Auswahl
-- Reward-Verarbeitung
-- Campfire-/Recovery-Übergang
-- Formvalidierung
-- zentrale User Flows
-- Accessibility-relevantes Verhalten
+React-Komponenten und Nutzerflüsse werden mit React Testing Library und Vitest auf beobachtbares Verhalten getestet.
 
-Tests sollen beobachtbares Verhalten prüfen.
+Tests sollen unabhängig voneinander ausführbar sein und keine Reihenfolge voraussetzen.
 
 ---
 
-# 21. Dependency-Regel
+# 21. Responsive und Mobile-first
 
-Neue Dependencies werden nur hinzugefügt, wenn:
+Die Anwendung wird mobile-first entwickelt.
 
-1. ein konkreter Bedarf besteht,
-2. die Dependency zum Projekt passt,
-3. sie nicht sinnvoll mit vorhandenen Mitteln ersetzt werden kann,
-4. Sicherheits- und Wartungsaspekte vertretbar sind.
+Die UI muss auf kleinen Bildschirmen vollständig nutzbar sein.
 
-Insbesondere werden keine Libraries nur für eine einzelne kleine UI-Aufgabe hinzugefügt.
+Desktop nutzt den zusätzlichen Platz, ohne die App in eine klassische Website umzuwandeln.
+
+Layouts sollen möglichst mit responsiven CSS-/Tailwind-Regeln statt mit geräteabhängigen Sonderlogiken umgesetzt werden.
 
 ---
 
-# 22. Architektur-Definition-of-Done
+# 22. Erweiterbarkeit
 
-Eine technische Entscheidung gilt erst als abgeschlossen, wenn:
+Die MVP-Architektur soll spätere Erweiterungen ermöglichen, ohne sie vorwegzunehmen.
 
-- [ ] sie dokumentiert ist, wenn sie langfristige Auswirkungen hat
-- [ ] sie zum aktuellen MVP-Scope passt
-- [ ] sie testbar ist
-- [ ] Accessibility nicht verschlechtert wird
-- [ ] Security-Anforderungen berücksichtigt wurden
-- [ ] keine unnötige Dependency eingeführt wurde
-- [ ] die spätere Backend-Erweiterung nicht unnötig blockiert wird
-- [ ] Naming Conventions eingehalten werden
-- [ ] Feature-Grenzen nachvollziehbar bleiben
-- [ ] Atomic Design nur dort eingesetzt wird, wo es tatsächlichen Nutzen bringt
-- [ ] der HP-Zustandsfluss keine ungültigen Zustände zulässt
+Insbesondere sollen spätere Backend-, Authentifizierungs- und Persistenzschichten eingeführt werden können, ohne dass die fachliche Logik vollständig aus den Features herausgelöst oder neu geschrieben werden muss.
+
+Gleichzeitig werden keine Abstraktionen nur für hypothetische zukünftige Anforderungen angelegt.
