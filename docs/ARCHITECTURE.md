@@ -2,120 +2,269 @@
 
 ## Zweck
 
-Dieses Dokument beschreibt die technische Architektur des aktuellen React-MVPs und bereitet die spätere Backend-Erweiterung vor.
+Dieses Dokument beschreibt die technische Architektur von Adventure Bible und legt fest, wie die verschiedenen Bereiche des Frontends zusammenarbeiten.
 
-Architekturentscheidungen sollen den MVP klein halten, aber keine unnötigen Sackgassen für Backend, Authentifizierung oder Persistenz erzeugen.
+Die Architektur soll:
 
-Architekturprinzipien sollen praktisch bleiben und keine künstliche Komplexität erzeugen.
+- die aktuelle React-Anwendung klar und nachvollziehbar strukturieren,
+- feature-orientierte Entwicklung ermöglichen,
+- TanStack Router sauber von der Application-Struktur trennen,
+- Atomic Design dort einsetzen, wo es echten Wiederverwendungsbedarf gibt,
+- die spätere Backend-, Authentifizierungs- und Datenbank-Erweiterung nicht unnötig erschweren.
+
+Architekturentscheidungen sollen praktisch bleiben. Ordner, Patterns und Abstraktionen werden nicht nur eingesetzt, um professionell auszusehen.
 
 ---
 
 # 1. Aktueller Stack
 
-## Frontend
+Der aktuell verwendete Stack wird durch `package.json` bestimmt.
+
+Aktuell relevant:
 
 - React
 - TypeScript
 - Vite
+- TanStack Router
+- TanStack Router Vite Plugin
 - DaisyUI
 - Tailwind CSS
 
-## Testing
-
-- Vitest
-- React Testing Library
-
-Die tatsächlich installierten Versionen und Scripts in `package.json` sind maßgeblich.
+Spätere Module können weitere Technologien ergänzen. Dokumentation darf eine Technologie nicht als bereits implementiert darstellen, wenn sie nur geplant ist.
 
 ---
 
 # 2. Architekturprinzipien
 
-Die Architektur folgt diesen Grundsätzen:
+Adventure Bible folgt diesen Grundsätzen:
 
-1. **Feature-oriented first** – Code wird primär nach fachlichen Features organisiert.
+1. **Feature-oriented first** – fachliche Entwicklung wird primär nach Features organisiert.
 2. **Single Responsibility** – Dateien und Komponenten haben eine klar erkennbare Verantwortung.
 3. **Explicit dependencies** – Abhängigkeiten zwischen Bereichen sollen nachvollziehbar sein.
 4. **Local state first** – State bleibt so lokal wie möglich.
-5. **Reusable only when useful** – Wiederverwendung entsteht aus tatsächlichem Bedarf, nicht aus abstrakter Vorplanung.
+5. **Reusable only when useful** – Wiederverwendung entsteht aus tatsächlichem Bedarf.
 6. **UI ≠ Business Logic** – fachliche Logik wird nicht unnötig in UI-Komponenten eingebettet.
 7. **Small changes** – Änderungen bleiben möglichst klein und überprüfbar.
-8. **No architecture theatre** – Ordner, Patterns und Abstraktionen werden nicht nur eingesetzt, um professionell auszusehen.
+8. **Generated code is not application code** – generierte Dateien werden nicht manuell bearbeitet.
+9. **No architecture theatre** – keine künstliche Komplexität nur für eine vermeintlich professionelle Struktur.
 
 ---
 
-# 3. MVP-Architektur
+# 3. Aktuelle `src/`-Struktur
 
-Der MVP ist zunächst eine Frontend-Anwendung.
-
-```text
-UI
-↓
-Pages / Routes
-↓
-Feature Components
-↓
-Application Logic
-↓
-Domain Models / Utilities
-↓
-Mock / Local Data
-```
-
-Die Architektur soll keine Backend-Schicht simulieren, die aktuell noch nicht benötigt wird.
-
----
-
-# 4. Feature-orientierte Struktur
-
-Die Anwendung wird bevorzugt nach Features organisiert und nicht ausschließlich nach technischen Dateitypen.
+Die aktuelle Frontend-Struktur ist bewusst in Application-, Routing-, Feature-, Shared- und technische Bereiche getrennt:
 
 ```text
 src/
 ├── app/
-│   ├── appShell.tsx
-│   └── providers.tsx
+│   └── appShell.tsx
+├── components/
+│   ├── layout/
+│   └── ui/
+├── data/
+├── features/
+├── lib/
 ├── routes/
 │   ├── __root.tsx
-│   ├── index.tsx
-│   ├── quests.tsx
-│   ├── plan.tsx
-│   └── profile.tsx
-├── components/
-│   ├── ui/
-│   └── layout/
-├── features/
-│   ├── profile/
-│   ├── character/
-│   ├── state/
-│   ├── quests/
-│   ├── progress/
-│   └── plan/
-├── data/
-├── lib/
+│   └── index.tsx
 ├── types/
 ├── assets/
 ├── App.tsx
-└── main.tsx
+├── App.css
+├── index.css
+├── main.tsx
+└── routeTree.gen.ts
 ```
 
-### Routing boundary
+Die Verzeichnisse `components`, `data`, `features`, `lib` und `types` dürfen zunächst leer sein. Ein Verzeichnis wird nicht nur deshalb mit künstlichen Dateien gefüllt, damit es im Git-Repository sichtbar ist.
 
-TanStack Router wird im MVP mit **File-Based Routing** verwendet. Die Route-Definitionen liegen deshalb unter `src/routes/`.
+`routeTree.gen.ts` ist eine Ausnahme: Die Datei wird durch TanStack Router generiert und gehört nicht zur handgeschriebenen Architektur.
 
-`src/app/` enthält Application-Infrastruktur wie die App-Shell und Provider. `src/routes/` enthält ausschließlich die Zuordnung und Struktur der navigierbaren Screens und Flows.
+---
 
-Diese Trennung hält die Routing-Struktur einheitlich und ermöglicht später auch verschachtelte bzw. nicht in der Hauptnavigation sichtbare Routen, ohne die Application-Infrastruktur mit Route-Definitionen zu vermischen.
+# 4. Verantwortlichkeiten der Bereiche
 
-Nicht in der Hauptnavigation sichtbare Routen sind keine Sicherheitsgrenze. Zugriffsschutz wird bei Bedarf über Authentifizierung und serverseitige Autorisierung umgesetzt.
+## `src/main.tsx` – technischer Einstiegspunkt
 
-Die konkrete Struktur darf während der Implementierung angepasst werden, wenn der Code dadurch klarer wird.
+`main.tsx` ist der Vite-/React-Einstiegspunkt der Anwendung.
 
-Keine künstliche Ordnerstruktur nur um eine Regel zu erfüllen.
+Seine Aufgabe ist es, die React-Anwendung in das HTML-Dokument einzuhängen und den App-Einstieg zu starten.
 
-### Feature-Grenzen
+`main.tsx` enthält keine fachliche Feature-Logik.
 
-Ein Feature darf seine eigenen fachlichen Komponenten, Hooks, Services, Tests und Typen enthalten, wenn diese nur für dieses Feature relevant sind.
+## `src/App.tsx` – Router-Einstieg
+
+`App.tsx` stellt den TanStack Router über den `RouterProvider` bereit.
+
+Der aktuelle Aufbau folgt grundsätzlich:
+
+```text
+main.tsx
+    ↓
+App.tsx
+    ↓
+RouterProvider
+    ↓
+routeTree
+```
+
+`App.tsx` ist **nicht** für das globale Seitenlayout zuständig.
+
+Die `AppShell` wird deshalb nicht in `App.tsx` eingebettet.
+
+## `src/app/` – Application-Ebene
+
+`app/` enthält anwendungsweite Infrastruktur und Zusammensetzung.
+
+Beispiele:
+
+- `appShell.tsx`
+- spätere globale Provider
+- globale Application-Konfiguration
+
+Die Application-Ebene ist nicht dasselbe wie ein UI-Component-Ordner.
+
+## `src/routes/` – Routing-Ebene
+
+`routes/` enthält die TanStack-File-Based-Routes.
+
+Beispiele:
+
+```text
+routes/
+├── __root.tsx
+├── index.tsx
+├── quests.tsx
+├── plan.tsx
+└── profile.tsx
+```
+
+Routen beschreiben navigierbare Screens und Flows. Sie sind nicht der Ort für beliebige globale UI-Komponenten.
+
+### Root Route und AppShell
+
+`__root.tsx` ist die Root-Route des TanStack Routers.
+
+Die Root-Route ist die richtige Stelle, um die globale `AppShell` mit dem Router-Outlet zu verbinden:
+
+```text
+App.tsx
+└── RouterProvider
+    └── __root.tsx
+        └── AppShell
+            └── Outlet
+                └── aktive Route
+```
+
+Dadurch bleibt `App.tsx` ein schlanker Router-Einstiegspunkt und die Application-Shell bleibt unter `src/app/`.
+
+Die Root-Route darf globale Layout-Struktur bereitstellen, soll aber keine fachliche Feature-Logik enthalten.
+
+### Nicht sichtbare Routen
+
+Nicht in der Hauptnavigation sichtbare Routen sind möglich, wenn sie interne Flows vereinfachen.
+
+Beispiele können später Onboarding-, Detail-, Modal- oder andere interne Flows sein.
+
+Ein nicht sichtbarer oder schwer auffindbarer Pfad ist **keine Sicherheitsgrenze**. Zugriffsschutz erfolgt später über Authentifizierung und serverseitige Autorisierung.
+
+## `src/features/` – fachliche Features
+
+`features/` ist der wichtigste Bereich für die eigentliche Produktlogik.
+
+Beispielsweise:
+
+```text
+features/
+├── hpCheck/
+├── quests/
+├── progress/
+├── plan/
+└── profile/
+```
+
+Ein Feature darf seine eigenen Komponenten, Hooks, Services, Tests und Typen enthalten, wenn diese nur für dieses Feature relevant sind.
+
+Beispiel:
+
+```text
+features/
+└── hpCheck/
+    ├── components/
+    ├── hooks/
+    ├── services/
+    ├── hpCheck.types.ts
+    └── hpCheck.test.ts
+```
+
+Feature-Code wird nicht ohne Grund in globale Ordner verschoben.
+
+## `src/components/` – Shared UI
+
+`components/` enthält UI-Bausteine, die tatsächlich von mehreren Bereichen oder Features wiederverwendet werden.
+
+Aktuelle Unterteilung:
+
+```text
+components/
+├── layout/
+└── ui/
+```
+
+`components/ui/` ist für wiederverwendbare UI-Primitives bzw. kleine gemeinsame Bausteine gedacht.
+
+`components/layout/` ist für wiederverwendbare Layout-Bausteine gedacht, die nicht ausschließlich zur Application-Infrastruktur gehören.
+
+Feature-spezifische Komponenten bleiben dagegen im jeweiligen Feature.
+
+## `src/data/` – Datenquellen
+
+`data/` enthält statische oder lokale Datenquellen des MVPs.
+
+Später können hier klar definierte Datenzugriffe liegen, wenn dies für den Übergang zum Backend sinnvoll ist.
+
+UI-Komponenten sollen nicht überall direkt auf Rohdaten zugreifen.
+
+## `src/lib/` – technische Hilfsfunktionen
+
+`lib/` enthält technische, fachlich möglichst neutrale Utilities und Infrastruktur-Helfer.
+
+Beispiele:
+
+- Formatierung
+- technische Helper
+- API-Client-Helfer
+- Validierungs-Utilities, sofern sie nicht eindeutig zu einem Feature gehören
+
+Feature-spezifische Logik gehört nicht automatisch nach `lib/`.
+
+## `src/types/` – geteilte Typen
+
+`types/` ist für Typen gedacht, die tatsächlich von mehreren unabhängigen Bereichen benötigt werden.
+
+Feature-spezifische Typen gehören bevorzugt in das jeweilige Feature.
+
+Ein globaler Typ-Ordner darf nicht zu einem Ablageort für jeden beliebigen Typ werden.
+
+## `src/assets/` – statische Frontend-Assets
+
+`assets/` enthält lokal eingebundene Bilder und andere statische Assets, die Bestandteil des Frontends sind.
+
+## `App.css` und `index.css`
+
+`index.css` enthält globale Styles bzw. globale Tailwind-/DaisyUI-Einbindungen.
+
+`App.css` darf app-spezifische Styles enthalten, sofern diese nicht besser global oder featurebezogen aufgehoben sind.
+
+---
+
+# 5. Feature-orientierte Entwicklung
+
+Adventure Bible wird fachlich feature-orientiert entwickelt.
+
+Die Hauptregel lautet:
+
+> Fachliche Verantwortung bleibt möglichst zusammen, technische Wiederverwendung wird erst bei tatsächlichem Bedarf herausgezogen.
 
 Beispiel:
 
@@ -126,23 +275,99 @@ features/
     ├── hooks/
     ├── services/
     ├── quests.types.ts
-    ├── questCard.tsx
-    └── quests.test.ts
+    └── questCard.tsx
 ```
 
-Feature-Code soll nicht unnötig in globale Ordner verschoben werden.
+Eine Quest-Komponente, die ausschließlich im Quest-Feature verwendet wird, gehört nicht automatisch nach `components/`.
 
-Wenn ein Baustein tatsächlich von mehreren unabhängigen Features benötigt wird, kann er in einen Shared-Bereich verschoben werden.
+Wenn mehrere unabhängige Features denselben Baustein benötigen, kann eine bewusste Extraktion nach `components/`, `lib/` oder `types/` sinnvoll sein.
 
 ---
 
-# 5. Naming Conventions
+# 6. Atomic Design – sinnvoll eingesetzt
+
+Atomic Design wird in Adventure Bible **pragmatisch** verwendet.
+
+Es ist ein Werkzeug zur Strukturierung wiederverwendbarer UI-Bausteine und keine Pflicht, jede Komponente künstlich einer Kategorie zuzuordnen.
+
+## Atoms
+
+Kleine, allgemein wiederverwendbare UI-Bausteine.
+
+Beispiele:
+
+- Button
+- Icon Button
+- Badge
+- Input
+- Progress Indicator
+- Slider
+
+DaisyUI kann bereits viele dieser Rollen übernehmen.
+
+## Molecules
+
+Kleine Kombinationen wiederverwendbarer Bausteine.
+
+Beispiele:
+
+- FormField
+- SearchField
+- QuestMeta
+- ProgressSummary
+- HpSlider
+
+## Organisms
+
+Größere, eigenständige UI-Bereiche.
+
+Beispiele:
+
+- QuestCard
+- CharacterSummary
+- StateOverview
+- AppNavigation
+- HpCheckSection
+
+## Feature-Komponenten
+
+Eine Komponente muss nicht in `components/ui/` verschoben werden, nur weil sie technisch wiederverwendbar sein könnte.
+
+Wenn eine Komponente ausschließlich zum HP-Check gehört, darf sie beispielsweise hier bleiben:
+
+```text
+features/
+└── hpCheck/
+    └── components/
+        └── hpCheckQuestionGroup.tsx
+```
+
+Erst tatsächlicher Wiederverwendungsbedarf rechtfertigt eine Shared-Komponente.
+
+### Verbotene Überabstraktion
+
+Nicht erwünscht ist eine künstliche Struktur wie:
+
+```text
+components/
+├── atom/
+├── molecule/
+├── organism/
+├── template/
+└── primitive/
+```
+
+wenn diese Unterteilung keinen realen Bedarf löst.
+
+---
+
+# 7. Naming Conventions
 
 Einheitliche Benennung ist verbindlich.
 
 ## Dateien und Ordner
 
-Adventure Bible verwendet für Datei- und Ordnernamen grundsätzlich **camelCase**.
+Grundsätzlich verwendet Adventure Bible **camelCase** für selbst benannte Dateien und Ordner.
 
 Beispiele:
 
@@ -151,7 +376,7 @@ questCard.tsx
 questList.tsx
 useQuestState.ts
 questService.ts
-userState.ts
+appShell.tsx
 apiClient.ts
 ```
 
@@ -163,7 +388,11 @@ quest-card.tsx
 quest_card.tsx
 ```
 
-Ausnahmen sind Dateien, deren Name durch ein Framework, Tool oder eine bestehende Konvention vorgegeben ist, zum Beispiel:
+### Framework- und Tool-Ausnahmen
+
+Dateien, deren Namen durch Frameworks, Tools oder etablierte Projektkonventionen vorgegeben sind, behalten diese Namen.
+
+Beispiele:
 
 ```text
 AGENTS.md
@@ -171,13 +400,16 @@ README.md
 vite.config.ts
 eslint.config.js
 main.tsx
+App.tsx
 ```
 
-Dokumentationsdateien unter `docs/` verwenden die bereits etablierte **UPPERCASE.md**-Konvention.
+TanStack-Route-Dateien wie `__root.tsx` und `index.tsx` folgen ebenfalls der vom Routing-System vorgegebenen Konvention.
+
+Dokumentationsdateien unter `docs/` verwenden die etablierte `UPPERCASE.md`-Konvention.
 
 ## React-Komponenten
 
-Auch wenn die Datei camelCase heißt, werden React-Komponenten selbst in **PascalCase** benannt.
+React-Komponenten selbst werden in **PascalCase** benannt.
 
 Beispiel:
 
@@ -188,21 +420,11 @@ export function QuestCard() {
 }
 ```
 
-Dateiname und Exportname müssen nicht identisch geschrieben sein.
-
 ## Variablen und Funktionen
 
 - `camelCase`
 - aussagekräftige Namen
 - keine unnötigen Abkürzungen
-
-Beispiel:
-
-```ts
-const currentQuest = ...
-const recommendedQuest = ...
-function completeQuest() {}
-```
 
 ## Typen und Interfaces
 
@@ -212,125 +434,59 @@ Beispiel:
 
 ```ts
 type Quest = ...
-interface UserState = ...
+interface UserState { ... }
 ```
-
-## Konstanten
-
-Normale Konstanten verwenden `camelCase`.
-
-Globale unveränderliche Konfigurationswerte dürfen `UPPER_SNAKE_CASE` verwenden, wenn dies die Lesbarkeit verbessert.
 
 ---
 
-# 6. Atomic Design – sinnvoll eingesetzt
+# 8. Routing und Navigation
 
-Adventure Bible darf das Atomic Design Pattern verwenden, aber **nicht dogmatisch**.
+Die Hauptbereiche der App werden über TanStack File-Based Routing abgebildet.
 
-Atomic Design ist ein Werkzeug zur Strukturierung wiederverwendbarer UI-Bausteine, kein Grund, jede kleine Komponente künstlich in Atom, Molekül oder Organismus einzuteilen.
-
-## Atoms
-
-Atoms sind kleine, allgemein wiederverwendbare UI-Bausteine.
-
-Beispiele:
-
-- Button
-- Icon Button
-- Badge
-- Input
-- Progress Indicator
-- Slider
-
-DaisyUI-Komponenten können bereits einen Großteil dieser Rolle übernehmen.
-
-## Molecules
-
-Molecules kombinieren mehrere wiederverwendbare UI-Bausteine zu einer kleinen, eigenständigen Einheit.
-
-Beispiele:
-
-- SearchField
-- QuestMeta
-- FormField
-- ProgressSummary
-- HpSlider
-
-## Organisms
-
-Organisms bilden größere wiederverwendbare UI-Bereiche.
-
-Beispiele:
-
-- QuestCard
-- CharacterSummary
-- StateOverview
-- AppNavigation
-- HpCheckSection
-
-## Templates / Pages
-
-Templates und Pages strukturieren den Screen und verbinden Feature-Bereiche.
-
-### Regel
-
-Eine Komponente muss **nicht** zu einem Atomic-Level gezwungen werden.
-
-Wenn eine UI-Einheit ausschließlich innerhalb eines Features verwendet wird, darf sie beim Feature bleiben.
-
-Beispiel:
-
-```text
-features/
-└── state/
-    └── components/
-        └── hpCheckQuestionGroup.tsx
-```
-
-Erst bei tatsächlichem Wiederverwendungsbedarf wird geprüft, ob eine Extraktion in einen Shared-/Atomic-Bereich sinnvoll ist.
-
-### Verbotene Überabstraktion
-
-Nicht erwünscht:
-
-```text
-components/
-├── atom/
-├── molecule/
-├── organism/
-├── template/
-├── primitive/
-└── compound/
-```
-
-wenn diese Struktur keinen realen Wiederverwendungsbedarf löst.
-
----
-
-# 7. Routing
-
-Routing bildet die Hauptbereiche der App eindeutig ab.
-
-MVP-Ziele:
+Geplante Hauptnavigation:
 
 - Home
 - Quests
 - Plan
 - Ich
 
-Profil-Erstellung und andere Onboarding-Schritte dürfen einen eigenen Flow besitzen.
+Der HP-Check ist kein eigener Hauptnavigation-Punkt. Er ist Bestandteil des Home-/Quest-Flows.
 
-Der HP-Check ist **kein eigener Hauptnavigation-Punkt**. Er ist Teil des Home-/Quest-Flows.
+Die Routing-Struktur soll Deep Links und direkte Navigation auf gültige App-Bereiche ermöglichen.
 
-Die Routing-Lösung muss Deep Links und direkte Navigation auf gültige App-Bereiche ermöglichen.
-
-Nicht in der Hauptnavigation sichtbare Routen dürfen für interne Flows verwendet werden, wenn sie die Produktstruktur vereinfachen und keine unnötige Navigationsebene erzeugen.
-
-Diese Sichtbarkeitseigenschaft ersetzt keine Authentifizierung oder Autorisierung.
+Nicht sichtbare interne Routen sind möglich, ersetzen aber keine Authentifizierung oder Autorisierung.
 
 ---
 
-# 8. State Management
+# 9. Generierter Route Tree
+
+`src/routeTree.gen.ts` wird automatisch durch das TanStack Router Vite Plugin erzeugt.
+
+Die Datei ist **generated code**.
+
+Regeln:
+
+- nicht manuell bearbeiten,
+- nicht als Ort für eigene Logik verwenden,
+- Änderungen ausschließlich über die Route-Dateien und die TanStack-Konfiguration herbeiführen.
+
+Der Datenfluss lautet:
+
+```text
+src/routes/*.tsx
+        ↓
+TanStack Router Vite Plugin
+        ↓
+src/routeTree.gen.ts
+        ↓
+App.tsx → createRouter({ routeTree })
+```
+
+Wenn der generierte Route Tree fehlerhaft ist, wird die Ursache in den Route-Dateien oder der Router-Konfiguration gesucht und nicht durch manuelle Änderungen an `routeTree.gen.ts` behoben.
+
+---
+
+# 10. State Management
 
 Für den MVP gilt:
 
@@ -338,7 +494,7 @@ Für den MVP gilt:
 
 Lokaler Component State ist zu bevorzugen, wenn Daten nur innerhalb einer Komponente oder eines kleinen Flows benötigt werden.
 
-Gemeinsamer App-State wird nur dort verwendet, wo mehrere unabhängige Bereiche denselben Zustand benötigen.
+Gemeinsamer App-State wird nur verwendet, wenn mehrere unabhängige Bereiche denselben Zustand benötigen.
 
 Keine zusätzliche State-Management-Library ohne konkreten Bedarf.
 
@@ -362,11 +518,11 @@ miniHpCheck
   └── campfire → resting
 ```
 
-Diese Zustände sollen nicht ausschließlich aus zufälligen Boolean-Kombinationen zusammengesetzt werden, wenn dadurch ungültige Zustände möglich werden.
+Diese Zustände sollen nicht unnötig aus voneinander unabhängigen Booleans zusammengesetzt werden, wenn dadurch ungültige Kombinationen möglich werden.
 
 ---
 
-# 9. Domain Models
+# 11. Domain Models
 
 Produktlogik soll nicht unkontrolliert in UI-Komponenten verteilt werden.
 
@@ -386,7 +542,7 @@ Wichtige Domain-Konzepte sind unter anderem:
 - PlanItem
 - Habit
 
-### HP-Domain
+## HP-Domain
 
 Der große HP-Check basiert auf:
 
@@ -396,17 +552,17 @@ HpArea
         └── 5 possible answers
 ```
 
-Die Berechnungslogik für Bereichswerte und Gesamt-HP gehört in testbare Domain-/Application-Logik und nicht in die React-Komponente.
+Die Berechnung der Bereichswerte und des Gesamtzustands gehört in testbare Domain-/Application-Logik und nicht in eine React-Komponente.
 
 Der Mini HP-Check verwendet pro Bereich einen selbst eingeschätzten Slider-Wert.
 
-Großer Check und Mini Check sind daher zwei unterschiedliche Eingabemodelle, die auf dasselbe HP-Domainmodell wirken können.
+Großer Check und Mini Check sind damit zwei unterschiedliche Eingabemodelle, die auf dasselbe HP-Domainmodell wirken können.
 
 ---
 
-# 10. Adaptive Logik
+# 12. Adaptive Logik
 
-Die adaptive Auswahl der Quests gehört zur Anwendungslogik und nicht direkt in die UI-Komponente.
+Die adaptive Auswahl von Quests gehört zur Application-/Feature-Logik und nicht direkt in die UI-Komponente.
 
 ```text
 UserState / HpState
@@ -426,7 +582,7 @@ HP-Werte dürfen Empfehlungen beeinflussen, aber nicht als harte moralische oder
 
 ---
 
-# 11. HP-Berechnung
+# 13. HP-Berechnung
 
 Die Berechnung des großen HP-Checks wird als reine, testbare Funktion modelliert, sobald die genaue Gewichtung festgelegt wurde.
 
@@ -438,27 +594,27 @@ Sie soll mindestens:
 
 Die Berechnung muss deterministisch sein.
 
-Die konkrete Formel wird als eigene Entscheidung dokumentiert, bevor sie als Produktlogik implementiert wird.
+Die konkrete Formel wird als eigene Produktentscheidung dokumentiert, bevor sie als Produktlogik implementiert wird.
 
 Der Mini HP-Check verändert den Zustand auf Grundlage der subjektiven Slider-Werte und kann später zusätzlich für Verlauf und Mustererkennung verwendet werden.
 
 ---
 
-# 12. Datenzugriff im MVP
+# 14. Datenzugriff im MVP
 
 Der MVP kann mit statischen Mock-Daten oder einer lokalen Datenquelle arbeiten.
 
 Datenzugriff soll hinter klaren Funktionen oder Services liegen, wenn dadurch der spätere Austausch gegen ein Backend einfacher wird.
 
-UI-Komponenten sollen nicht direkt überall auf Rohdaten zugreifen.
+UI-Komponenten sollen nicht überall direkt auf Rohdaten zugreifen.
 
 ---
 
-# 13. Backend-Vorbereitung
+# 15. Backend-Vorbereitung
 
 Nach dem React-Modul ist eine Backend-Erweiterung vorgesehen.
 
-Geplante langfristige Struktur:
+Langfristige Struktur:
 
 ```text
 React Client
@@ -484,7 +640,7 @@ Die Anwendung darf später nicht allein auf clientseitige Authentifizierung vert
 
 ---
 
-# 14. Datenbank
+# 16. Datenbank
 
 Die Datenbank wird erst im Backend-Modul eingeführt.
 
@@ -508,7 +664,7 @@ Datenbankzugriffe dürfen niemals durch String-Konkatenation aus User Input erze
 
 ---
 
-# 15. Authentifizierung und Secrets
+# 17. Authentifizierung und Secrets
 
 Clerk wird für die spätere Benutzer-Authentifizierung bevorzugt.
 
@@ -524,7 +680,7 @@ Siehe `docs/SECURITY.md`.
 
 ---
 
-# 16. Unicode und Internationalisierung
+# 18. Unicode und Internationalisierung
 
 Alle Texte werden als Unicode behandelt.
 
@@ -544,7 +700,7 @@ Spätere Internationalisierung soll über Locale-aware Lösungen erfolgen und ni
 
 ---
 
-# 17. Sicherheitsgrenzen
+# 19. Sicherheitsgrenzen
 
 Frontend-Eingaben sind grundsätzlich untrusted.
 
@@ -559,87 +715,127 @@ Bei späterem Backend:
 - Output sicher behandeln
 - Fehler nicht mit sensiblen Informationen an den Client geben
 
+Details gehören in `docs/SECURITY.md`.
+
 ---
 
-# 18. Komponentenregeln
+# 20. Abhängigkeitsrichtung
 
-Komponenten sollen eine klare Verantwortung besitzen.
-
-Bevorzugt:
+Die Abhängigkeiten sollen möglichst in eine nachvollziehbare Richtung laufen:
 
 ```text
-Page
- ↓
-Feature component
- ↓
-Presentational / shared component
+Routes / Screens
+      ↓
+Features
+      ↓
+Domain / Application Logic
+      ↓
+Shared technical utilities
+      ↓
+Data / API boundary
 ```
 
-Nicht bevorzugt:
+Dabei gilt:
+
+- Ein Feature darf Shared-Bausteine verwenden.
+- Shared-Bausteine dürfen nicht von einem einzelnen Feature abhängen.
+- Routing soll keine fachliche Domain-Logik besitzen.
+- `App.tsx` soll keine Feature-Logik besitzen.
+- Generierter Code wird nicht als Abhängigkeitsziel für eigene Logik verwendet.
+
+Die konkrete Abhängigkeitsrichtung darf angepasst werden, wenn eine begründete Architekturentscheidung dokumentiert wird.
+
+---
+
+# 21. Testbarkeit
+
+Fachliche Berechnungen und adaptive Entscheidungslogik müssen unabhängig von React testbar sein.
+
+Besonders wichtig sind:
+
+- HP-Berechnung
+- Quest-Empfehlungslogik
+- Zustandsübergänge
+- Validierung
+- spätere Datenzugriffslogik
+
+Die konkret verwendeten Testwerkzeuge werden durch die tatsächlich installierten Dependencies bestimmt und in der Entwicklungsdokumentation nachvollziehbar gehalten.
+
+---
+
+# 22. Architekturentscheidungen dokumentieren
+
+Wenn eine Entscheidung die Struktur des Projekts dauerhaft beeinflusst, soll sie nachvollziehbar dokumentiert werden.
+
+Besonders relevante Entscheidungen sind:
+
+- neue Architektur-Layer
+- neue globale Dependencies
+- Änderung der Routing-Struktur
+- Einführung globalen States
+- Extraktion von Feature-Code in Shared-Code
+- neue Backend-Schnittstellen
+- Änderungen an Authentifizierung oder Datenzugriff
+
+Kleine Implementierungsentscheidungen müssen nicht künstlich dokumentiert werden.
+
+---
+
+# 23. Praktische Leitlinie
+
+Bei jeder neuen Datei sollen zunächst diese Fragen beantwortet werden:
+
+1. **Welche fachliche Verantwortung hat sie?**
+2. **Gehört sie zu einem konkreten Feature?**
+3. **Ist sie tatsächlich über mehrere Features wiederverwendbar?**
+4. **Ist sie Application-Infrastruktur?**
+5. **Ist sie Routing?**
+6. **Ist sie ein technischer Helper oder eine Datenquelle?**
+7. **Ist ihr Name mit den Naming Conventions vereinbar?**
+8. **Erzeugt das Atomic Pattern hier echten Mehrwert?**
+
+Wenn keine klare Antwort existiert, wird nicht automatisch ein neuer Ordner oder eine neue Abstraktion angelegt.
+
+---
+
+# 24. Zielbild
+
+Die langfristige Architektur soll folgende Trennung erhalten:
 
 ```text
-Eine riesige App-Komponente,
-die Routing, State, Daten, Logik und komplettes UI enthält.
+                        ┌─────────────────────┐
+                        │      main.tsx       │
+                        └──────────┬──────────┘
+                                   ↓
+                        ┌─────────────────────┐
+                        │       App.tsx       │
+                        │   RouterProvider    │
+                        └──────────┬──────────┘
+                                   ↓
+                        ┌─────────────────────┐
+                        │     __root.tsx      │
+                        │     AppShell        │
+                        └──────────┬──────────┘
+                                   ↓
+                              ┌────────┐
+                              │ Outlet │
+                              └───┬────┘
+                                  ↓
+                         ┌──────────────────┐
+                         │      Routes      │
+                         └────────┬─────────┘
+                                  ↓
+                         ┌──────────────────┐
+                         │     Features     │
+                         └────────┬─────────┘
+                                  ↓
+                    ┌────────────────────────────┐
+                    │ Domain / Application Logic│
+                    └─────────────┬──────────────┘
+                                  ↓
+                    ┌────────────────────────────┐
+                    │ Data / API / Backend       │
+                    └────────────────────────────┘
 ```
 
-Wiederverwendbare UI-Grundbausteine können unter `components/ui/` liegen.
-
-Shared Layout-Komponenten können unter `components/layout/` liegen.
-
-Feature-spezifische Komponenten bleiben beim jeweiligen Feature.
-
----
-
-# 19. Import- und Abhängigkeitsrichtung
-
-Abhängigkeiten sollen möglichst in eine verständliche Richtung fließen:
-
-```text
-app
- ↓
-routes
- ↓
-features
- ↓
-shared components / lib
-```
-
-Ein Feature soll nicht von einem anderen Feature abhängig werden, nur weil dadurch kurzfristig Code eingespart wird.
-
-Wenn zwei Features dieselbe fachliche Logik benötigen, soll die gemeinsame Domänenlogik bewusst extrahiert werden.
-
-Zirkuläre Abhängigkeiten sind zu vermeiden.
-
----
-
-# 20. Testing Architecture
-
-Tests werden möglichst nahe an der zu testenden Funktionalität organisiert.
-
-Reine Domain- und Application-Logik wird bevorzugt mit Unit-Tests geprüft.
-
-React-Komponenten und Nutzerflüsse werden mit React Testing Library und Vitest auf beobachtbares Verhalten getestet.
-
-Tests sollen unabhängig voneinander ausführbar sein und keine Reihenfolge voraussetzen.
-
----
-
-# 21. Responsive und Mobile-first
-
-Die Anwendung wird mobile-first entwickelt.
-
-Die UI muss auf kleinen Bildschirmen vollständig nutzbar sein.
-
-Desktop nutzt den zusätzlichen Platz, ohne die App in eine klassische Website umzuwandeln.
-
-Layouts sollen möglichst mit responsiven CSS-/Tailwind-Regeln statt mit geräteabhängigen Sonderlogiken umgesetzt werden.
-
----
-
-# 22. Erweiterbarkeit
-
-Die MVP-Architektur soll spätere Erweiterungen ermöglichen, ohne sie vorwegzunehmen.
-
-Insbesondere sollen spätere Backend-, Authentifizierungs- und Persistenzschichten eingeführt werden können, ohne dass die fachliche Logik vollständig aus den Features herausgelöst oder neu geschrieben werden muss.
-
-Gleichzeitig werden keine Abstraktionen nur für hypothetische zukünftige Anforderungen angelegt.
+Diese Struktur ist ein Zielbild und darf sich weiterentwickeln, wenn die tatsächliche Implementierung neue Anforderungen sichtbar macht.
