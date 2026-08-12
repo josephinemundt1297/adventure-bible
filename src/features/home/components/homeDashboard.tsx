@@ -7,7 +7,7 @@ const state = [
 
 export function HomeDashboard() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <header className="flex items-start justify-between gap-3 pt-4">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Guten Morgen, Josi!</h1>
