@@ -11,9 +11,9 @@ export function BottomNavigation() {
   return (
     <nav
       aria-label="Hauptnavigation"
-      className="fixed inset-x-0 bottom-0 z-10 border-t border-base-300 bg-base-100/95 backdrop-blur"
+      className="absolute inset-x-0 bottom-0 z-10 border-t border-base-300 bg-base-100/95 backdrop-blur"
     >
-      <ul className="mx-auto grid max-w-md grid-cols-4">
+      <ul className="grid grid-cols-4">
         {navigationItems.map((item) => (
           <li key={item.label}>
             {item.path ? (
