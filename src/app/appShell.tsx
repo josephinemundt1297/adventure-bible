@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { BottomNavigation } from "../components/layout/bottomNavigation";
+import { PhoneFrame } from "../components/layout/phoneFrame";
 
 interface AppShellProps {
   children: ReactNode;
@@ -7,9 +8,11 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <div className="min-h-screen bg-base-100 text-base-content">
-      <main className="min-h-screen pb-20">{children}</main>
-      <BottomNavigation />
+    <div className="flex min-h-screen items-center justify-center bg-base-200 p-4">
+      <PhoneFrame>
+        <main className="min-h-full pb-20">{children}</main>
+        <BottomNavigation />
+      </PhoneFrame>
     </div>
   );
 }
