@@ -1,11 +1,15 @@
+import type { ReactNode } from "react";
+import { BottomNavigation } from "../components/layout/bottomNavigation";
+
 interface AppShellProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function AppShell({ children }: AppShellProps) {
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
-      <main>{children}</main>
+      <main className="min-h-screen pb-20">{children}</main>
+      <BottomNavigation />
     </div>
   );
 }
