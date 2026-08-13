@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { initialPlan } from "../../../data/plan";
 import type { PlannedActivity } from "../../../types/plan";
+import { EmptyState } from "../../../components/ui/emptyState";
 
 const PLAN_KEY = "adventure-bible:plan";
 
@@ -44,6 +45,15 @@ export function DayPlan() {
   }
 
   const completedCount = activities.filter((activity) => activity.completed).length;
+
+  if (activities.length === 0) {
+    return (
+      <EmptyState
+        title="Dein Plan ist noch leer"
+        description="Du hast für heute noch keine Aktivitäten geplant. Das ist völlig in Ordnung – dein Tag darf flexibel bleiben."
+      />
+    );
+  }
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-3" aria-labelledby="plan-heading">
@@ -100,7 +110,7 @@ export function DayPlan() {
                   onClick={() => moveActivity(activity.id, "up")}
                   disabled={index === 0}
                   aria-label={`${activity.title} nach oben verschieben`}
-                  className="flex size-11 items-center justify-center rounded-lg text-lg font-bold leading-none text-base-content/65 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
+                  className="flex size-11 items-center justify-center rounded-lg text-base font-bold text-base-content/65 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
                 >
                   ↑
                 </button>
@@ -109,7 +119,7 @@ export function DayPlan() {
                   onClick={() => moveActivity(activity.id, "down")}
                   disabled={index === activities.length - 1}
                   aria-label={`${activity.title} nach unten verschieben`}
-                  className="flex size-11 items-center justify-center rounded-lg text-lg font-bold leading-none text-base-content/65 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
+                  className="flex size-11 items-center justify-center rounded-lg text-base font-bold text-base-content/65 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
                 >
                   ↓
                 </button>
