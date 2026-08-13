@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import { useState } from "react";
 
 interface ProfileSetupProps {
@@ -7,7 +8,7 @@ interface ProfileSetupProps {
 export function ProfileSetup({ onComplete }: ProfileSetupProps) {
   const [name, setName] = useState("");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const trimmedName = name.trim();
 
@@ -28,10 +29,7 @@ export function ProfileSetup({ onComplete }: ProfileSetupProps) {
         </p>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="card border border-base-300 bg-base-100 shadow-sm"
-      >
+      <form onSubmit={handleSubmit} className="card border border-base-300 bg-base-100 shadow-sm">
         <div className="card-body gap-5">
           <div className="form-control">
             <label className="label" htmlFor="profile-name">
