@@ -58,7 +58,7 @@ export function DayPlan() {
           <button
             type="button"
             aria-label="Kalender öffnen"
-            className="flex size-10 shrink-0 items-center justify-center rounded-xl text-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="flex size-11 shrink-0 items-center justify-center rounded-xl text-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             📅
           </button>
@@ -77,8 +77,11 @@ export function DayPlan() {
             key={activity.id}
             className={`px-3 py-2.5 ${index !== activities.length - 1 ? "border-b border-base-300/50" : ""}`}
           >
-            <div className="flex min-h-14 items-center gap-3">
-              <span className="flex size-8 shrink-0 items-center justify-center text-lg" aria-hidden="true">
+            <div className="flex min-h-16 items-center gap-3">
+              <span
+                className="flex size-11 shrink-0 items-center justify-center text-2xl leading-none"
+                aria-hidden="true"
+              >
                 {activity.type === "quest" ? "🎯" : "🧳"}
               </span>
 
@@ -97,7 +100,7 @@ export function DayPlan() {
                   onClick={() => moveActivity(activity.id, "up")}
                   disabled={index === 0}
                   aria-label={`${activity.title} nach oben verschieben`}
-                  className="flex size-9 items-center justify-center rounded-lg text-xs text-base-content/45 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
+                  className="flex size-11 items-center justify-center rounded-lg text-sm text-base-content/45 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
                 >
                   ↑
                 </button>
@@ -106,7 +109,7 @@ export function DayPlan() {
                   onClick={() => moveActivity(activity.id, "down")}
                   disabled={index === activities.length - 1}
                   aria-label={`${activity.title} nach unten verschieben`}
-                  className="flex size-9 items-center justify-center rounded-lg text-xs text-base-content/45 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
+                  className="flex size-11 items-center justify-center rounded-lg text-sm text-base-content/45 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
                 >
                   ↓
                 </button>
@@ -115,7 +118,7 @@ export function DayPlan() {
                   onClick={() => toggleActivity(activity.id)}
                   aria-pressed={activity.completed}
                   aria-label={`${activity.completed ? "Als offen markieren" : "Als erledigt markieren"}: ${activity.title}`}
-                  className="flex size-9 items-center justify-center rounded-lg text-base focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary"
+                  className="flex size-11 items-center justify-center rounded-lg text-lg focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary"
                 >
                   {activity.completed ? "✓" : "○"}
                 </button>
