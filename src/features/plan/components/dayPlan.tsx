@@ -100,7 +100,7 @@ export function DayPlan() {
                   onClick={() => moveActivity(activity.id, "up")}
                   disabled={index === 0}
                   aria-label={`${activity.title} nach oben verschieben`}
-                  className="flex size-11 items-center justify-center rounded-lg text-sm text-base-content/45 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
+                  className="flex size-11 items-center justify-center rounded-lg text-lg font-bold leading-none text-base-content/65 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
                 >
                   ↑
                 </button>
@@ -109,7 +109,7 @@ export function DayPlan() {
                   onClick={() => moveActivity(activity.id, "down")}
                   disabled={index === activities.length - 1}
                   aria-label={`${activity.title} nach unten verschieben`}
-                  className="flex size-11 items-center justify-center rounded-lg text-sm text-base-content/45 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
+                  className="flex size-11 items-center justify-center rounded-lg text-lg font-bold leading-none text-base-content/65 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15"
                 >
                   ↓
                 </button>
