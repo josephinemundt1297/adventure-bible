@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { quests } from "../../../data/quests";
+import { selectMiniQuest } from "../../../lib/miniQuestSelection";
 import type { MiniHpArea, MiniHpState } from "../../../types/miniHp";
 
 const MINI_HP_STATE_KEY = "adventure-bible:mini-hp-state";
@@ -23,10 +25,10 @@ const initialValues: Record<MiniHpArea, number> = {
 
 export function MiniHpCheck() {
   const [values, setValues] = useState(initialValues);
-  const [saved, setSaved] = useState(false);
+  const [savedState, setSavedState] = useState<MiniHpState | null>(null);
 
   function updateValue(area: MiniHpArea, value: number) {
-    setSaved(false);
+    setSavedState(null);
     setValues((current) => ({ ...current, [area]: value }));
   }
 
@@ -37,17 +39,20 @@ export function MiniHpCheck() {
     };
 
     sessionStorage.setItem(MINI_HP_STATE_KEY, JSON.stringify(state));
-    setSaved(true);
+    setSavedState(state);
   }
+
+  const recommendations = savedState ? selectMiniQuest(savedState, quests) : null;
 
   return (
     <section className="space-y-6" aria-labelledby="mini-hp-heading">
       <header className="space-y-2 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">Schneller HP-Check</p>
         <h1 id="mini-hp-heading" className="text-2xl font-bold tracking-tight">
           Wie geht es dir gerade?
         </h1>
         <p className="text-sm leading-6 text-base-content/70">
-          Dein Zustand hilft der App, dich besser zu unterstützen.
+          Ein kurzer Check genügt. Danach schlägt dir die App eine passende Aufgabe vor – plus eine Alternative.
         </p>
       </header>
 
@@ -82,13 +87,40 @@ export function MiniHpCheck() {
       </div>
 
       <button type="button" className="btn btn-primary w-full" onClick={saveCheck}>
-        Speichern
+        Aufgabe vorschlagen
       </button>
 
-      {saved && (
-        <p className="text-center text-sm font-medium text-success" role="status">
-          Zustand gespeichert. 🌿
-        </p>
+      {recommendations && (
+        <div className="space-y-3" aria-labelledby="mini-hp-recommendation-heading" aria-live="polite">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">Deine Empfehlung</p>
+            <h2 id="mini-hp-recommendation-heading" className="mt-1 text-lg font-bold">
+              Was passt gerade zu dir?
+            </h2>
+          </div>
+
+          {recommendations.primary && (
+            <article className="card border border-primary/30 bg-primary/5 shadow-sm">
+              <div className="card-body gap-3 p-4">
+                <span className="badge badge-primary w-fit">Vorschlag</span>
+                <h3 className="text-lg font-bold">{recommendations.primary.title}</h3>
+                <p className="text-sm leading-6 text-base-content/70">{recommendations.primary.description}</p>
+                <span className="text-sm font-semibold text-primary">+{recommendations.primary.rewardXp} XP</span>
+              </div>
+            </article>
+          )}
+
+          {recommendations.alternative && (
+            <article className="card border border-base-300 bg-base-100 shadow-sm">
+              <div className="card-body gap-3 p-4">
+                <span className="badge badge-ghost w-fit">Alternative</span>
+                <h3 className="text-lg font-bold">{recommendations.alternative.title}</h3>
+                <p className="text-sm leading-6 text-base-content/70">{recommendations.alternative.description}</p>
+                <span className="text-sm font-semibold text-base-content/70">+{recommendations.alternative.rewardXp} XP</span>
+              </div>
+            </article>
+          )}
+        </div>
       )}
     </section>
   );
