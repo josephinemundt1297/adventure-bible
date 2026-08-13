@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { EmptyState } from "../components/ui/emptyState";
 import { QuestRecommendation } from "../features/quests/components/questRecommendation";
 import type { HpState } from "../types/hp";
 
@@ -25,15 +26,15 @@ function QuestsPage() {
 
   if (!state) {
     return (
-      <section className="mx-auto max-w-md space-y-4 text-center">
-        <h1 className="text-2xl font-bold">Noch keine Quest-Empfehlung</h1>
-        <p className="text-sm leading-6 text-base-content/70">
-          Starte zuerst einen HP-Check, damit wir eine Quest passend zu deinem aktuellen Zustand auswählen können.
-        </p>
-        <Link to="/hp-check" className="btn btn-primary w-full">
-          HP-Check starten
-        </Link>
-      </section>
+      <EmptyState
+        title="Noch keine Quest-Empfehlung"
+        description="Starte zuerst einen HP-Check, damit wir eine Quest passend zu deinem aktuellen Zustand auswählen können."
+        action={
+          <Link to="/hp-check" className="btn btn-primary w-full">
+            HP-Check starten
+          </Link>
+        }
+      />
     );
   }
 
