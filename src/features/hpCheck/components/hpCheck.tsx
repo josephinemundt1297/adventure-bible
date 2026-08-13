@@ -1,0 +1,106 @@
+import { useMemo, useState } from "react";
+import { hpAnswerLabels, hpAreaLabels, hpQuestions } from "../../../data/hpQuestions";
+import { calculateHpState } from "../../../lib/hpScore";
+import type { HpAnswer } from "../../../types/hp";
+
+interface HpCheckProps {
+  onComplete?: (overall: number) => void;
+}
+
+export function HpCheck({ onComplete }: HpCheckProps) {
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<HpAnswer[]>([]);
+
+  const question = hpQuestions[questionIndex];
+  const currentAnswer = answers.find((answer) => answer.questionId === question.id)?.value;
+  const isLastQuestion = questionIndex === hpQuestions.length - 1;
+  const progress = Math.round(((questionIndex + 1) / hpQuestions.length) * 100);
+
+  const state = useMemo(() => calculateHpState(answers), [answers]);
+
+  function selectAnswer(value: HpAnswer["value"]) {
+    setAnswers((current) => {
+      const withoutCurrent = current.filter((answer) => answer.questionId !== question.id);
+      return [...withoutCurrent, { questionId: question.id, value }];
+    });
+  }
+
+  function next() {
+    if (currentAnswer === undefined) return;
+
+    if (isLastQuestion) {
+      onComplete?.(state.overall);
+      return;
+    }
+
+    setQuestionIndex((current) => current + 1);
+  }
+
+  return (
+    <section className="mx-auto max-w-md space-y-5" aria-labelledby="hp-heading">
+      <header className="space-y-2">
+        <p className="text-sm font-semibold uppercase tracking-wide text-primary">Neuer Abenteuerzyklus</p>
+        <h1 id="hp-heading" className="text-2xl font-bold tracking-tight">Wie geht es dir gerade?</h1>
+        <p className="text-sm leading-6 text-base-content/70">
+          Nimm dir kurz Zeit, deinen aktuellen Zustand wahrzunehmen. Es gibt keine richtigen oder falschen Antworten.
+        </p>
+      </header>
+
+      <div aria-label={`Fortschritt: Frage ${questionIndex + 1} von ${hpQuestions.length}`}>
+        <div className="mb-2 flex items-center justify-between text-xs font-semibold">
+          <span>{hpAreaLabels[question.area]}</span>
+          <span>Frage {questionIndex + 1} / {hpQuestions.length}</span>
+        </div>
+        <progress className="progress progress-primary w-full" value={progress} max="100" />
+      </div>
+
+      <fieldset className="card border border-base-300 bg-base-100 shadow-sm">
+        <div className="card-body gap-4">
+          <legend className="text-lg font-semibold leading-7">{question.question}</legend>
+
+          <div className="grid gap-2" role="radiogroup" aria-label="Antwort auswählen">
+            {hpAnswerLabels.map((label, index) => {
+              const value = (index + 1) as HpAnswer["value"];
+              const selected = currentAnswer === value;
+
+              return (
+                <button
+                  key={label}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => selectAnswer(value)}
+                  className={`btn h-auto min-h-12 justify-start px-4 text-left normal-case ${selected ? "btn-primary" : "btn-outline"}`}
+                >
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-bold">
+                    {value}
+                  </span>
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            type="button"
+            className="btn btn-primary mt-2 w-full"
+            disabled={currentAnswer === undefined}
+            onClick={next}
+          >
+            {isLastQuestion ? "Zustand ansehen" : "Weiter"}
+          </button>
+        </div>
+      </fieldset>
+
+      <p className="text-center text-xs leading-5 text-base-content/60">
+        Dieser Check ist eine persönliche Einschätzung und keine medizinische Diagnose.
+      </p>
+
+      {isLastQuestion && currentAnswer !== undefined && (
+        <p className="sr-only" aria-live="polite">
+          Dein aktueller Gesamtzustand liegt bei {state.overall} von 100.
+        </p>
+      )}
+    </section>
+  );
+}
