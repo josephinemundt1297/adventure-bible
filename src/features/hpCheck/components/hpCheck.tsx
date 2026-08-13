@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { hpAnswerLabels, hpAreaLabels, hpQuestions } from "../../../data/hpQuestions";
 import { calculateHpState } from "../../../lib/hpScore";
@@ -16,7 +16,6 @@ export function HpCheck() {
   const currentAnswer = answers.find((answer) => answer.questionId === question.id)?.value;
   const isLastQuestion = questionIndex === hpQuestions.length - 1;
   const progress = Math.round(((questionIndex + 1) / hpQuestions.length) * 100);
-  const state = useMemo(() => calculateHpState(answers), [answers]);
 
   function selectAnswer(value: HpAnswer["value"]) {
     setAnswers((current) => {
