@@ -29,13 +29,15 @@ export function DayPlan() {
     });
   }
 
-  function moveActivity(id: string) {
+  function moveActivity(id: string, direction: "up" | "down") {
     setActivities((current) => {
       const index = current.findIndex((activity) => activity.id === id);
-      if (index < 1) return current;
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+
+      if (index < 0 || targetIndex < 0 || targetIndex >= current.length) return current;
 
       const next = [...current];
-      [next[index - 1], next[index]] = [next[index], next[index - 1]];
+      [next[index], next[targetIndex]] = [next[targetIndex], next[index]];
       sessionStorage.setItem(PLAN_KEY, JSON.stringify(next));
       return next;
     });
@@ -52,14 +54,17 @@ export function DayPlan() {
             </h1>
             <p className="mt-1 text-sm text-base-content/65">Orientierung statt Pflicht.</p>
           </div>
-          <span className="text-sm font-semibold text-base-content/60" aria-label={`${activities.filter((activity) => activity.completed).length} von ${activities.length} erledigt`}>
+          <span
+            className="text-sm font-semibold text-base-content/60"
+            aria-label={`${activities.filter((activity) => activity.completed).length} von ${activities.length} erledigt`}
+          >
             {activities.filter((activity) => activity.completed).length}/{activities.length}
           </span>
         </div>
       </header>
 
       <div className="space-y-3" aria-label="Geplante Aktivitäten">
-        {activities.map((activity) => (
+        {activities.map((activity, index) => (
           <article
             key={activity.id}
             className={`rounded-2xl border p-4 shadow-sm ${activity.completed ? "border-primary/20 bg-primary/5" : "border-base-300 bg-base-100"}`}
@@ -85,15 +90,26 @@ export function DayPlan() {
                 <h2 className={`mt-1 font-semibold ${activity.completed ? "line-through text-base-content/55" : ""}`}>
                   {activity.title}
                 </h2>
+
                 {!activity.completed && (
-                  <button
-                    type="button"
-                    onClick={() => moveActivity(activity.id)}
-                    disabled={activities[0]?.id === activity.id}
-                    className="mt-3 min-h-10 rounded-xl px-3 text-xs font-semibold text-primary underline underline-offset-2 disabled:cursor-default disabled:opacity-40"
-                  >
-                    Nach oben verschieben
-                  </button>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => moveActivity(activity.id, "up")}
+                      disabled={index === 0}
+                      className="min-h-10 rounded-xl px-3 text-xs font-semibold text-primary underline underline-offset-2 disabled:cursor-default disabled:opacity-40"
+                    >
+                      ↑ Nach oben
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => moveActivity(activity.id, "down")}
+                      disabled={index === activities.length - 1}
+                      className="min-h-10 rounded-xl px-3 text-xs font-semibold text-primary underline underline-offset-2 disabled:cursor-default disabled:opacity-40"
+                    >
+                      ↓ Nach unten
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
