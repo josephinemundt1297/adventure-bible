@@ -1,16 +1,16 @@
 import { useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { hpAnswerLabels, hpAreaLabels, hpQuestions } from "../../../data/hpQuestions";
 import { calculateHpState } from "../../../lib/hpScore";
 import type { HpAnswer } from "../../../types/hp";
 
-interface HpCheckProps {
-  onComplete?: (overall: number) => void;
-}
+const HP_STATE_KEY = "adventure-bible:hp-state";
 
-export function HpCheck({ onComplete }: HpCheckProps) {
+export function HpCheck() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<HpAnswer[]>([]);
   const [completed, setCompleted] = useState(false);
+  const [completedState, setCompletedState] = useState<ReturnType<typeof calculateHpState> | null>(null);
 
   const question = hpQuestions[questionIndex];
   const currentAnswer = answers.find((answer) => answer.questionId === question.id)?.value;
@@ -29,22 +29,23 @@ export function HpCheck({ onComplete }: HpCheckProps) {
     if (currentAnswer === undefined) return;
 
     if (isLastQuestion) {
-      const completedAnswers = [
+      const allAnswers = [
         ...answers.filter((answer) => answer.questionId !== question.id),
         { questionId: question.id, value: currentAnswer },
       ];
-      const completedState = calculateHpState(completedAnswers);
+      const finalState = calculateHpState(allAnswers);
 
-      setAnswers(completedAnswers);
+      sessionStorage.setItem(HP_STATE_KEY, JSON.stringify(finalState));
+      setAnswers(allAnswers);
+      setCompletedState(finalState);
       setCompleted(true);
-      onComplete?.(completedState.overall);
       return;
     }
 
     setQuestionIndex((current) => current + 1);
   }
 
-  if (completed) {
+  if (completed && completedState) {
     return (
       <section className="mx-auto max-w-md space-y-5" aria-labelledby="hp-result-heading">
         <header className="space-y-2">
@@ -55,7 +56,7 @@ export function HpCheck({ onComplete }: HpCheckProps) {
             Dein aktueller Zustand
           </h1>
           <p className="text-sm leading-6 text-base-content/70">
-            Danke, dass du dir kurz Zeit für dich genommen hast. Deine Einschätzung ist die Grundlage für passende nächste Schritte.
+            Deine Einschätzung ist die Grundlage für eine Quest, die zu deinem aktuellen Zustand passt.
           </p>
         </header>
 
@@ -64,8 +65,8 @@ export function HpCheck({ onComplete }: HpCheckProps) {
             <span className="text-sm font-semibold uppercase tracking-wide text-base-content/60">
               Gesamtzustand
             </span>
-            <span className="text-5xl font-bold text-primary" aria-label={`${state.overall} von 100`}>
-              {state.overall}
+            <span className="text-5xl font-bold text-primary" aria-label={`${completedState.overall} von 100`}>
+              {completedState.overall}
             </span>
             <span className="text-sm text-base-content/60">von 100</span>
           </div>
@@ -75,7 +76,7 @@ export function HpCheck({ onComplete }: HpCheckProps) {
           <div className="card-body gap-4">
             <h2 className="text-lg font-semibold">Deine Bereiche</h2>
             <div className="space-y-4">
-              {state.areas.map(({ area, score }) => (
+              {completedState.areas.map(({ area, score }) => (
                 <div key={area}>
                   <div className="mb-1 flex items-center justify-between text-sm">
                     <span>{hpAreaLabels[area]}</span>
@@ -92,6 +93,10 @@ export function HpCheck({ onComplete }: HpCheckProps) {
             </div>
           </div>
         </div>
+
+        <Link to="/quests" className="btn btn-primary w-full">
+          Meine Quest ansehen
+        </Link>
 
         <p className="text-center text-xs leading-5 text-base-content/60">
           Dieser Check ist eine persönliche Einschätzung und keine medizinische Diagnose.
