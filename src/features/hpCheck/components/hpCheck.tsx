@@ -10,12 +10,12 @@ interface HpCheckProps {
 export function HpCheck({ onComplete }: HpCheckProps) {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<HpAnswer[]>([]);
+  const [completed, setCompleted] = useState(false);
 
   const question = hpQuestions[questionIndex];
   const currentAnswer = answers.find((answer) => answer.questionId === question.id)?.value;
   const isLastQuestion = questionIndex === hpQuestions.length - 1;
   const progress = Math.round(((questionIndex + 1) / hpQuestions.length) * 100);
-
   const state = useMemo(() => calculateHpState(answers), [answers]);
 
   function selectAnswer(value: HpAnswer["value"]) {
@@ -29,11 +29,75 @@ export function HpCheck({ onComplete }: HpCheckProps) {
     if (currentAnswer === undefined) return;
 
     if (isLastQuestion) {
-      onComplete?.(state.overall);
+      const completedAnswers = [
+        ...answers.filter((answer) => answer.questionId !== question.id),
+        { questionId: question.id, value: currentAnswer },
+      ];
+      const completedState = calculateHpState(completedAnswers);
+
+      setAnswers(completedAnswers);
+      setCompleted(true);
+      onComplete?.(completedState.overall);
       return;
     }
 
     setQuestionIndex((current) => current + 1);
+  }
+
+  if (completed) {
+    return (
+      <section className="mx-auto max-w-md space-y-5" aria-labelledby="hp-result-heading">
+        <header className="space-y-2">
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary">
+            Abenteuerzyklus gestartet
+          </p>
+          <h1 id="hp-result-heading" className="text-2xl font-bold tracking-tight">
+            Dein aktueller Zustand
+          </h1>
+          <p className="text-sm leading-6 text-base-content/70">
+            Danke, dass du dir kurz Zeit für dich genommen hast. Deine Einschätzung ist die Grundlage für passende nächste Schritte.
+          </p>
+        </header>
+
+        <div className="card border border-base-300 bg-base-100 shadow-sm">
+          <div className="card-body items-center text-center">
+            <span className="text-sm font-semibold uppercase tracking-wide text-base-content/60">
+              Gesamtzustand
+            </span>
+            <span className="text-5xl font-bold text-primary" aria-label={`${state.overall} von 100`}>
+              {state.overall}
+            </span>
+            <span className="text-sm text-base-content/60">von 100</span>
+          </div>
+        </div>
+
+        <div className="card border border-base-300 bg-base-100 shadow-sm">
+          <div className="card-body gap-4">
+            <h2 className="text-lg font-semibold">Deine Bereiche</h2>
+            <div className="space-y-4">
+              {state.areas.map(({ area, score }) => (
+                <div key={area}>
+                  <div className="mb-1 flex items-center justify-between text-sm">
+                    <span>{hpAreaLabels[area]}</span>
+                    <span className="font-semibold">{score}/100</span>
+                  </div>
+                  <progress
+                    className="progress progress-primary w-full"
+                    value={score}
+                    max="100"
+                    aria-label={`${hpAreaLabels[area]}: ${score} von 100`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <p className="text-center text-xs leading-5 text-base-content/60">
+          Dieser Check ist eine persönliche Einschätzung und keine medizinische Diagnose.
+        </p>
+      </section>
+    );
   }
 
   return (
@@ -95,12 +159,6 @@ export function HpCheck({ onComplete }: HpCheckProps) {
       <p className="text-center text-xs leading-5 text-base-content/60">
         Dieser Check ist eine persönliche Einschätzung und keine medizinische Diagnose.
       </p>
-
-      {isLastQuestion && currentAnswer !== undefined && (
-        <p className="sr-only" aria-live="polite">
-          Dein aktueller Gesamtzustand liegt bei {state.overall} von 100.
-        </p>
-      )}
     </section>
   );
 }
