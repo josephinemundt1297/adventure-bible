@@ -43,82 +43,100 @@ export function DayPlan() {
     });
   }
 
+  const completedCount = activities.filter((activity) => activity.completed).length;
+
   return (
-    <section className="mx-auto flex max-w-md flex-col gap-5" aria-labelledby="plan-heading">
-      <header className="space-y-2">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">Dein Tag</p>
-        <div className="flex items-end justify-between gap-3">
+    <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="plan-heading">
+      <header className="px-2 pt-1">
+        <div className="flex items-start justify-between gap-3">
           <div>
             <h1 id="plan-heading" className="text-2xl font-bold tracking-tight">
               Mein Plan für heute
             </h1>
-            <p className="mt-1 text-sm text-base-content/65">Orientierung statt Pflicht.</p>
+            <p className="mt-1 text-sm text-base-content/60">Dein Tag darf flexibel bleiben.</p>
           </div>
-          <span
-            className="text-sm font-semibold text-base-content/60"
-            aria-label={`${activities.filter((activity) => activity.completed).length} von ${activities.length} erledigt`}
+          <button
+            type="button"
+            aria-label="Kalender öffnen"
+            className="flex size-10 shrink-0 items-center justify-center rounded-xl text-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
-            {activities.filter((activity) => activity.completed).length}/{activities.length}
-          </span>
+            📅
+          </button>
         </div>
+        <p className="mt-3 text-xs font-semibold text-base-content/50">
+          {completedCount} von {activities.length} erledigt
+        </p>
       </header>
 
-      <div className="space-y-3" aria-label="Geplante Aktivitäten">
+      <div className="overflow-hidden rounded-2xl border border-base-300/60 bg-base-100/75" aria-label="Geplante Aktivitäten">
         {activities.map((activity, index) => (
           <article
             key={activity.id}
-            className={`rounded-2xl border p-4 shadow-sm ${activity.completed ? "border-primary/20 bg-primary/5" : "border-base-300 bg-base-100"}`}
+            className={`px-4 py-3.5 ${index !== activities.length - 1 ? "border-b border-base-300/60" : ""}`}
           >
-            <div className="flex items-start gap-3">
+            <div className="flex items-center gap-3">
+              <span
+                className="flex size-9 shrink-0 items-center justify-center text-xl"
+                aria-hidden="true"
+              >
+                {activity.type === "quest" ? "🎯" : "🧳"}
+              </span>
+
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold text-base-content/60">{activity.time}</p>
+                <h2
+                  className={`mt-0.5 font-semibold leading-5 ${activity.completed ? "text-base-content/50 line-through" : ""}`}
+                >
+                  {activity.title}
+                </h2>
+              </div>
+
               <button
                 type="button"
                 onClick={() => toggleActivity(activity.id)}
                 aria-pressed={activity.completed}
                 aria-label={`${activity.completed ? "Als offen markieren" : "Als erledigt markieren"}: ${activity.title}`}
-                className="mt-0.5 flex size-11 shrink-0 items-center justify-center rounded-xl border border-base-300 bg-base-100 text-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                className="flex size-10 shrink-0 items-center justify-center rounded-xl text-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 {activity.completed ? "✓" : "○"}
               </button>
+            </div>
 
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-semibold">{activity.time}</p>
-                  <span className="text-xs font-medium text-base-content/55">
-                    {activity.type === "quest" ? "Quest" : "Persönlich"}
-                  </span>
-                </div>
-                <h2 className={`mt-1 font-semibold ${activity.completed ? "line-through text-base-content/55" : ""}`}>
-                  {activity.title}
-                </h2>
-
-                {!activity.completed && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => moveActivity(activity.id, "up")}
-                      disabled={index === 0}
-                      className="min-h-10 rounded-xl px-3 text-xs font-semibold text-primary underline underline-offset-2 disabled:cursor-default disabled:opacity-40"
-                    >
-                      ↑ Nach oben
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => moveActivity(activity.id, "down")}
-                      disabled={index === activities.length - 1}
-                      className="min-h-10 rounded-xl px-3 text-xs font-semibold text-primary underline underline-offset-2 disabled:cursor-default disabled:opacity-40"
-                    >
-                      ↓ Nach unten
-                    </button>
-                  </div>
-                )}
-              </div>
+            <div className="mt-2 flex justify-end gap-1 pl-12">
+              <button
+                type="button"
+                onClick={() => moveActivity(activity.id, "up")}
+                disabled={index === 0}
+                aria-label={`${activity.title} nach oben verschieben`}
+                className="min-h-9 rounded-lg px-2 text-xs font-semibold text-base-content/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-25"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                onClick={() => moveActivity(activity.id, "down")}
+                disabled={index === activities.length - 1}
+                aria-label={`${activity.title} nach unten verschieben`}
+                className="min-h-9 rounded-lg px-2 text-xs font-semibold text-base-content/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-25"
+              >
+                ↓
+              </button>
             </div>
           </article>
         ))}
       </div>
 
-      <p className="rounded-2xl border border-base-300 bg-base-100 p-4 text-sm leading-5 text-base-content/70" role="note">
-        Dein Plan darf sich verändern. Verschieben ist ein Teil des Plans – kein Scheitern.
+      <button
+        type="button"
+        disabled
+        aria-label="Aktivität hinzufügen"
+        className="min-h-11 w-full rounded-xl bg-primary px-4 font-semibold text-primary-content shadow-sm opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-default"
+      >
+        + Aktivität hinzufügen
+      </button>
+
+      <p className="px-2 text-center text-xs leading-5 text-base-content/55" role="note">
+        Verschieben ist ein Teil des Plans – kein Scheitern.
       </p>
     </section>
   );
