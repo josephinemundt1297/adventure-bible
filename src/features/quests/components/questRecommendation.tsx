@@ -73,8 +73,8 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
           </div>
         </article>
 
-        <Link to="/hp-check" className="btn btn-primary w-full">
-          Mini HP-Check vorbereiten
+        <Link to="/mini-hp-check" className="btn btn-primary w-full">
+          Mini HP-Check
         </Link>
       </section>
     );
