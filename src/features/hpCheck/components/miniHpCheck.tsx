@@ -55,9 +55,9 @@ export function MiniHpCheck() {
   }
 
   const recommendations = savedState ? selectMiniQuest(savedState, quests) : null;
-  const selectedQuest = recommendations
-    ? [recommendations.primary, recommendations.alternative].find((quest) => quest?.id === selectedQuestId) ?? null
-    : null;
+  const primary = recommendations?.primary ?? null;
+  const alternative = recommendations?.alternative ?? null;
+  const selectedQuest = [primary, alternative].find((quest) => quest?.id === selectedQuestId) ?? null;
 
   return (
     <section className="space-y-6" aria-labelledby="mini-hp-heading">
@@ -114,29 +114,29 @@ export function MiniHpCheck() {
             </h2>
           </div>
 
-          {recommendations.primary && (
-            <article className={`card border shadow-sm ${selectedQuestId === recommendations.primary.id ? "border-primary bg-primary/10" : "border-primary/30 bg-primary/5"}`}>
+          {primary && (
+            <article className={`card border shadow-sm ${selectedQuestId === primary.id ? "border-primary bg-primary/10" : "border-primary/30 bg-primary/5"}`}>
               <div className="card-body gap-3 p-4">
                 <span className="badge badge-primary w-fit">Vorschlag</span>
-                <h3 className="text-lg font-bold">{recommendations.primary.title}</h3>
-                <p className="text-sm leading-6 text-base-content/70">{recommendations.primary.description}</p>
-                <span className="text-sm font-semibold text-primary">+{recommendations.primary.rewardXp} XP</span>
-                <button type="button" className="btn btn-primary min-h-11 w-full" onClick={() => chooseQuest(recommendations.primary)} aria-pressed={selectedQuestId === recommendations.primary.id}>
-                  {selectedQuestId === recommendations.primary.id ? "Ausgewählt ✓" : "Diese Aufgabe wählen"}
+                <h3 className="text-lg font-bold">{primary.title}</h3>
+                <p className="text-sm leading-6 text-base-content/70">{primary.description}</p>
+                <span className="text-sm font-semibold text-primary">+{primary.rewardXp} XP</span>
+                <button type="button" className="btn btn-primary min-h-11 w-full" onClick={() => chooseQuest(primary)} aria-pressed={selectedQuestId === primary.id}>
+                  {selectedQuestId === primary.id ? "Ausgewählt ✓" : "Diese Aufgabe wählen"}
                 </button>
               </div>
             </article>
           )}
 
-          {recommendations.alternative && (
-            <article className={`card border shadow-sm ${selectedQuestId === recommendations.alternative.id ? "border-primary bg-primary/10" : "border-base-300 bg-base-100"}`}>
+          {alternative && (
+            <article className={`card border shadow-sm ${selectedQuestId === alternative.id ? "border-primary bg-primary/10" : "border-base-300 bg-base-100"}`}>
               <div className="card-body gap-3 p-4">
                 <span className="badge badge-ghost w-fit">Alternative</span>
-                <h3 className="text-lg font-bold">{recommendations.alternative.title}</h3>
-                <p className="text-sm leading-6 text-base-content/70">{recommendations.alternative.description}</p>
-                <span className="text-sm font-semibold text-base-content/70">+{recommendations.alternative.rewardXp} XP</span>
-                <button type="button" className="btn btn-outline min-h-11 w-full" onClick={() => chooseQuest(recommendations.alternative)} aria-pressed={selectedQuestId === recommendations.alternative.id}>
-                  {selectedQuestId === recommendations.alternative.id ? "Ausgewählt ✓" : "Alternative wählen"}
+                <h3 className="text-lg font-bold">{alternative.title}</h3>
+                <p className="text-sm leading-6 text-base-content/70">{alternative.description}</p>
+                <span className="text-sm font-semibold text-base-content/70">+{alternative.rewardXp} XP</span>
+                <button type="button" className="btn btn-outline min-h-11 w-full" onClick={() => chooseQuest(alternative)} aria-pressed={selectedQuestId === alternative.id}>
+                  {selectedQuestId === alternative.id ? "Ausgewählt ✓" : "Alternative wählen"}
                 </button>
               </div>
             </article>
