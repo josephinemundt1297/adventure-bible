@@ -4,16 +4,24 @@ import { quests } from "../../../data/quests";
 import { addProgress } from "../../../lib/progress";
 import { selectQuest } from "../../../lib/questSelection";
 import type { HpState } from "../../../types/hp";
+import type { Quest } from "../../../types/quest";
 import type { QuestProgress } from "../../../types/questProgress";
 
 const QUEST_PROGRESS_KEY = "adventure-bible:quest-progress";
+const MINI_SELECTED_QUEST_KEY = "adventure-bible:mini-selected-quest";
 
 interface QuestRecommendationProps {
   state: HpState;
 }
 
+function readMiniSelectedQuest(): Quest | null {
+  const selectedId = sessionStorage.getItem(MINI_SELECTED_QUEST_KEY);
+  if (!selectedId) return null;
+  return quests.find((quest) => quest.id === selectedId) ?? null;
+}
+
 export function QuestRecommendation({ state }: QuestRecommendationProps) {
-  const quest = selectQuest(state, quests);
+  const quest = readMiniSelectedQuest() ?? selectQuest(state, quests);
   const [progress, setProgress] = useState<QuestProgress | null>(() => {
     const stored = sessionStorage.getItem(QUEST_PROGRESS_KEY);
     if (!stored) return null;
@@ -39,6 +47,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
       status: "active",
     };
     sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(nextProgress));
+    sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
     setProgress(nextProgress);
   }
 
