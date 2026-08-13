@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { quests } from "../../../data/quests";
+import { addProgress } from "../../../lib/progress";
 import { selectQuest } from "../../../lib/questSelection";
 import type { HpState } from "../../../types/hp";
 import type { QuestProgress } from "../../../types/questProgress";
@@ -49,6 +50,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
       rewardQuestPoints: 1,
     };
     sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(completedProgress));
+    addProgress(quest.rewardXp, 1);
     setProgress(completedProgress);
   }
 
