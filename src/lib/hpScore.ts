@@ -14,7 +14,7 @@ export function calculateHpState(answers: HpAnswer[]): HpState {
       const areaQuestions = hpQuestions.filter((question) => question.area === area);
       const areaAnswers = areaQuestions
         .map((question) => answers.find((answer) => answer.questionId === question.id)?.value)
-        .filter((value): value is number => value !== undefined);
+        .filter((value): value is HpAnswer["value"] => value !== undefined);
 
       const average = areaAnswers.length
         ? areaAnswers.reduce((sum, value) => sum + value, 0) / areaAnswers.length
