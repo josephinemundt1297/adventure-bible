@@ -1,8 +1,28 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { addProgress, getLevel, getLevelProgress, readProgress, PROGRESS_STATE_KEY } from "../src/lib/progress";
 
+function createSessionStorage() {
+  let store = new Map<string, string>();
+
+  return {
+    getItem: (key: string) => store.get(key) ?? null,
+    setItem: (key: string, value: string) => store.set(key, value),
+    removeItem: (key: string) => store.delete(key),
+    clear: () => {
+      store = new Map<string, string>();
+    },
+    key: (index: number) => [...store.keys()][index] ?? null,
+    get length() {
+      return store.size;
+    },
+  } satisfies Storage;
+}
+
 beforeEach(() => {
-  sessionStorage.clear();
+  Object.defineProperty(globalThis, "sessionStorage", {
+    configurable: true,
+    value: createSessionStorage(),
+  });
 });
 
 describe("progress", () => {
