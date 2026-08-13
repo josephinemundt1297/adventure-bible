@@ -1,7 +1,9 @@
+import type { ReactNode } from "react";
+
 interface ErrorStateProps {
   title: string;
   description: string;
-  action?: React.ReactNode;
+  action?: ReactNode;
 }
 
 export function ErrorState({ title, description, action }: ErrorStateProps) {
