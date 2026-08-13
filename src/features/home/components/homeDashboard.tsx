@@ -9,23 +9,37 @@ export function HomeDashboard() {
   return (
     <div className="space-y-3">
       <header className="flex items-start justify-between gap-3 pt-4">
-        <div>
+        <div className="min-w-0">
           <h1 className="text-xl font-semibold tracking-tight">Guten Morgen, Josi!</h1>
           <p className="mt-1 text-sm text-base-content/65">Bereit für dein Abenteuer?</p>
         </div>
 
         <div className="flex shrink-0 gap-1" aria-label="Schnellaktionen">
-          <button type="button" className="btn btn-ghost btn-sm btn-square" aria-label="Benachrichtigungen">
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm btn-square focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            aria-label="Benachrichtigungen"
+          >
             <span aria-hidden="true">🔔</span>
           </button>
-          <button type="button" className="btn btn-ghost btn-sm btn-square" aria-label="Einstellungen">
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm btn-square focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            aria-label="Einstellungen"
+          >
             <span aria-hidden="true">⚙</span>
           </button>
         </div>
       </header>
 
-      <section className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm" aria-labelledby="status-heading">
-        <h2 id="status-heading" className="text-xs font-semibold uppercase tracking-wide text-base-content/60">
+      <section
+        className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm"
+        aria-labelledby="status-heading"
+      >
+        <h2
+          id="status-heading"
+          className="text-xs font-semibold uppercase tracking-wide text-base-content/60"
+        >
           Dein Status
         </h2>
 
@@ -36,7 +50,7 @@ export function HomeDashboard() {
                 <span aria-hidden="true" className="w-5 text-center text-base">
                   {item.icon}
                 </span>
-                <span className="flex-1 font-medium">{item.label}</span>
+                <span className="min-w-0 flex-1 font-medium">{item.label}</span>
                 <span className="tabular-nums text-xs font-medium text-base-content/65">
                   {item.value}/100
                 </span>
@@ -52,10 +66,16 @@ export function HomeDashboard() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm" aria-labelledby="quest-heading">
-        <div className="flex items-start gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-base-200 text-lg" aria-hidden="true">
-            🧙
+      <section
+        className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm"
+        aria-labelledby="quest-heading"
+      >
+        <div className="flex items-center gap-3">
+          <div
+            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-base-200 text-lg"
+            aria-hidden="true"
+          >
+            🦝
           </div>
 
           <div className="min-w-0 flex-1">
@@ -64,15 +84,20 @@ export function HomeDashboard() {
               <br />
               für dich
             </p>
-            <h2 id="quest-heading" className="mt-2 text-base font-semibold">Trink 2L Wasser</h2>
-
-            <div className="mt-3 flex items-center justify-between gap-3">
-              <span className="text-xs font-medium text-base-content/65">+20 XP</span>
-              <button type="button" className="btn btn-primary btn-sm min-h-10 px-5">
-                Starten
-              </button>
-            </div>
+            <h2 id="quest-heading" className="mt-1 text-base font-semibold">
+              Trink 2L Wasser
+            </h2>
           </div>
+        </div>
+
+        <div className="mt-3 flex items-center justify-between gap-3 pl-13">
+          <span className="text-xs font-medium text-base-content/65">+20 XP</span>
+          <button
+            type="button"
+            className="btn btn-primary min-h-10 px-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            Starten
+          </button>
         </div>
       </section>
     </div>
