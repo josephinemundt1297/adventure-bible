@@ -2,49 +2,80 @@ import { useState } from "react";
 import { initialPlan } from "../../../data/plan";
 import type { PlannedActivity } from "../../../types/plan";
 import { EmptyState } from "../../../components/ui/emptyState";
+import { ErrorState } from "../../../components/ui/errorState";
 
 const PLAN_KEY = "adventure-bible:plan";
 
-function loadPlan(): PlannedActivity[] {
+interface PlanLoadResult {
+  activities: PlannedActivity[];
+  error: boolean;
+}
+
+function loadPlan(): PlanLoadResult {
   const stored = sessionStorage.getItem(PLAN_KEY);
-  if (!stored) return initialPlan;
+  if (!stored) return { activities: initialPlan, error: false };
 
   try {
-    return JSON.parse(stored) as PlannedActivity[];
+    return { activities: JSON.parse(stored) as PlannedActivity[], error: false };
   } catch {
-    sessionStorage.removeItem(PLAN_KEY);
-    return initialPlan;
+    return { activities: [], error: true };
   }
 }
 
 export function DayPlan() {
-  const [activities, setActivities] = useState<PlannedActivity[]>(loadPlan);
+  const [{ activities, error: loadError }, setPlan] = useState<PlanLoadResult>(loadPlan);
+  const [announcement, setAnnouncement] = useState("");
 
   function toggleActivity(id: string) {
-    setActivities((current) => {
-      const next = current.map((activity) =>
+    setPlan((current) => {
+      const next = current.activities.map((activity) =>
         activity.id === id ? { ...activity, completed: !activity.completed } : activity,
       );
       sessionStorage.setItem(PLAN_KEY, JSON.stringify(next));
-      return next;
+
+      const changed = next.find((activity) => activity.id === id);
+      setAnnouncement(changed ? `${changed.title}: ${changed.completed ? "erledigt" : "wieder offen"}.` : "");
+
+      return { activities: next, error: false };
     });
   }
 
   function moveActivity(id: string, direction: "up" | "down") {
-    setActivities((current) => {
-      const index = current.findIndex((activity) => activity.id === id);
+    setPlan((current) => {
+      const index = current.activities.findIndex((activity) => activity.id === id);
       const targetIndex = direction === "up" ? index - 1 : index + 1;
 
-      if (index < 0 || targetIndex < 0 || targetIndex >= current.length) return current;
+      if (index < 0 || targetIndex < 0 || targetIndex >= current.activities.length) return current;
 
-      const next = [...current];
+      const next = [...current.activities];
       [next[index], next[targetIndex]] = [next[targetIndex], next[index]];
       sessionStorage.setItem(PLAN_KEY, JSON.stringify(next));
-      return next;
+      setAnnouncement(`${next[targetIndex].title} verschoben.`);
+      return { activities: next, error: false };
     });
   }
 
+  function retryLoad() {
+    sessionStorage.removeItem(PLAN_KEY);
+    setPlan({ activities: initialPlan, error: false });
+    setAnnouncement("Plan konnte wiederhergestellt werden.");
+  }
+
   const completedCount = activities.filter((activity) => activity.completed).length;
+
+  if (loadError) {
+    return (
+      <ErrorState
+        title="Dein Plan konnte nicht geladen werden"
+        description="Die gespeicherten Aktivitäten konnten nicht gelesen werden. Dein bisheriger Plan wurde nicht verändert."
+        action={
+          <button type="button" onClick={retryLoad} className="btn btn-primary w-full">
+            Plan wiederherstellen
+          </button>
+        }
+      />
+    );
+  }
 
   if (activities.length === 0) {
     return (
@@ -57,6 +88,9 @@ export function DayPlan() {
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-3" aria-labelledby="plan-heading">
+      <p className="sr-only" aria-live="polite">
+        {announcement}
+      </p>
       <header className="px-2 pt-1">
         <div className="flex items-start justify-between gap-3">
           <div>
