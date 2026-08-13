@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { quests } from "../../../data/quests";
 import { selectMiniQuest } from "../../../lib/miniQuestSelection";
 import type { MiniHpArea, MiniHpState } from "../../../types/miniHp";
+import type { Quest } from "../../../types/quest";
 
 const MINI_HP_STATE_KEY = "adventure-bible:mini-hp-state";
+const MINI_SELECTED_QUEST_KEY = "adventure-bible:mini-selected-quest";
 
 const areas: Array<{
   id: MiniHpArea;
@@ -26,9 +29,11 @@ const initialValues: Record<MiniHpArea, number> = {
 export function MiniHpCheck() {
   const [values, setValues] = useState(initialValues);
   const [savedState, setSavedState] = useState<MiniHpState | null>(null);
+  const [selectedQuestId, setSelectedQuestId] = useState<string | null>(null);
 
   function updateValue(area: MiniHpArea, value: number) {
     setSavedState(null);
+    setSelectedQuestId(null);
     setValues((current) => ({ ...current, [area]: value }));
   }
 
@@ -39,10 +44,20 @@ export function MiniHpCheck() {
     };
 
     sessionStorage.setItem(MINI_HP_STATE_KEY, JSON.stringify(state));
+    sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
+    setSelectedQuestId(null);
     setSavedState(state);
   }
 
+  function chooseQuest(quest: Quest) {
+    sessionStorage.setItem(MINI_SELECTED_QUEST_KEY, quest.id);
+    setSelectedQuestId(quest.id);
+  }
+
   const recommendations = savedState ? selectMiniQuest(savedState, quests) : null;
+  const selectedQuest = recommendations
+    ? [recommendations.primary, recommendations.alternative].find((quest) => quest?.id === selectedQuestId) ?? null
+    : null;
 
   return (
     <section className="space-y-6" aria-labelledby="mini-hp-heading">
@@ -100,25 +115,42 @@ export function MiniHpCheck() {
           </div>
 
           {recommendations.primary && (
-            <article className="card border border-primary/30 bg-primary/5 shadow-sm">
+            <article className={`card border shadow-sm ${selectedQuestId === recommendations.primary.id ? "border-primary bg-primary/10" : "border-primary/30 bg-primary/5"}`}>
               <div className="card-body gap-3 p-4">
                 <span className="badge badge-primary w-fit">Vorschlag</span>
                 <h3 className="text-lg font-bold">{recommendations.primary.title}</h3>
                 <p className="text-sm leading-6 text-base-content/70">{recommendations.primary.description}</p>
                 <span className="text-sm font-semibold text-primary">+{recommendations.primary.rewardXp} XP</span>
+                <button type="button" className="btn btn-primary min-h-11 w-full" onClick={() => chooseQuest(recommendations.primary)} aria-pressed={selectedQuestId === recommendations.primary.id}>
+                  {selectedQuestId === recommendations.primary.id ? "Ausgewählt ✓" : "Diese Aufgabe wählen"}
+                </button>
               </div>
             </article>
           )}
 
           {recommendations.alternative && (
-            <article className="card border border-base-300 bg-base-100 shadow-sm">
+            <article className={`card border shadow-sm ${selectedQuestId === recommendations.alternative.id ? "border-primary bg-primary/10" : "border-base-300 bg-base-100"}`}>
               <div className="card-body gap-3 p-4">
                 <span className="badge badge-ghost w-fit">Alternative</span>
                 <h3 className="text-lg font-bold">{recommendations.alternative.title}</h3>
                 <p className="text-sm leading-6 text-base-content/70">{recommendations.alternative.description}</p>
                 <span className="text-sm font-semibold text-base-content/70">+{recommendations.alternative.rewardXp} XP</span>
+                <button type="button" className="btn btn-outline min-h-11 w-full" onClick={() => chooseQuest(recommendations.alternative)} aria-pressed={selectedQuestId === recommendations.alternative.id}>
+                  {selectedQuestId === recommendations.alternative.id ? "Ausgewählt ✓" : "Alternative wählen"}
+                </button>
               </div>
             </article>
+          )}
+
+          {selectedQuest && (
+            <div className="space-y-2 pt-2">
+              <p className="text-center text-sm font-medium" role="status">
+                „{selectedQuest.title}“ ist ausgewählt.
+              </p>
+              <Link to="/quests" className="btn btn-primary min-h-11 w-full">
+                Aufgabe starten
+              </Link>
+            </div>
           )}
         </div>
       )}
