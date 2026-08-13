@@ -1,12 +1,11 @@
 import { getLevel, getLevelProgress, readProgress } from "../../../lib/progress";
-import type { ProgressState } from "../../../types/progress";
 
 interface CharacterViewProps {
   name: string;
 }
 
 export function CharacterView({ name }: CharacterViewProps) {
-  const [progress] = useState<ProgressState>(() => readProgress());
+  const progress = readProgress();
 
   const level = getLevel(progress.xp);
   const levelProgress = getLevelProgress(progress.xp);
