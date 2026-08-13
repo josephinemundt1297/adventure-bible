@@ -11,7 +11,7 @@ export function BottomNavigation() {
   return (
     <nav
       aria-label="Hauptnavigation"
-      className="absolute inset-x-4 bottom-4 z-10 rounded-2xl border border-base-300 bg-base-100/95 p-2 shadow-lg backdrop-blur"
+      className="absolute inset-x-4 bottom-4 z-10 rounded-2xl border border-base-300 bg-base-100/95 p-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] shadow-lg backdrop-blur"
     >
       <ul className="grid grid-cols-4 gap-1">
         {navigationItems.map((item) => (
@@ -22,9 +22,9 @@ export function BottomNavigation() {
                 "aria-current": "page",
                 className: "bg-primary/10 text-primary",
               }}
-              className="flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-xl px-2 py-1 text-xs font-medium text-base-content/70 transition-colors hover:bg-base-200 hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1 text-xs font-medium text-base-content/70 transition-colors hover:bg-base-200 hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none"
             >
-              <span aria-hidden="true" className="text-base leading-none">
+              <span aria-hidden="true" className="text-lg leading-none">
                 {item.icon}
               </span>
               <span>{item.label}</span>
