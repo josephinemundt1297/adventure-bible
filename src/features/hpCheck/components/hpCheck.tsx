@@ -83,7 +83,7 @@ export function HpCheck() {
         <div className="card-body min-h-0 items-center justify-center p-5">
           <h2 id="hp-question" className="w-full max-w-sm shrink-0 text-center text-lg font-semibold leading-6">{question.question}</h2>
 
-          <div className="mt-5 grid w-full max-w-sm gap-3" aria-label="Antwort auswählen">
+          <div className="mt-5 grid w-full max-w-sm gap-4" aria-label="Antwort auswählen">
             {hpAnswerLabels.map((label, index) => {
               const value = (index + 1) as HpAnswer["value"];
               const selected = currentAnswer === value;
@@ -96,7 +96,7 @@ export function HpCheck() {
             })}
           </div>
 
-          <button type="button" className="btn btn-primary mt-5 h-11 min-h-11 w-full max-w-sm shrink-0" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
+          <button type="button" className="btn btn-primary mt-8 h-11 min-h-11 w-full max-w-sm shrink-0" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
         </div>
       </section>
 
