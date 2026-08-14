@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { quests } from "../../../data/quests";
 import type { PlannedActivity } from "../../../types/plan";
 
@@ -17,6 +17,50 @@ export function AddActivityDialog({ open, onClose, onAdd }: AddActivityDialogPro
   const [questId, setQuestId] = useState(quests[0]?.id ?? "");
   const [title, setTitle] = useState("");
   const [time, setTime] = useState("12:00");
+  const dialogRef = useRef<HTMLElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const dialog = dialogRef.current;
+    const focusableSelector = 'button:not([disabled]), select, input, textarea, [href], [tabindex]:not([tabindex="-1"])';
+
+    requestAnimationFrame(() => {
+      const firstFocusable = dialog?.querySelector<HTMLElement>(focusableSelector);
+      firstFocusable?.focus();
+    });
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialog) return;
+      const focusable = [...dialog.querySelectorAll<HTMLElement>(focusableSelector)];
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previousFocusRef.current?.focus();
+    };
+  }, [open, onClose]);
 
   if (!open) return null;
 
@@ -61,8 +105,20 @@ export function AddActivityDialog({ open, onClose, onAdd }: AddActivityDialogPro
   const canAdd = Boolean(time) && (kind === "quest" ? Boolean(selectedQuest) : Boolean(title.trim()));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-3 sm:items-center" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
-      <section role="dialog" aria-modal="true" aria-labelledby="add-activity-heading" className="w-full max-w-md rounded-3xl border border-base-300 bg-base-100 p-5 shadow-xl">
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-3 sm:items-center"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) close();
+      }}
+    >
+      <section
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="add-activity-heading"
+        className="w-full max-w-md rounded-3xl border border-base-300 bg-base-100 p-5 shadow-xl"
+      >
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-primary">Deinen Plan</p>
@@ -72,8 +128,8 @@ export function AddActivityDialog({ open, onClose, onAdd }: AddActivityDialogPro
         </div>
 
         <div className="join mb-4 grid w-full grid-cols-2">
-          <button type="button" onClick={() => setKind("quest")} className={`join-item btn ${kind === "quest" ? "btn-primary" : "btn-outline"}`}>Quest</button>
-          <button type="button" onClick={() => setKind("personal")} className={`join-item btn ${kind === "personal" ? "btn-primary" : "btn-outline"}`}>Eigene Aufgabe</button>
+          <button type="button" onClick={() => setKind("quest")} aria-pressed={kind === "quest"} className={`join-item btn ${kind === "quest" ? "btn-primary" : "btn-outline"}`}>Quest</button>
+          <button type="button" onClick={() => setKind("personal")} aria-pressed={kind === "personal"} className={`join-item btn ${kind === "personal" ? "btn-primary" : "btn-outline"}`}>Eigene Aufgabe</button>
         </div>
 
         {kind === "quest" ? (
@@ -89,7 +145,7 @@ export function AddActivityDialog({ open, onClose, onAdd }: AddActivityDialogPro
         ) : (
           <label className="form-control w-full">
             <span className="label-text mb-2 font-semibold">Was möchtest du einplanen?</span>
-            <input value={title} onChange={(event) => setTitle(event.target.value)} className="input input-bordered w-full" placeholder="z. B. Wäsche machen" maxLength={60} autoFocus />
+            <input value={title} onChange={(event) => setTitle(event.target.value)} className="input input-bordered w-full" placeholder="z. B. Wäsche machen" maxLength={60} />
           </label>
         )}
 
