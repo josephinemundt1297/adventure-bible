@@ -19,6 +19,17 @@ export function readProgress(): ProgressState {
   }
 }
 
+export function addXp(rewardXp: number): ProgressState {
+  const current = readProgress();
+  const next: ProgressState = {
+    ...current,
+    xp: current.xp + rewardXp,
+  };
+
+  sessionStorage.setItem(PROGRESS_STATE_KEY, JSON.stringify(next));
+  return next;
+}
+
 export function addProgress(rewardXp: number, questPoints = 1): ProgressState {
   const current = readProgress();
   const next: ProgressState = {
