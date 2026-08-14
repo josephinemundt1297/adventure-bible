@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { initialPlan } from "../../../data/plan";
 import type { PlannedActivity } from "../../../types/plan";
 import { EmptyState } from "../../../components/ui/emptyState";
@@ -180,6 +181,13 @@ export function DayPlan() {
       >
         + Aktivität hinzufügen
       </button>
+
+      <Link
+        to="/reflection"
+        className="flex min-h-11 w-full items-center justify-center rounded-xl border border-primary/30 bg-base-100/60 px-4 text-sm font-semibold text-primary shadow-sm transition-colors hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
+        🌙 Abendliche Reflexion
+      </Link>
 
       <p className="px-2 text-center text-xs leading-4 text-base-content/55" role="note">
         Verschieben ist ein Teil des Plans – kein Scheitern.
