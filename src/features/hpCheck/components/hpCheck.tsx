@@ -8,6 +8,8 @@ import { leaveCampfire } from "../../../lib/campfire";
 import type { HpAnswer } from "../../../types/hp";
 
 const HP_STATE_KEY = "adventure-bible:hp-state";
+const QUEST_PROGRESS_KEY = "adventure-bible:quest-progress";
+const MINI_SELECTED_QUEST_KEY = "adventure-bible:mini-selected-quest";
 
 export function HpCheck() {
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -37,6 +39,8 @@ export function HpCheck() {
       const finalState = calculateHpState(allAnswers);
       leaveCampfire();
       sessionStorage.setItem(HP_STATE_KEY, JSON.stringify(finalState));
+      sessionStorage.removeItem(QUEST_PROGRESS_KEY);
+      sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
       notifyAchievements(recordHpCheck());
       setAnswers(allAnswers);
       setCompletedState(finalState);
