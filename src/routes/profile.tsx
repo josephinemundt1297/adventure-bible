@@ -47,8 +47,8 @@ function ProfileSignedOut() {
         </p>
       </header>
 
-      <div className="rounded-3xl border border-primary/20 bg-base-100 p-[4vw] shadow-sm">
-        <div className="space-y-[1.5dvh]">
+      <div className="h-auto rounded-3xl border border-primary/20 bg-base-100 px-[4vw] py-[2.5dvh] shadow-sm">
+        <div className="space-y-[1dvh]">
           <SignInButton mode="modal">
             <button
               type="button"
@@ -68,7 +68,7 @@ function ProfileSignedOut() {
           </SignUpButton>
         </div>
 
-        <p className="mt-[1.5dvh] text-center text-xs leading-5 text-base-content/55">
+        <p className="mt-[1.25dvh] text-center text-xs leading-5 text-base-content/55">
           Dein Adventure-Bible-Fortschritt gehört zu deinem Konto.
         </p>
       </div>
