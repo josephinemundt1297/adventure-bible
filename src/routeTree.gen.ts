@@ -10,15 +10,23 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as HpCheckRouteImport } from './routes/hp-check'
 import { Route as MiniHpCheckRouteImport } from './routes/mini-hp-check'
 import { Route as PlanRouteImport } from './routes/plan'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as QuestsRouteImport } from './routes/quests'
+import { Route as ReflectionRouteImport } from './routes/reflection'
+import { Route as StatsRouteImport } from './routes/stats'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarRoute = CalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HpCheckRoute = HpCheckRouteImport.update({
@@ -46,55 +54,97 @@ const QuestsRoute = QuestsRouteImport.update({
   path: '/quests',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReflectionRoute = ReflectionRouteImport.update({
+  id: '/reflection',
+  path: '/reflection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatsRoute = StatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarRoute
   '/hp-check': typeof HpCheckRoute
   '/mini-hp-check': typeof MiniHpCheckRoute
   '/plan': typeof PlanRoute
   '/profile': typeof ProfileRoute
   '/quests': typeof QuestsRoute
+  '/reflection': typeof ReflectionRoute
+  '/stats': typeof StatsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarRoute
   '/hp-check': typeof HpCheckRoute
   '/mini-hp-check': typeof MiniHpCheckRoute
   '/plan': typeof PlanRoute
   '/profile': typeof ProfileRoute
   '/quests': typeof QuestsRoute
+  '/reflection': typeof ReflectionRoute
+  '/stats': typeof StatsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarRoute
   '/hp-check': typeof HpCheckRoute
   '/mini-hp-check': typeof MiniHpCheckRoute
   '/plan': typeof PlanRoute
   '/profile': typeof ProfileRoute
   '/quests': typeof QuestsRoute
+  '/reflection': typeof ReflectionRoute
+  '/stats': typeof StatsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/hp-check' | '/mini-hp-check' | '/plan' | '/profile' | '/quests'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/hp-check' | '/mini-hp-check' | '/plan' | '/profile' | '/quests'
-  id:
-    | '__root__'
     | '/'
+    | '/calendar'
     | '/hp-check'
     | '/mini-hp-check'
     | '/plan'
     | '/profile'
     | '/quests'
+    | '/reflection'
+    | '/stats'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/calendar'
+    | '/hp-check'
+    | '/mini-hp-check'
+    | '/plan'
+    | '/profile'
+    | '/quests'
+    | '/reflection'
+    | '/stats'
+  id:
+    | '__root__'
+    | '/'
+    | '/calendar'
+    | '/hp-check'
+    | '/mini-hp-check'
+    | '/plan'
+    | '/profile'
+    | '/quests'
+    | '/reflection'
+    | '/stats'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CalendarRoute: typeof CalendarRoute
   HpCheckRoute: typeof HpCheckRoute
   MiniHpCheckRoute: typeof MiniHpCheckRoute
   PlanRoute: typeof PlanRoute
   ProfileRoute: typeof ProfileRoute
   QuestsRoute: typeof QuestsRoute
+  ReflectionRoute: typeof ReflectionRoute
+  StatsRoute: typeof StatsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -104,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar': {
+      id: '/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof CalendarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/hp-check': {
@@ -141,16 +198,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuestsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reflection': {
+      id: '/reflection'
+      path: '/reflection'
+      fullPath: '/reflection'
+      preLoaderRoute: typeof ReflectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stats': {
+      id: '/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CalendarRoute: CalendarRoute,
   HpCheckRoute: HpCheckRoute,
   MiniHpCheckRoute: MiniHpCheckRoute,
   PlanRoute: PlanRoute,
   ProfileRoute: ProfileRoute,
   QuestsRoute: QuestsRoute,
+  ReflectionRoute: ReflectionRoute,
+  StatsRoute: StatsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
