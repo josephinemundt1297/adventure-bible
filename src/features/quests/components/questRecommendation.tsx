@@ -50,9 +50,13 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
     return <p>Aktuell ist keine Quest verfügbar.</p>;
   }
 
+  // Keep a narrowed Quest reference for event handlers/closures so TypeScript
+  // can guarantee that quest data exists when an action is performed.
+  const quest = selectedQuest;
+
   function startQuest() {
     leaveCampfire();
-    const nextProgress: QuestProgress = { quest: selectedQuest, status: "active" };
+    const nextProgress: QuestProgress = { quest, status: "active" };
     sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(nextProgress));
     sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
     setProgress(nextProgress);
@@ -60,16 +64,16 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
 
   function completeQuest() {
     const completedProgress: QuestProgress = {
-      quest: selectedQuest,
+      quest,
       status: "completed",
       completedAt: new Date().toISOString(),
-      rewardXp: selectedQuest.rewardXp,
+      rewardXp: quest.rewardXp,
       rewardQuestPoints: 1,
     };
 
     sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(completedProgress));
-    recordQuestHistory(selectedQuest.id);
-    addProgress(selectedQuest.rewardXp, 1);
+    recordQuestHistory(quest.id);
+    addProgress(quest.rewardXp, 1);
     notifyAchievements(recordQuestCompletion());
     setProgress(completedProgress);
   }
@@ -80,13 +84,13 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
         <header className="grid h-[168px] grid-rows-[24px_58px_72px] gap-2">
           <p className="text-sm font-semibold uppercase tracking-wide text-primary">Quest abgeschlossen</p>
           <h1 id="quest-complete-heading" className="text-2xl font-bold leading-7 tracking-tight">Gut gemacht! 🎉</h1>
-          <p className="text-sm leading-6 text-base-content/70">Du hast „{selectedQuest.title}“ abgeschlossen. Dein Fortschritt ist gespeichert.</p>
+          <p className="text-sm leading-6 text-base-content/70">Du hast „{quest.title}“ abgeschlossen. Dein Fortschritt ist gespeichert.</p>
         </header>
 
         <article className="card h-[220px] border border-primary/20 bg-base-100 shadow-sm">
           <div className="card-body grid grid-rows-[32px_52px_28px] place-items-center content-center gap-3 text-center">
             <span className="badge badge-primary badge-lg">Reward</span>
-            <p className="text-3xl font-bold text-primary">+{selectedQuest.rewardXp} XP</p>
+            <p className="text-3xl font-bold text-primary">+{quest.rewardXp} XP</p>
             <p className="font-semibold">+1 Quest Point</p>
           </div>
         </article>
@@ -101,17 +105,17 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
       <section className="space-y-5" aria-labelledby="active-quest-heading">
         <header className="grid h-[168px] grid-rows-[24px_58px_72px] gap-2">
           <p className="text-sm font-semibold uppercase tracking-wide text-primary">Aktive Quest</p>
-          <h1 id="active-quest-heading" className="overflow-hidden text-2xl font-bold leading-7 tracking-tight">{selectedQuest.title}</h1>
+          <h1 id="active-quest-heading" className="overflow-hidden text-2xl font-bold leading-7 tracking-tight">{quest.title}</h1>
           <p className="text-sm leading-6 text-base-content/70">Nimm dir den Raum, den diese Aufgabe braucht. Du entscheidest selbst, wann du sie abschließt.</p>
         </header>
 
         <article className="card h-[250px] border border-primary/20 bg-base-100 shadow-sm">
           <div className="card-body grid grid-rows-[24px_72px_24px_40px] gap-3">
             <span className="badge badge-primary w-fit">In Arbeit</span>
-            <p className="overflow-hidden text-sm leading-6">{selectedQuest.description}</p>
+            <p className="overflow-hidden text-sm leading-6">{quest.description}</p>
             <div className="flex items-center justify-between text-sm text-base-content/60">
-              <span>Aufwand: {selectedQuest.effort === "short" ? "kurz" : "mittel"}</span>
-              <span>+{selectedQuest.rewardXp} XP</span>
+              <span>Aufwand: {quest.effort === "short" ? "kurz" : "mittel"}</span>
+              <span>+{quest.rewardXp} XP</span>
             </div>
             <button type="button" className="btn btn-primary min-h-10 w-full" onClick={completeQuest}>Quest abschließen</button>
           </div>
@@ -131,13 +135,13 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
       <article className="card h-[280px] border border-primary/20 bg-base-100 shadow-sm">
         <div className="card-body grid grid-rows-[24px_32px_72px_24px_40px] gap-3">
           <div className="flex items-center justify-between gap-3">
-            <span className="badge badge-primary">{selectedQuest.type === "recovery" ? "Recovery Quest" : "Side Quest"}</span>
-            <span className="text-sm font-semibold text-primary">+{selectedQuest.rewardXp} XP</span>
+            <span className="badge badge-primary">{quest.type === "recovery" ? "Recovery Quest" : "Side Quest"}</span>
+            <span className="text-sm font-semibold text-primary">+{quest.rewardXp} XP</span>
           </div>
-          <h2 className="overflow-hidden text-xl font-bold leading-7">{selectedQuest.title}</h2>
-          <p className="overflow-hidden text-sm leading-6 text-base-content/70">{selectedQuest.description}</p>
+          <h2 className="overflow-hidden text-xl font-bold leading-7">{quest.title}</h2>
+          <p className="overflow-hidden text-sm leading-6 text-base-content/70">{quest.description}</p>
           <div className="flex items-center justify-between text-sm text-base-content/60">
-            <span>Aufwand: {selectedQuest.effort === "short" ? "kurz" : "mittel"}</span>
+            <span>Aufwand: {quest.effort === "short" ? "kurz" : "mittel"}</span>
             <span>Empfohlen für dich</span>
           </div>
           <button type="button" className="btn btn-primary min-h-10 w-full" onClick={startQuest}>Quest starten</button>
