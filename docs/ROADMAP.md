@@ -2,37 +2,34 @@
 
 ## Zweck
 
-Diese Roadmap beschreibt den Entwicklungsplan für das aktuelle React-Abschlussprojekt.
+Diese Roadmap beschreibt den aktuellen Stand und die verbleibenden Schritte für das React-Abschlussprojekt.
 
-Sie ist bewusst vom langfristigen Produkt-Roadmap getrennt: Ziel ist ein fokussierter, präsentierbarer MVP.
+Ziel ist ein fokussierter, präsentierbarer MVP mit einem vollständigen und getesteten Adventure-Bible-Loop.
 
 ---
 
 # 1. Projektziel
 
-**Präsentation:** Freitag, 10:00 Uhr
-
-Der MVP muss den zentralen Adventure-Bible-Loop überzeugend demonstrieren:
+Der MVP demonstriert:
 
 ```text
 Profil
-→ Charakter
-→ Zustand einschätzen
-→ adaptive Quest
+→ großer HP-Check
+→ HP-Zustand
+→ adaptive Quest-Auswahl
+→ Quest starten
 → Quest abschließen
-→ XP erhalten
-→ Fortschritt sehen
+→ XP / Quest Points / Reward
+→ Mini HP-Check
+→ neue Quest ODER Lagerfeuer
+→ nächster Abenteuerzyklus
 ```
 
-Die App soll dabei wie eine echte mobile App wirken und auf Desktop weiterhin als App erkennbar bleiben.
+Die App soll auf Smartphone und Desktop wie eine persönliche App wirken.
 
 ---
 
 # 2. Entwicklungsprinzip
-
-Nicht möglichst viele Features bauen.
-
-Sondern:
 
 > Einen kleinen, vollständigen und getesteten Produkt-Loop bauen.
 
@@ -45,8 +42,6 @@ Priorität:
 5. visuelle Qualität
 6. optionale Erweiterungen
 
-Wenn Zeit knapp wird, werden optionale Features gestrichen – nicht Tests, Accessibility oder der Kern-Loop.
-
 ---
 
 # 3. Phase 0 – Dokumentation und Planung
@@ -54,199 +49,185 @@ Wenn Zeit knapp wird, werden optionale Features gestrichen – nicht Tests, Acce
 - [x] AGENTS.md prüfen
 - [x] PROJECT.md prüfen
 - [x] DESIGN.md prüfen
-- [x] FEATURES.md erstellen
+- [x] FEATURES.md erstellen und Scope festlegen
 - [x] ACCESSIBILITY.md erstellen
 - [x] SECURITY.md erstellen
-- [ ] ARCHITECTURE.md finalisieren
-- [ ] Agentic-Workflow dokumentieren
-- [ ] Skills festlegen
-- [ ] MVP-Scope bestätigen
+- [x] ARCHITECTURE.md festlegen
+- [x] Agentic-Workflow dokumentieren
+- [x] Skills / Workflow-Struktur festlegen
+- [x] MVP-Scope bestätigen
 
 ---
 
-# 4. Montag – Fundament
+# 4. Technisches Fundament
 
-## Ziel
+- [x] Dependencies prüfen
+- [x] Tailwind / DaisyUI einrichten
+- [x] globale Styles und Theme
+- [x] TanStack Router integrieren
+- [x] App-Shell erstellen
+- [x] Hauptnavigation erstellen
+- [x] responsive Grundstruktur erstellen
+- [x] Test-Setup einrichten
+- [x] Production Build grundsätzlich erfolgreich
+- [x] Lint grundsätzlich erfolgreich
 
-Technisches Fundament und Produktstruktur fertigstellen.
-
-### Aufgaben
-
-- [ ] aktuelle Dependencies prüfen
-- [ ] DaisyUI / Tailwind-Setup abschließen
-- [ ] globale Styles und Theme definieren
-- [ ] Routing-Strategie festlegen
-- [ ] App-Shell erstellen
-- [ ] Hauptnavigation erstellen
-- [ ] responsive Grundstruktur erstellen
-- [ ] erste Accessibility-Prüfung
-- [ ] Test-Setup einrichten
-
-### Ergebnis
-
-Die Anwendung startet sauber und besitzt eine navigierbare App-Shell mit den vorgesehenen Hauptbereichen.
+**Status:** 🟢 abgeschlossen
 
 ---
 
-# 5. Dienstag – Profil und Charakter
+# 5. Profil und Charakter
 
-## Ziel
+- [x] Profil-/Account-Bereich
+- [x] Clerk Sign-in / Sign-up UI
+- [x] Character View
+- [x] XP / Level / Quest Points
+- [x] grundlegende Fortschrittsanzeige
+- [x] responsive Darstellung
 
-Der Nutzer kann die Anwendung erstmals als persönliche App erleben.
+**Status:** 🟢 abgeschlossen
 
-### Aufgaben
-
-- [ ] Profil-Erstellung
-- [ ] Formularvalidierung
-- [ ] Character View
-- [ ] persönliche Grunddaten
-- [ ] grundlegender Zustand
-- [ ] responsive Darstellung
-- [ ] Accessibility-Tests
-- [ ] Komponenten-Tests
-
-### Ergebnis
-
-Ein Nutzer kann ein Profil erstellen und anschließend seinen Charakter sehen.
+> Hinweis: Clerk ist bereits als Authentifizierungs-UI integriert. Backend-Persistenz und serverseitige Autorisierung bleiben außerhalb des React-MVP.
 
 ---
 
-# 6. Mittwoch – Zustand und Quests
+# 6. HP-Check und adaptive Quests
 
-## Ziel
+- [x] großer HP-Check
+- [x] 3 Fragen pro HP-Bereich
+- [x] 5 Antwortmöglichkeiten pro Frage
+- [x] nachvollziehbare HP-Berechnung
+- [x] HP-Zusammenfassung
+- [x] regelbasierte Quest-Auswahl
+- [x] Quest-Daten aus lokaler JSON-Datei
+- [x] Quest starten
+- [x] Quest abschließen
+- [x] Quest-Historie berücksichtigen
+- [x] XP / Quest Points vergeben
+- [x] sichtbares Reward-Feedback
 
-Der adaptive Kern der Anwendung funktioniert.
-
-### Aufgaben
-
-- [ ] HP-/Zustandscheck
-- [ ] Zustandmodell
-- [ ] Questmodell
-- [ ] Quest-Liste
-- [ ] Quest-Detailansicht
-- [ ] einfache regelbasierte adaptive Auswahl
-- [ ] Quest starten
-- [ ] Quest abschließen
-- [ ] XP-Berechnung
-- [ ] Tests für adaptive Logik
-
-### Ergebnis
-
-Der Zustand des Nutzers beeinflusst nachvollziehbar, welche Quest empfohlen wird.
+**Status:** 🟢 abgeschlossen
 
 ---
 
-# 7. Donnerstag – Fortschritt, Polish und Qualität
+# 7. Mini HP-Check und Regeneration
 
-## Ziel
+- [x] Mini HP-Check mit zugänglichen Slidern
+- [x] aktueller Wert sichtbar
+- [x] vorheriger HP-Wert soweit vorhanden sichtbar
+- [x] zwei passende Quest-Optionen
+- [x] Nutzer entscheidet selbst
+- [x] Lagerfeuer als bewusste Recovery-Option
+- [x] Lagerfeuerzustand speichern
+- [x] neuen Abenteuerzyklus aus dem Lagerfeuer starten
 
-Den vollständigen Produkt-Loop stabilisieren und präsentationsbereit machen.
-
-### Aufgaben
-
-- [ ] XP und Fortschrittsanzeige
-- [ ] Plan-Bereich auf MVP-Niveau
-- [ ] Profilbereich / Ich
-- [ ] Empty States
-- [ ] Loading / Error / Success States, wo erforderlich
-- [ ] Mobile Polish
-- [ ] Desktop-Ansicht prüfen
-- [ ] Keyboard-Test
-- [ ] Screenreader-relevante Prüfung
-- [ ] Kontrastprüfung
-- [ ] `prefers-reduced-motion`
-- [ ] Build
-- [ ] Lint
-- [ ] Tests
-- [ ] unnötige Dateien / Debug-Code entfernen
-
-### Ergebnis
-
-Der komplette MVP-Loop funktioniert stabil und kann präsentiert werden.
+**Status:** 🟢 abgeschlossen
 
 ---
 
-# 8. Freitag – Präsentation
+# 8. Home / zentraler Flow
 
-## Vor der Präsentation
+- [x] Home als Einstiegspunkt
+- [x] aktueller HP-Zustand sichtbar
+- [x] nächster sinnvoller Schritt abhängig vom Loop-Zustand
+- [x] aktive Quest verlinken
+- [x] Quest-Abschluss → Mini HP-Check verlinken
+- [x] Lagerfeuerzustand berücksichtigen
+- [x] Fortschritt sichtbar
 
-- [ ] `npm run build`
+**Status:** 🟢 abgeschlossen
+
+---
+
+# 9. Plan und persönliche Bereiche
+
+- [x] Plan-Bereich auf MVP-Niveau
+- [x] Aufgaben hinzufügen
+- [x] Aufgaben verschieben
+- [x] Aufgaben entfernen
+- [x] erledigte Aufgaben markieren
+- [x] Plan scrollt intern, Navigation bleibt sichtbar
+- [x] Profilbereich / Ich
+- [x] Reflexion als vorhandene Zusatzfunktion
+
+**Status:** 🟢 abgeschlossen
+
+---
+
+# 10. Accessibility und Qualität
+
+- [x] semantische Strukturen in zentralen Flows
+- [x] zugängliche Labels / Namen
+- [x] Status ohne reine Farbcodierung
+- [x] sichtbare Focus-Styles an zentralen Interaktionen
+- [x] Touch-Ziele berücksichtigt
+- [x] `prefers-reduced-motion` berücksichtigt
+- [x] responsive Layout-Grundlagen
+- [x] Unit-Tests für zentrale Domain-Logik
+- [x] Campfire-State getestet
+- [ ] vollständiger manueller Keyboard-Test
+- [ ] vollständiger manueller Screenreader-Check
+- [ ] vollständige Kontrastprüfung
+- [ ] finaler Mobile-/Desktop-Durchlauf
+
+**Status:** 🟡 technische Basis fertig, manuelle Abnahme offen
+
+---
+
+# 11. Finaler MVP-Check
+
+- [ ] `npm run test`
 - [ ] `npm run lint`
-- [ ] Tests ausführen
+- [ ] `npm run build`
 - [ ] App lokal starten
-- [ ] Präsentationsablauf einmal vollständig durchspielen
-- [ ] Demo-Daten prüfen
-- [ ] keine offenen kritischen Fehler
+- [ ] vollständigen Demo-Flow einmal durchspielen
+- [ ] keine kritischen Fehler im Demo-Flow
+- [ ] unnötige Debug-/Testartefakte prüfen
+- [ ] finale Dokumentation auf Konsistenz prüfen
 
-## Demo-Reihenfolge
-
-1. App öffnen
-2. Profil zeigen / erstellen
-3. Charakter zeigen
-4. aktuellen Zustand setzen
-5. adaptive Quest demonstrieren
-6. Quest abschließen
-7. XP zeigen
-8. Fortschritt zeigen
-9. kurz erklären, wie die App auf den Nutzer reagiert
-10. Accessibility und technische Umsetzung erwähnen
+**Status:** 🟡 finale Verifikation offen
 
 ---
 
-# 9. Scope-Regel
-
-Neue Ideen werden während der Woche in drei Kategorien eingeordnet:
-
-### Must Have
-
-Notwendig für den zentralen MVP-Loop oder die Präsentation.
-
-### Should Have
-
-Sinnvoll, aber der MVP funktioniert auch ohne sie.
-
-### Later
-
-Post-MVP oder langfristige Vision.
-
-Nur **Must Have** darf den bestehenden Plan automatisch unterbrechen.
-
----
-
-# 10. Definition of Done – MVP
+# 12. Definition of Done – MVP
 
 Der MVP ist fertig, wenn:
 
-- [ ] der zentrale Produkt-Loop funktioniert
-- [ ] Profil-Erstellung funktioniert
-- [ ] Zustand kann erfasst werden
-- [ ] Quest wird passend ausgewählt
-- [ ] Quest kann abgeschlossen werden
-- [ ] XP / Fortschritt werden aktualisiert
-- [ ] Hauptnavigation funktioniert
-- [ ] mobile Ansicht funktioniert
-- [ ] Desktop-Ansicht funktioniert
-- [ ] zentrale Accessibility-Anforderungen erfüllt sind
-- [ ] Tests vorhanden und erfolgreich sind
-- [ ] Lint erfolgreich ist
-- [ ] Production Build erfolgreich ist
-- [ ] keine bekannten kritischen Fehler den Demo-Flow blockieren
+- [x] zentraler Produkt-Loop implementiert ist
+- [x] Profil / Charakter vorhanden sind
+- [x] Zustand erfasst werden kann
+- [x] Quest passend ausgewählt werden kann
+- [x] Quest gestartet und abgeschlossen werden kann
+- [x] XP / Quest Points aktualisiert werden
+- [x] Mini HP-Check durchgeführt werden kann
+- [x] zwischen neuer Quest und Lagerfeuer gewählt werden kann
+- [x] Home den nächsten sinnvollen Schritt zeigt
+- [x] Hauptnavigation funktioniert
+- [x] mobile Grunddarstellung funktioniert
+- [x] zentrale Accessibility-Anforderungen technisch berücksichtigt sind
+- [x] Tests vorhanden sind
+- [ ] finaler Testlauf erfolgreich verifiziert ist
+- [ ] finaler Lint-Lauf erfolgreich verifiziert ist
+- [ ] finaler Production Build erfolgreich verifiziert ist
+- [ ] manuelle Accessibility-Abnahme durchgeführt ist
+- [ ] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
 
 ---
 
-# 11. Nach dem MVP
+# 13. Nach dem MVP
 
-Erst nach erfolgreicher Präsentationsversion:
+Nicht Teil der aktuellen React-MVP-Abnahme:
 
 - Backend
-- Clerk-Authentifizierung
 - Datenbank
-- Persistenz
-- echte Benutzerkonten
+- serverseitige Persistenz
+- serverseitige Autorisierung
 - komplexere adaptive Logik
-- weitere RPG-Systeme
 - KI-Unterstützung
 - Voice Input
 - Kalenderintegration
+- umfangreiche Statistiken
+- komplexes Inventar / RPG-System
+- langfristige Mustererkennung
 
-Diese Punkte werden nicht in den aktuellen React-MVP gedrängt.
+Diese Funktionen werden erst nach einem stabilen MVP betrachtet.
