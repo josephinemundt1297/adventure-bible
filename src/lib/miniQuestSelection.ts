@@ -23,21 +23,22 @@ export function selectMiniQuest(
   }
 
   const eligible = availableQuests.filter((quest) => !excludedQuestIds.includes(quest.id));
-  const pool = eligible.length > 0 ? eligible : availableQuests;
-  const lowest = [...state.values].sort((a, b) => a.value - b.value)[0];
+  const pool = eligible.length >= 2 ? eligible : availableQuests;
 
-  if (!lowest) {
-    return {
-      primary: pool[0],
-      alternative: pool[1] ?? null,
-    };
-  }
+  const hpByArea = new Map(
+    state.values.map((value) => [miniToQuestArea[value.area], value.value]),
+  );
 
-  const targetArea = miniToQuestArea[lowest.area];
-  const primary = pool.find((quest) => quest.targetArea === targetArea) ?? pool[0];
-  const alternative = pool.find(
-    (quest) => quest.id !== primary.id && quest.targetArea !== targetArea,
-  ) ?? pool.find((quest) => quest.id !== primary.id) ?? null;
+  // Sort every quest by the HP value of the area it supports.
+  // Lower HP = greater need = higher recommendation priority.
+  const sorted = [...pool].sort((a, b) => {
+    const aScore = hpByArea.get(a.targetArea) ?? 100;
+    const bScore = hpByArea.get(b.targetArea) ?? 100;
+    return aScore - bScore;
+  });
 
-  return { primary, alternative };
+  return {
+    primary: sorted[0] ?? null,
+    alternative: sorted[1] ?? null,
+  };
 }
