@@ -28,7 +28,7 @@ function ProfilePage() {
 function ProfileSignedOut() {
   return (
     <section
-      className="mx-auto flex w-full max-w-md flex-col gap-[2.5dvh]"
+      className="mx-auto flex min-h-full w-full max-w-md flex-col"
       aria-labelledby="profile-heading"
     >
       <header className="space-y-[1dvh]">
@@ -47,30 +47,28 @@ function ProfileSignedOut() {
         </p>
       </header>
 
-      <div className="h-auto rounded-3xl border border-primary/20 bg-base-100 px-[4vw] py-[2.5dvh] shadow-sm">
-        <div className="space-y-[1dvh]">
-          <SignInButton mode="modal">
-            <button
-              type="button"
-              className="btn btn-primary min-h-12 w-full rounded-2xl text-base"
-            >
-              Anmelden
-            </button>
-          </SignInButton>
+      <div className="flex flex-1 items-center justify-center pb-[8dvh] pt-[3dvh]">
+        <div className="w-full rounded-3xl border border-primary/20 bg-base-100 px-[4vw] py-[2.5dvh] shadow-sm">
+          <div className="mx-auto flex w-[72%] flex-col items-center gap-[1dvh]">
+            <SignInButton mode="modal">
+              <button
+                type="button"
+                className="btn btn-primary min-h-12 w-full rounded-2xl text-base"
+              >
+                Anmelden
+              </button>
+            </SignInButton>
 
-          <SignUpButton mode="modal">
-            <button
-              type="button"
-              className="btn btn-outline min-h-12 w-full rounded-2xl border-primary/30 bg-base-100 text-base-content"
-            >
-              Konto erstellen
-            </button>
-          </SignUpButton>
+            <SignUpButton mode="modal">
+              <button
+                type="button"
+                className="btn btn-outline min-h-12 w-full rounded-2xl border-primary/30 bg-base-100 text-base-content"
+              >
+                Konto erstellen
+              </button>
+            </SignUpButton>
+          </div>
         </div>
-
-        <p className="mt-[1.25dvh] text-center text-xs leading-5 text-base-content/55">
-          Dein Adventure-Bible-Fortschritt gehört zu deinem Konto.
-        </p>
       </div>
     </section>
   );
