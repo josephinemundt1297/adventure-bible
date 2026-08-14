@@ -1,103 +1,158 @@
-const state = [
-  { label: "Energie", value: 58, icon: "⚡" },
-  { label: "Fokus", value: 62, icon: "🎯" },
-  { label: "Stimmung", value: 70, icon: "🙂" },
-  { label: "Körper", value: 54, icon: "❤️" },
+import { useUser } from "@clerk/react";
+import { Link } from "@tanstack/react-router";
+import { readCampfire } from "../../../lib/campfire";
+import { readProgress } from "../../../lib/progress";
+import type { HpState } from "../../../types/hp";
+import type { QuestProgress } from "../../../types/questProgress";
+
+const HP_STATE_KEY = "adventure-bible:hp-state";
+const QUEST_PROGRESS_KEY = "adventure-bible:quest-progress";
+
+const statusAreas = [
+  { id: "energy", label: "Energie", icon: "⚡" },
+  { id: "focus", label: "Fokus", icon: "🎯" },
+  { id: "mood", label: "Stimmung", icon: "🙂" },
+  { id: "body", label: "Körper", icon: "❤️" },
 ] as const;
 
+function readHpState(): HpState | null {
+  const stored = sessionStorage.getItem(HP_STATE_KEY);
+  if (!stored) return null;
+  try {
+    return JSON.parse(stored) as HpState;
+  } catch {
+    sessionStorage.removeItem(HP_STATE_KEY);
+    return null;
+  }
+}
+
+function readQuestProgress(): QuestProgress | null {
+  const stored = sessionStorage.getItem(QUEST_PROGRESS_KEY);
+  if (!stored) return null;
+  try {
+    return JSON.parse(stored) as QuestProgress;
+  } catch {
+    sessionStorage.removeItem(QUEST_PROGRESS_KEY);
+    return null;
+  }
+}
+
 export function HomeDashboard() {
+  const { user } = useUser();
+  const name = user?.firstName ?? user?.fullName ?? "Abenteurer";
+  const hpState = readHpState();
+  const questProgress = readQuestProgress();
+  const campfire = readCampfire();
+  const progress = readProgress();
+
+  const action = campfire
+    ? {
+        eyebrow: "Lagerfeuer",
+        title: "Zeit für Regeneration.",
+        description: "Du hast dich bewusst für eine Pause entschieden. Wenn du bereit bist, beginnt ein neuer Abenteuerzyklus.",
+        label: "Neuen Zyklus starten",
+        to: "/hp-check" as const,
+        icon: "🔥",
+      }
+    : questProgress?.status === "active"
+      ? {
+          eyebrow: "Aktive Quest",
+          title: questProgress.quest.title,
+          description: "Deine Quest wartet darauf, von dir abgeschlossen zu werden.",
+          label: "Quest öffnen",
+          to: "/quests" as const,
+          icon: "⚔️",
+        }
+      : questProgress?.status === "completed"
+        ? {
+            eyebrow: "Quest abgeschlossen",
+            title: "Dein nächster Schritt ist der Mini-HP-Check.",
+            description: `Du hast „${questProgress.quest.title}“ abgeschlossen und ${questProgress.rewardXp ?? questProgress.quest.rewardXp} XP erhalten.`,
+            label: "Mini-HP-Check",
+            to: "/mini-hp-check" as const,
+            icon: "✨",
+          }
+        : hpState
+          ? {
+              eyebrow: "Deine nächste Quest",
+              title: "Ein passender nächster Schritt wartet.",
+              description: "Dein aktueller Zustand hilft dabei, eine Quest passend zu deinen verfügbaren Ressourcen auszuwählen.",
+              label: "Quest ansehen",
+              to: "/quests" as const,
+              icon: "🧭",
+            }
+          : {
+              eyebrow: "Neuer Abenteuerzyklus",
+              title: "Wie geht es dir gerade?",
+              description: "Starte mit einem kurzen HP-Check. Es gibt keine richtigen oder falschen Antworten.",
+              label: "HP-Check starten",
+              to: "/hp-check" as const,
+              icon: "♥",
+            };
+
   return (
     <div className="space-y-3">
       <header className="flex items-start justify-between gap-3 pt-4">
         <div className="min-w-0">
-          <h1 className="text-xl font-semibold tracking-tight">Guten Morgen, Josi!</h1>
-          <p className="mt-1 text-sm text-base-content/65">Bereit für dein Abenteuer?</p>
-        </div>
-
-        <div className="flex shrink-0 gap-1" aria-label="Schnellaktionen">
-          <button
-            type="button"
-            className="btn btn-ghost btn-sm btn-square focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            aria-label="Benachrichtigungen"
-          >
-            <span aria-hidden="true">🔔</span>
-          </button>
-          <button
-            type="button"
-            className="btn btn-ghost btn-sm btn-square focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            aria-label="Einstellungen"
-          >
-            <span aria-hidden="true">⚙</span>
-          </button>
+          <h1 className="text-xl font-semibold tracking-tight">Hallo, {name}!</h1>
+          <p className="mt-1 text-sm text-base-content/65">Was ist heute dein nächster guter Schritt?</p>
         </div>
       </header>
 
-      <section
-        className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm"
-        aria-labelledby="status-heading"
-      >
-        <h2
-          id="status-heading"
-          className="text-xs font-semibold uppercase tracking-wide text-base-content/60"
-        >
-          Dein Status
-        </h2>
+      {hpState ? (
+        <section className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm" aria-labelledby="status-heading">
+          <div className="flex items-center justify-between gap-3">
+            <h2 id="status-heading" className="text-xs font-semibold uppercase tracking-wide text-base-content/60">Dein Status</h2>
+            <span className="text-xs font-semibold text-primary">{hpState.overall}/100 gesamt</span>
+          </div>
 
-        <div className="mt-4 space-y-4">
-          {state.map((item) => (
-            <div key={item.label}>
-              <div className="mb-2 flex min-h-6 items-center gap-2 text-sm">
-                <span aria-hidden="true" className="w-5 text-center text-base">
-                  {item.icon}
-                </span>
-                <span className="min-w-0 flex-1 font-medium">{item.label}</span>
-                <span className="tabular-nums text-xs font-medium text-base-content/65">
-                  {item.value}/100
-                </span>
-              </div>
-              <progress
-                className="progress progress-primary h-1.5 w-full"
-                value={item.value}
-                max="100"
-                aria-label={`${item.label}: ${item.value} von 100`}
-              />
-            </div>
-          ))}
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            {statusAreas.map((item) => {
+              const value = hpState.areas.find((area) => area.area === item.id)?.score ?? 0;
+              return (
+                <div key={item.id} className="rounded-xl bg-base-200/60 p-3">
+                  <div className="flex items-center gap-2 text-sm">
+                    <span aria-hidden="true">{item.icon}</span>
+                    <span className="font-medium">{item.label}</span>
+                  </div>
+                  <p className="mt-2 text-lg font-bold tabular-nums">{value}/100</p>
+                  <progress className="progress progress-primary mt-1 h-1.5 w-full" value={value} max="100" aria-label={`${item.label}: ${value} von 100`} />
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      ) : (
+        <section className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm" aria-labelledby="welcome-heading">
+          <h2 id="welcome-heading" className="text-base font-semibold">Dein Abenteuer beginnt hier.</h2>
+          <p className="mt-1 text-sm leading-5 text-base-content/65">Der große HP-Check gibt dir einen Ausgangspunkt für deinen nächsten Schritt.</p>
+        </section>
+      )}
+
+      <section className="rounded-2xl border border-primary/20 bg-base-100 p-4 shadow-sm" aria-labelledby="next-action-heading">
+        <div className="flex items-start gap-3">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xl" aria-hidden="true">{action.icon}</div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary">{action.eyebrow}</p>
+            <h2 id="next-action-heading" className="mt-1 text-base font-semibold">{action.title}</h2>
+            <p className="mt-1 text-sm leading-5 text-base-content/65">{action.description}</p>
+          </div>
         </div>
+        <Link to={action.to} className="btn btn-primary mt-4 min-h-10 w-full">{action.label}</Link>
       </section>
 
-      <section
-        className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm"
-        aria-labelledby="quest-heading"
-      >
-        <div className="flex items-center gap-3">
-          <div
-            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-base-200 text-lg"
-            aria-hidden="true"
-          >
-            🦝
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold leading-tight text-base-content/65">
-              Empfohlene Quest
-              <br />
-              für dich
-            </p>
-            <h2 id="quest-heading" className="mt-1 text-base font-semibold">
-              Trink 2L Wasser
-            </h2>
-          </div>
+      <section className="grid grid-cols-3 gap-2" aria-label="Fortschritt">
+        <div className="rounded-xl border border-base-300 bg-base-100 p-3 text-center shadow-sm">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-base-content/55">XP</p>
+          <p className="mt-1 text-base font-bold">{progress.xp}</p>
         </div>
-
-        <div className="mt-3 flex items-center justify-between gap-3 pl-13">
-          <span className="text-xs font-medium text-base-content/65">+20 XP</span>
-          <button
-            type="button"
-            className="btn btn-primary min-h-10 px-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          >
-            Starten
-          </button>
+        <div className="rounded-xl border border-base-300 bg-base-100 p-3 text-center shadow-sm">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-base-content/55">Quests</p>
+          <p className="mt-1 text-base font-bold">{progress.completedQuests}</p>
+        </div>
+        <div className="rounded-xl border border-base-300 bg-base-100 p-3 text-center shadow-sm">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-base-content/55">Points</p>
+          <p className="mt-1 text-base font-bold">{progress.questPoints}</p>
         </div>
       </section>
     </div>
