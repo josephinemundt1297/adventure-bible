@@ -34,8 +34,8 @@ export function BottomNavigation() {
 
         <li className="relative -mt-7 flex justify-center">
           <Link
-            to="/mini-hp-check"
-            aria-label="Mini HP-Check starten"
+            to="/hp-check"
+            aria-label="Großen HP-Check starten"
             activeProps={{
               "aria-current": "page",
             }}
@@ -56,7 +56,7 @@ export function BottomNavigation() {
                 "aria-current": "page",
                 className: "bg-primary/10 text-primary",
               }}
-              className="flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1 text-xs font-medium text-base-content/70 transition-colors hover:bg-base-200 hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none"
+              className="flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1 text-xs font-medium text-base-content/70 transition-colors hover:bg-base-200 hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none motion-reduce:hover:scale-100"
             >
               <span aria-hidden="true" className="text-lg leading-none">
                 {item.icon}
