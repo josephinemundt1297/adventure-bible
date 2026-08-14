@@ -10,33 +10,91 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HpCheckRouteImport } from './routes/hp-check'
+import { Route as MiniHpCheckRouteImport } from './routes/mini-hp-check'
+import { Route as PlanRouteImport } from './routes/plan'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as QuestsRouteImport } from './routes/quests'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HpCheckRoute = HpCheckRouteImport.update({
+  id: '/hp-check',
+  path: '/hp-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MiniHpCheckRoute = MiniHpCheckRouteImport.update({
+  id: '/mini-hp-check',
+  path: '/mini-hp-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanRoute = PlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuestsRoute = QuestsRouteImport.update({
+  id: '/quests',
+  path: '/quests',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/hp-check': typeof HpCheckRoute
+  '/mini-hp-check': typeof MiniHpCheckRoute
+  '/plan': typeof PlanRoute
+  '/profile': typeof ProfileRoute
+  '/quests': typeof QuestsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/hp-check': typeof HpCheckRoute
+  '/mini-hp-check': typeof MiniHpCheckRoute
+  '/plan': typeof PlanRoute
+  '/profile': typeof ProfileRoute
+  '/quests': typeof QuestsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/hp-check': typeof HpCheckRoute
+  '/mini-hp-check': typeof MiniHpCheckRoute
+  '/plan': typeof PlanRoute
+  '/profile': typeof ProfileRoute
+  '/quests': typeof QuestsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/hp-check' | '/mini-hp-check' | '/plan' | '/profile' | '/quests'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/hp-check' | '/mini-hp-check' | '/plan' | '/profile' | '/quests'
+  id:
+    | '__root__'
+    | '/'
+    | '/hp-check'
+    | '/mini-hp-check'
+    | '/plan'
+    | '/profile'
+    | '/quests'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HpCheckRoute: typeof HpCheckRoute
+  MiniHpCheckRoute: typeof MiniHpCheckRoute
+  PlanRoute: typeof PlanRoute
+  ProfileRoute: typeof ProfileRoute
+  QuestsRoute: typeof QuestsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +106,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hp-check': {
+      id: '/hp-check'
+      path: '/hp-check'
+      fullPath: '/hp-check'
+      preLoaderRoute: typeof HpCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mini-hp-check': {
+      id: '/mini-hp-check'
+      path: '/mini-hp-check'
+      fullPath: '/mini-hp-check'
+      preLoaderRoute: typeof MiniHpCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plan': {
+      id: '/plan'
+      path: '/plan'
+      fullPath: '/plan'
+      preLoaderRoute: typeof PlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quests': {
+      id: '/quests'
+      path: '/quests'
+      fullPath: '/quests'
+      preLoaderRoute: typeof QuestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HpCheckRoute: HpCheckRoute,
+  MiniHpCheckRoute: MiniHpCheckRoute,
+  PlanRoute: PlanRoute,
+  ProfileRoute: ProfileRoute,
+  QuestsRoute: QuestsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
