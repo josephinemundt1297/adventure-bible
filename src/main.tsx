@@ -11,7 +11,6 @@ createRoot(document.getElementById("root")!).render(
       appearance={{
         variables: {
           colorPrimary: "#1f4d2e",
-          colorTextSecondary: "#9a6b56",
           colorBackground: "#fff8ef",
           colorInputBackground: "#fff8ef",
           colorInputText: "#3a1d10",
