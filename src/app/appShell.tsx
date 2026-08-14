@@ -1,4 +1,5 @@
 import { Show, UserButton } from "@clerk/react";
+import { useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { BottomNavigation } from "../components/layout/bottomNavigation";
 import { PhoneFrame } from "../components/layout/phoneFrame";
@@ -9,6 +10,9 @@ interface AppShellProps {
 }
 
 export function AppShell({ children }: AppShellProps) {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isPlanRoute = pathname === "/plan";
+
   return (
     <div className="flex min-h-dvh w-full items-center justify-center bg-base-200 px-[3vw] py-[2dvh]">
       <PhoneFrame>
@@ -24,7 +28,7 @@ export function AppShell({ children }: AppShellProps) {
           </div>
         </Show>
         <RewardNotification />
-        <main className="h-full overflow-y-auto px-4 pb-24 pt-12">
+        <main className={`h-full px-4 pb-24 pt-12 ${isPlanRoute ? "min-h-0 overflow-hidden" : "overflow-y-auto"}`}>
           {children}
         </main>
         <BottomNavigation />
