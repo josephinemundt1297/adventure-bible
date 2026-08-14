@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { notifyAchievements } from "../components/ui/rewardNotification";
 import { recordReflection } from "../lib/achievements";
 
 const REFLECTION_KEY = "adventure-bible:reflection";
@@ -27,7 +28,7 @@ function ReflectionPage() {
 
   function saveReflection() {
     sessionStorage.setItem(REFLECTION_KEY, JSON.stringify(reflection));
-    recordReflection();
+    notifyAchievements(recordReflection());
     setSaved(true);
   }
 
