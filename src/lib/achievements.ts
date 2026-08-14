@@ -3,6 +3,7 @@ import { addXp, readProgress } from "./progress";
 export const ACHIEVEMENTS_KEY = "adventure-bible:achievements";
 export const HP_CHECK_DATES_KEY = "adventure-bible:hp-check-dates";
 export const MINI_HP_CHECK_COUNT_KEY = "adventure-bible:mini-hp-check-count";
+export const CAMPFIRE_COUNT_KEY = "adventure-bible:campfire-count";
 export const REFLECTION_COUNT_KEY = "adventure-bible:reflection-count";
 
 export interface Achievement {
@@ -43,6 +44,13 @@ export const ACHIEVEMENTS: Achievement[] = [
     xp: 15,
   },
   {
+    id: "five-quests",
+    title: "Questjäger",
+    description: "Fünf Quests abgeschlossen.",
+    icon: "🗡️",
+    xp: 30,
+  },
+  {
     id: "ten-quests",
     title: "Abenteurer",
     description: "Zehn Quests abgeschlossen.",
@@ -55,6 +63,20 @@ export const ACHIEVEMENTS: Achievement[] = [
     description: "Einen Mini-HP-Check nach einer Quest durchgeführt.",
     icon: "💚",
     xp: 15,
+  },
+  {
+    id: "first-campfire",
+    title: "Rast gemacht",
+    description: "Zum ersten Mal bewusst am Lagerfeuer gerastet.",
+    icon: "🔥",
+    xp: 15,
+  },
+  {
+    id: "three-campfires",
+    title: "Meister der Rast",
+    description: "Dreimal bewusst eine Pause am Lagerfeuer gewählt.",
+    icon: "🏕️",
+    xp: 35,
   },
   {
     id: "three-reflections",
@@ -156,6 +178,10 @@ export function recordQuestCompletion(): Achievement[] {
     const achievement = unlock("first-quest");
     if (achievement) unlocked.push(achievement);
   }
+  if (completedQuests >= 5) {
+    const achievement = unlock("five-quests");
+    if (achievement) unlocked.push(achievement);
+  }
   if (completedQuests >= 10) {
     const achievement = unlock("ten-quests");
     if (achievement) unlocked.push(achievement);
@@ -168,6 +194,21 @@ export function recordMiniHpCheck(): Achievement[] {
   if (count < 1) return [];
   const achievement = unlock("mini-hp-check");
   return achievement ? [achievement] : [];
+}
+
+export function recordCampfire(): Achievement[] {
+  const count = saveCount(CAMPFIRE_COUNT_KEY, readCount(CAMPFIRE_COUNT_KEY) + 1);
+  const unlocked: Achievement[] = [];
+
+  if (count >= 1) {
+    const achievement = unlock("first-campfire");
+    if (achievement) unlocked.push(achievement);
+  }
+  if (count >= 3) {
+    const achievement = unlock("three-campfires");
+    if (achievement) unlocked.push(achievement);
+  }
+  return unlocked;
 }
 
 export function recordReflection(): Achievement[] {
