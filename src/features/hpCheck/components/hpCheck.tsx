@@ -4,6 +4,7 @@ import { hpAnswerLabels, hpAreaLabels, hpQuestions } from "../../../data/hpQuest
 import { calculateHpState } from "../../../lib/hpScore";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { recordHpCheck } from "../../../lib/achievements";
+import { leaveCampfire } from "../../../lib/campfire";
 import type { HpAnswer } from "../../../types/hp";
 
 const HP_STATE_KEY = "adventure-bible:hp-state";
@@ -34,6 +35,7 @@ export function HpCheck() {
         { questionId: question.id, value: currentAnswer },
       ];
       const finalState = calculateHpState(allAnswers);
+      leaveCampfire();
       sessionStorage.setItem(HP_STATE_KEY, JSON.stringify(finalState));
       notifyAchievements(recordHpCheck());
       setAnswers(allAnswers);
