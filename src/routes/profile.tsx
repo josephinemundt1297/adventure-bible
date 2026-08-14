@@ -31,17 +31,17 @@ function ProfileSignedOut() {
       className="mx-auto flex min-h-full w-full max-w-md flex-col"
       aria-labelledby="profile-heading"
     >
-      <header className="w-full max-w-[38rem] space-y-[1dvh] pt-[1dvh]">
+      <header className="mx-auto w-[72%] space-y-[1dvh] pt-[1dvh] text-center">
         <p className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-primary">
           Neues Abenteuer
         </p>
         <h1
           id="profile-heading"
-          className="max-w-[17ch] text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight text-primary"
+          className="text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight text-primary"
         >
           Dein Abenteuer wartet
         </h1>
-        <p className="max-w-[32rem] text-[0.95rem] leading-6 text-base-content/70">
+        <p className="text-[0.95rem] leading-6 text-base-content/70">
           Melde dich an oder erstelle dein Konto, damit dein Charakter und dein
           Fortschritt sicher bei dir bleiben.
         </p>
