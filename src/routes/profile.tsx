@@ -1,6 +1,5 @@
 import {
-  SignedIn,
-  SignedOut,
+  Show,
   SignInButton,
   SignUpButton,
   UserButton,
@@ -16,12 +15,12 @@ export const Route = createFileRoute("/profile")({
 function ProfilePage() {
   return (
     <>
-      <SignedOut>
+      <Show when="signed-out">
         <ProfileSignedOut />
-      </SignedOut>
-      <SignedIn>
+      </Show>
+      <Show when="signed-in">
         <ProfileSignedIn />
-      </SignedIn>
+      </Show>
     </>
   );
 }
