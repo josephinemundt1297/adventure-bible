@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { quests } from "../../../data/quests";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { recordMiniHpCheck } from "../../../lib/achievements";
+import { readCompletedQuestIds } from "../../../lib/questHistory";
 import { selectMiniQuest } from "../../../lib/miniQuestSelection";
 import type { MiniHpArea, MiniHpState } from "../../../types/miniHp";
 import type { Quest } from "../../../types/quest";
@@ -24,7 +25,7 @@ export function MiniHpCheck() {
   }
   function chooseQuest(quest: Quest) { sessionStorage.setItem(MINI_SELECTED_QUEST_KEY, quest.id); setSelectedQuestId(quest.id); }
 
-  const recommendations = savedState ? selectMiniQuest(savedState, quests) : null;
+  const recommendations = savedState ? selectMiniQuest(savedState, quests, readCompletedQuestIds()) : null;
   const primary = recommendations?.primary ?? null;
   const alternative = recommendations?.alternative ?? null;
   const selectedQuest = [primary, alternative].find((quest) => quest?.id === selectedQuestId) ?? null;
