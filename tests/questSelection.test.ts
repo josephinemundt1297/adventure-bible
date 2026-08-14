@@ -38,6 +38,14 @@ describe("selectQuest", () => {
     expect(selectQuest(state, quests)?.id).toBe("focus-quest");
   });
 
+  it("skips excluded quests when another quest is available", () => {
+    expect(selectQuest(state, quests, ["focus-quest"])?.id).toBe("energy-quest");
+  });
+
+  it("falls back to the full pool when every quest is excluded", () => {
+    expect(selectQuest(state, quests, ["focus-quest", "energy-quest"])?.id).toBe("focus-quest");
+  });
+
   it("returns null when there are no quests", () => {
     expect(selectQuest(state, [])).toBeNull();
   });
