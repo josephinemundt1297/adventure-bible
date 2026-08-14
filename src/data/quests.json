@@ -1,0 +1,182 @@
+[
+  {
+    "id": "recovery-breath",
+    "title": "Atem holen",
+    "description": "Nimm dir fünf ruhige Minuten. Atme bewusst und lass die Schultern sinken.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "recovery"
+  },
+  {
+    "id": "energy-water",
+    "title": "Energie auffüllen",
+    "description": "Hol dir ein Glas Wasser und etwas, das dir gerade gut Energie gibt.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "energy"
+  },
+  {
+    "id": "focus-reset",
+    "title": "Fokus zurückholen",
+    "description": "Räume für zehn Minuten eine kleine Ablenkung aus dem Weg und konzentriere dich auf genau eine Sache.",
+    "type": "side",
+    "effort": "short",
+    "rewardXp": 20,
+    "targetArea": "focus"
+  },
+  {
+    "id": "body-stretch",
+    "title": "Körperpause",
+    "description": "Mach eine kurze, angenehme Bewegungspause und finde heraus, was sich dein Körper gerade wünscht.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "body"
+  },
+  {
+    "id": "mood-light",
+    "title": "Kleiner Lichtblick",
+    "description": "Tu für zehn Minuten etwas, das dir nachweislich ein kleines bisschen Freude macht.",
+    "type": "daily",
+    "effort": "short",
+    "rewardXp": 20,
+    "targetArea": "mood"
+  },
+  {
+    "id": "muscle-release",
+    "title": "Spannung lösen",
+    "description": "Nimm dir fünf Minuten für eine sanfte Entspannung deiner angespannten Muskelgruppen.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "muscles"
+  },
+  {
+    "id": "nutrition-pause",
+    "title": "Versorgung prüfen",
+    "description": "Mach eine kurze Pause und kümmere dich bewusst um Essen oder Trinken, das dir gerade guttut.",
+    "type": "daily",
+    "effort": "short",
+    "rewardXp": 20,
+    "targetArea": "nutrition"
+  },
+  {
+    "id": "tidy-small-space",
+    "title": "Eine kleine Ecke",
+    "description": "Wähle eine kleine Fläche und bring sie für fünf Minuten in Ordnung. Danach darfst du wieder aufhören.",
+    "type": "side",
+    "effort": "short",
+    "rewardXp": 20,
+    "targetArea": "focus"
+  },
+  {
+    "id": "fresh-air",
+    "title": "Frische Luft",
+    "description": "Öffne ein Fenster oder geh für ein paar Minuten nach draußen und nimm bewusst deine Umgebung wahr.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "recovery"
+  },
+  {
+    "id": "favorite-song",
+    "title": "Ein Lieblingssong",
+    "description": "Hör einen Song, den du wirklich magst, und gönn dir diese paar Minuten ganz ohne Nebenaufgabe.",
+    "type": "daily",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "mood"
+  },
+  {
+    "id": "screen-pause",
+    "title": "Augenpause",
+    "description": "Leg für fünf Minuten den Bildschirm weg und gib deinen Augen eine kleine Pause.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "body"
+  },
+  {
+    "id": "one-important-thing",
+    "title": "Eine Sache zuerst",
+    "description": "Wähle genau eine wichtige Kleinigkeit und erledige nur diese. Alles andere darf warten.",
+    "type": "side",
+    "effort": "short",
+    "rewardXp": 20,
+    "targetArea": "focus"
+  },
+  {
+    "id": "cozy-reset",
+    "title": "Gemütlich machen",
+    "description": "Mach deinen aktuellen Platz für zehn Minuten angenehmer: Licht, Decke, Getränk oder Musik.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "mood"
+  },
+  {
+    "id": "gentle-movement",
+    "title": "Sanft bewegen",
+    "description": "Bewege dich ein paar Minuten so, wie es sich gerade angenehm und machbar anfühlt.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "body"
+  },
+  {
+    "id": "drink-break",
+    "title": "Trinkpause",
+    "description": "Mach dir etwas zu trinken und nimm dir einen Moment, bevor du mit dem Tag weitermachst.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 15,
+    "targetArea": "energy"
+  },
+  {
+    "id": "tiny-task",
+    "title": "Die kleinste Aufgabe",
+    "description": "Such dir eine Aufgabe, die in höchstens fünf Minuten erledigt werden kann, und mach nur diese.",
+    "type": "side",
+    "effort": "short",
+    "rewardXp": 20,
+    "targetArea": "focus"
+  },
+  {
+    "id": "social-connection",
+    "title": "Verbindung",
+    "description": "Schreib einer Person, die dir guttut, eine kurze Nachricht – ohne Erwartung auf eine bestimmte Antwort.",
+    "type": "daily",
+    "effort": "short",
+    "rewardXp": 20,
+    "targetArea": "mood"
+  },
+  {
+    "id": "rest-without-guilt",
+    "title": "Pause ohne Schuldgefühl",
+    "description": "Nimm dir zehn Minuten echte Pause. Du musst diese Zeit nicht produktiv machen.",
+    "type": "recovery",
+    "effort": "short",
+    "rewardXp": 20,
+    "targetArea": "recovery"
+  },
+  {
+    "id": "prepare-tomorrow",
+    "title": "Morgen leichter machen",
+    "description": "Bereite eine kleine Sache für morgen vor, die dir den Start erleichtert.",
+    "type": "daily",
+    "effort": "short",
+    "rewardXp": 20,
+    "targetArea": "focus"
+  },
+  {
+    "id": "creative-ten",
+    "title": "Zehn Minuten kreativ",
+    "description": "Mach zehn Minuten etwas Kreatives: schreiben, zeichnen, häkeln, Musik oder etwas anderes, das dir Freude macht.",
+    "type": "side",
+    "effort": "medium",
+    "rewardXp": 25,
+    "targetArea": "mood"
+  }
+]
