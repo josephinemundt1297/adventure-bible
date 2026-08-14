@@ -33,29 +33,29 @@
   line-height: 1.18;
 }
 
-.hp-check-page fieldset {
+.hp-check-page section[aria-labelledby="hp-question"] {
   min-height: 0;
 }
 
-.hp-check-page fieldset .card-body {
+.hp-check-page section[aria-labelledby="hp-question"] .card-body {
   gap: 0.45dvh;
   padding-block: 0.75dvh;
 }
 
-.hp-check-page fieldset legend {
+.hp-check-page section[aria-labelledby="hp-question"] h2 {
   line-height: 1.2;
 }
 
-.hp-check-page fieldset [role="radiogroup"] {
+.hp-check-page section[aria-labelledby="hp-question"] [aria-label="Antwort auswählen"] {
   gap: 0.55dvh;
 }
 
-.hp-check-page fieldset [role="radiogroup"] button {
+.hp-check-page section[aria-labelledby="hp-question"] [aria-label="Antwort auswählen"] button {
   min-height: 2.75rem;
   height: 4.7dvh;
 }
 
-.hp-check-page fieldset > .card-body > button:last-child {
+.hp-check-page section[aria-labelledby="hp-question"] .card-body > button:last-child {
   min-height: 2.75rem;
   height: 4.7dvh;
   margin-top: 0;
@@ -76,16 +76,16 @@
     font-size: 0.78rem;
   }
 
-  .hp-check-page fieldset .card-body {
+  .hp-check-page section[aria-labelledby="hp-question"] .card-body {
     gap: 0.35dvh;
     padding-block: 0.6dvh;
   }
 
-  .hp-check-page fieldset legend {
+  .hp-check-page section[aria-labelledby="hp-question"] h2 {
     font-size: 0.95rem;
   }
 
-  .hp-check-page fieldset [role="radiogroup"] {
+  .hp-check-page section[aria-labelledby="hp-question"] [aria-label="Antwort auswählen"] {
     gap: 0.45dvh;
   }
 
