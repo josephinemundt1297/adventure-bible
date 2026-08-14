@@ -5,6 +5,7 @@ import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { addProgress } from "../../../lib/progress";
 import { recordQuestCompletion } from "../../../lib/achievements";
 import { readCompletedQuestIds, recordQuestCompletion as recordQuestHistory } from "../../../lib/questHistory";
+import { selectQuest } from "../../../lib/questSelection";
 import type { HpState } from "../../../types/hp";
 import type { Quest } from "../../../types/quest";
 import type { QuestProgress } from "../../../types/questProgress";
@@ -37,24 +38,15 @@ function readQuestProgress(): QuestProgress | null {
 export function QuestRecommendation({ state }: QuestRecommendationProps) {
   const [progress, setProgress] = useState<QuestProgress | null>(readQuestProgress);
 
-  // Keep the current quest visible while it is active or completed.
-  // Only after the user starts a fresh mini HP check should a new quest be selected.
+  // Active/completed quests always win over a fresh recommendation. This keeps
+  // the selected quest visible until the user explicitly starts a new HP check.
   const selectedQuest =
     progress?.status === "active" || progress?.status === "completed"
       ? progress.quest
-      : readMiniSelectedQuest() ?? null;
+      : readMiniSelectedQuest() ?? selectQuest(state, quests, readCompletedQuestIds());
 
   if (!selectedQuest) {
-    return (
-      <section className="space-y-5" aria-labelledby="quest-empty-heading">
-        <header className="min-h-[168px] space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-wide text-primary">Deine nächste Quest</p>
-          <h1 id="quest-empty-heading" className="min-h-[58px] text-2xl font-bold tracking-tight">Eine passende Aufgabe wartet auf dich.</h1>
-          <p className="min-h-[72px] text-sm leading-6 text-base-content/70">Deine Empfehlung orientiert sich an deinem aktuellen HP-Check.</p>
-        </header>
-        <p className="text-sm text-base-content/70">Bitte starte zuerst einen Mini HP-Check und wähle daraus eine Aufgabe.</p>
-      </section>
-    );
+    return <p>Aktuell ist keine Quest verfügbar.</p>;
   }
 
   function startQuest() {
