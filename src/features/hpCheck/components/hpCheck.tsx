@@ -80,10 +80,10 @@ export function HpCheck() {
       </div>
 
       <section className="card min-h-0 flex-1 border border-base-300 bg-base-100 shadow-sm" aria-labelledby="hp-question">
-        <div className="card-body min-h-0 items-center justify-center gap-4 p-5">
+        <div className="card-body min-h-0 items-center justify-center gap-5 p-5">
           <h2 id="hp-question" className="w-full max-w-sm shrink-0 text-center text-lg font-semibold leading-6">{question.question}</h2>
 
-          <div className="grid w-full max-w-sm gap-2.5" aria-label="Antwort auswählen">
+          <div className="grid w-full max-w-sm gap-3" aria-label="Antwort auswählen">
             {hpAnswerLabels.map((label, index) => {
               const value = (index + 1) as HpAnswer["value"];
               const selected = currentAnswer === value;
