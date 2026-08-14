@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { quests } from "../../../data/quests";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
-import { recordMiniHpCheck } from "../../../lib/achievements";
+import { recordCampfire, recordMiniHpCheck } from "../../../lib/achievements";
 import { readCompletedQuestIds } from "../../../lib/questHistory";
 import { selectMiniQuest } from "../../../lib/miniQuestSelection";
 import { leaveCampfire, startCampfire } from "../../../lib/campfire";
@@ -70,6 +70,7 @@ export function MiniHpCheck() {
     startCampfire();
     sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
     setSelectedQuestId(null);
+    notifyAchievements(recordCampfire());
     setCampfireStarted(true);
   }
 
