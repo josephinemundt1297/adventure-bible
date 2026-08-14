@@ -79,16 +79,16 @@ export function HpCheck() {
         <progress className="progress progress-primary h-2 w-full" value={progress} max="100" />
       </div>
 
-      <fieldset className="card min-h-0 flex-1 border border-base-300 bg-base-100 shadow-sm">
+      <section className="card min-h-0 flex-1 border border-base-300 bg-base-100 shadow-sm" aria-labelledby="hp-question">
         <div className="card-body min-h-0 items-center justify-center gap-4 p-5">
-          <legend className="w-full max-w-sm shrink-0 text-center text-lg font-semibold leading-6">{question.question}</legend>
+          <h2 id="hp-question" className="w-full max-w-sm shrink-0 text-center text-lg font-semibold leading-6">{question.question}</h2>
 
-          <div className="grid w-full max-w-sm gap-2.5" role="radiogroup" aria-label="Antwort auswählen">
+          <div className="grid w-full max-w-sm gap-2.5" aria-label="Antwort auswählen">
             {hpAnswerLabels.map((label, index) => {
               const value = (index + 1) as HpAnswer["value"];
               const selected = currentAnswer === value;
               return (
-                <button key={label} type="button" role="radio" aria-checked={selected} onClick={() => selectAnswer(value)} className={`btn h-11 min-h-11 w-full justify-start px-4 text-left normal-case ${selected ? "btn-primary" : "btn-outline"}`}>
+                <button key={label} type="button" aria-pressed={selected} onClick={() => selectAnswer(value)} className={`btn h-11 min-h-11 w-full justify-start px-4 text-left normal-case ${selected ? "btn-primary" : "btn-outline"}`}>
                   <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-bold">{value}</span>
                   {label}
                 </button>
@@ -98,7 +98,7 @@ export function HpCheck() {
 
           <button type="button" className="btn btn-primary h-11 min-h-11 w-full max-w-sm shrink-0" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
         </div>
-      </fieldset>
+      </section>
 
       <p className="shrink-0 text-center text-xs leading-4 text-base-content/60">Dieser Check ist eine persönliche Einschätzung und keine medizinische Diagnose.</p>
     </section>
