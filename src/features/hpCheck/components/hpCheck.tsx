@@ -96,7 +96,9 @@ export function HpCheck() {
             })}
           </div>
 
-          <button type="button" className="btn btn-primary mt-8 h-11 min-h-11 w-full max-w-sm shrink-0" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
+          <div className="mt-10 w-full max-w-sm shrink-0">
+            <button type="button" className="btn btn-primary h-11 min-h-11 w-full" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
+          </div>
         </div>
       </section>
 
