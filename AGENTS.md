@@ -8,7 +8,7 @@
 - **UI:** DaisyUI
 - **Testing:** Vitest + React Testing Library
 - **Ziel:** React-Abschlussprojekt
-- **Authentifizierung (Backend-Phase):** Clerk
+- **Authentifizierung:** Clerk ist bereits als Authentifizierungs-UI integriert; Backend-Autorisierung und Persistenz bleiben außerhalb des React-MVP.
 
 Adventure Bible verwandelt den Alltag in ein persönliches Abenteuer.
 
