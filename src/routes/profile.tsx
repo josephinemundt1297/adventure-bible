@@ -69,7 +69,7 @@ function ProfileSignedIn() {
             Dein Clerk-Konto ist mit deinem Adventure-Bible-Profil verbunden.
           </p>
         </div>
-        <UserButton afterSignOutUrl="/" />
+        <UserButton />
       </header>
 
       <CharacterView name={name} />
