@@ -18,11 +18,11 @@
 .hp-check-page section {
   height: 100%;
   min-height: 0;
-  gap: 1dvh;
+  gap: 0.55dvh;
 }
 
 .hp-check-page section > header {
-  gap: 0.4dvh;
+  gap: 0.25dvh;
 }
 
 .hp-check-page section > header h1 {
@@ -30,7 +30,7 @@
 }
 
 .hp-check-page section > header p:last-child {
-  line-height: 1.25;
+  line-height: 1.18;
 }
 
 .hp-check-page fieldset {
@@ -38,27 +38,33 @@
 }
 
 .hp-check-page fieldset .card-body {
-  gap: 0.8dvh;
-  padding-block: 1.4dvh;
+  gap: 0.45dvh;
+  padding-block: 0.75dvh;
 }
 
 .hp-check-page fieldset legend {
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .hp-check-page fieldset [role="radiogroup"] {
-  gap: 0.8dvh;
+  gap: 0.55dvh;
 }
 
 .hp-check-page fieldset [role="radiogroup"] button {
   min-height: 2.75rem;
-  height: 5dvh;
+  height: 4.7dvh;
 }
 
 .hp-check-page fieldset > .card-body > button:last-child {
   min-height: 2.75rem;
-  height: 5dvh;
+  height: 4.7dvh;
   margin-top: 0;
+}
+
+.hp-check-page section > p:last-child {
+  margin: 0;
+  font-size: clamp(0.65rem, 1.45dvh, 0.75rem);
+  line-height: 1.2;
 }
 
 @media (max-height: 720px) {
@@ -67,15 +73,24 @@
   }
 
   .hp-check-page section > header p:last-child {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
 
   .hp-check-page fieldset .card-body {
-    padding-block: 1dvh;
+    gap: 0.35dvh;
+    padding-block: 0.6dvh;
   }
 
   .hp-check-page fieldset legend {
     font-size: 0.95rem;
+  }
+
+  .hp-check-page fieldset [role="radiogroup"] {
+    gap: 0.45dvh;
+  }
+
+  .hp-check-page section > p:last-child {
+    font-size: 0.65rem;
   }
 }
 
