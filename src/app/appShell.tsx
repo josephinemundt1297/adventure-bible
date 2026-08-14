@@ -12,7 +12,7 @@ export function AppShell({ children }: AppShellProps) {
     <div className="flex min-h-dvh w-full items-center justify-center bg-base-200 px-[3vw] py-[2dvh]">
       <PhoneFrame>
         <Show when="signed-in">
-          <div className="absolute right-4 top-[2.5dvh] z-20 rounded-full border border-base-300 bg-base-100/95 p-1 shadow-sm backdrop-blur">
+          <div className="absolute right-4 top-[1dvh] z-20 rounded-full border border-base-300 bg-base-100/95 p-1 shadow-sm backdrop-blur">
             <UserButton
               appearance={{
                 elements: {
