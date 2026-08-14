@@ -2,6 +2,7 @@ import { Show, UserButton } from "@clerk/react";
 import type { ReactNode } from "react";
 import { BottomNavigation } from "../components/layout/bottomNavigation";
 import { PhoneFrame } from "../components/layout/phoneFrame";
+import { RewardNotification } from "../components/ui/rewardNotification";
 
 interface AppShellProps {
   children: ReactNode;
@@ -22,6 +23,7 @@ export function AppShell({ children }: AppShellProps) {
             />
           </div>
         </Show>
+        <RewardNotification />
         <main className="h-full overflow-y-auto px-4 pb-24 pt-12">
           {children}
         </main>
