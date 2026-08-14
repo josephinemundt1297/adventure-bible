@@ -2,7 +2,6 @@ import {
   Show,
   SignInButton,
   SignUpButton,
-  UserButton,
   useUser,
 } from "@clerk/react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -86,30 +85,19 @@ function ProfileSignedIn() {
       className="mx-auto flex w-full max-w-md flex-col gap-[2.5dvh]"
       aria-labelledby="account-heading"
     >
-      <header className="flex items-center justify-between gap-4">
-        <div className="min-w-0 space-y-[0.75dvh]">
-          <p className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-primary">
-            Dein Konto
-          </p>
-          <h1
-            id="account-heading"
-            className="truncate text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight text-primary"
-          >
-            {name}
-          </h1>
-          <p className="text-sm leading-5 text-base-content/70">
-            Dein Konto ist mit deinem Adventure-Bible-Profil verbunden.
-          </p>
-        </div>
-        <div className="shrink-0 rounded-full border border-primary/15 bg-base-100 p-1 shadow-sm">
-          <UserButton
-            appearance={{
-              elements: {
-                avatarBox: "size-11",
-              },
-            }}
-          />
-        </div>
+      <header className="min-w-0 space-y-[0.75dvh]">
+        <p className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-primary">
+          Dein Konto
+        </p>
+        <h1
+          id="account-heading"
+          className="truncate text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight text-primary"
+        >
+          {name}
+        </h1>
+        <p className="text-sm leading-5 text-base-content/70">
+          Dein Konto ist mit deinem Adventure-Bible-Profil verbunden.
+        </p>
       </header>
 
       <CharacterView name={name} />
