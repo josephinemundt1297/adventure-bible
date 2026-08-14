@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { getLevel, getLevelProgress, readProgress } from "../../../lib/progress";
 
 interface CharacterViewProps {
@@ -75,6 +76,13 @@ export function CharacterView({ name }: CharacterViewProps) {
           <p className="mt-1 text-lg font-bold">{progress.completedQuests}</p>
         </div>
       </div>
+
+      <Link
+        to="/stats"
+        className="btn btn-outline min-h-11 w-full"
+      >
+        📊 Fortschritt ansehen
+      </Link>
 
       <div className="alert border-base-300 bg-base-100 text-sm leading-5 shadow-sm" role="status">
         <span aria-hidden="true">🌿</span>
