@@ -74,21 +74,23 @@ export function HpCheck() {
       </div>
 
       <fieldset className="card min-h-0 flex-1 border border-base-300 bg-base-100 shadow-sm">
-        <div className="card-body min-h-0 gap-3 p-4">
-          <legend className="shrink-0 text-lg font-semibold leading-6">{question.question}</legend>
-          <div className="grid gap-2" role="radiogroup" aria-label="Antwort auswählen">
+        <div className="card-body min-h-0 items-center justify-center gap-4 p-5">
+          <legend className="w-full max-w-sm shrink-0 text-center text-lg font-semibold leading-6">{question.question}</legend>
+
+          <div className="grid w-full max-w-sm gap-2.5" role="radiogroup" aria-label="Antwort auswählen">
             {hpAnswerLabels.map((label, index) => {
               const value = (index + 1) as HpAnswer["value"];
               const selected = currentAnswer === value;
               return (
-                <button key={label} type="button" role="radio" aria-checked={selected} onClick={() => selectAnswer(value)} className={`btn h-11 min-h-11 justify-start px-4 text-left normal-case ${selected ? "btn-primary" : "btn-outline"}`}>
+                <button key={label} type="button" role="radio" aria-checked={selected} onClick={() => selectAnswer(value)} className={`btn h-11 min-h-11 w-full justify-start px-4 text-left normal-case ${selected ? "btn-primary" : "btn-outline"}`}>
                   <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-bold">{value}</span>
                   {label}
                 </button>
               );
             })}
           </div>
-          <button type="button" className="btn btn-primary h-11 min-h-11 w-full shrink-0" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
+
+          <button type="button" className="btn btn-primary h-11 min-h-11 w-full max-w-sm shrink-0" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
         </div>
       </fieldset>
 
