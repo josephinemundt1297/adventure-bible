@@ -44,11 +44,25 @@ const state: MiniHpState = {
 };
 
 describe("selectMiniQuest", () => {
-  it("uses the lowest mini HP area for the primary recommendation", () => {
+  it("sorts recommendations by the weakest HP area", () => {
     const result = selectMiniQuest(state, quests);
 
     expect(result.primary?.id).toBe("focus-quest");
-    expect(result.alternative?.id).toBe("energy-quest");
+    expect(result.alternative?.id).toBe("body-quest");
+  });
+
+  it("offers two quests even when both strongest recommendations target the same weak area", () => {
+    const focusQuests: Quest[] = [
+      quests[1],
+      { ...quests[1], id: "focus-quest-2", title: "Noch mehr Fokus" },
+      quests[0],
+    ];
+
+    const result = selectMiniQuest(state, focusQuests);
+
+    expect(result.primary?.targetArea).toBe("focus");
+    expect(result.alternative?.targetArea).toBe("focus");
+    expect(result.primary?.id).not.toBe(result.alternative?.id);
   });
 
   it("returns null recommendations when no quests are available", () => {
