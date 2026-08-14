@@ -12,7 +12,6 @@ createRoot(document.getElementById("root")!).render(
         variables: {
           colorPrimary: "#1f4d2e",
           colorBackground: "#fff8ef",
-          colorInputBackground: "#fff8ef",
           colorInputText: "#3a1d10",
           borderRadius: "1rem",
         },
