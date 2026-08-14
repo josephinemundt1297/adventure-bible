@@ -4,6 +4,7 @@ import { quests } from "../../../data/quests";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { addProgress } from "../../../lib/progress";
 import { recordQuestCompletion } from "../../../lib/achievements";
+import { leaveCampfire } from "../../../lib/campfire";
 import { readCompletedQuestIds, recordQuestCompletion as recordQuestHistory } from "../../../lib/questHistory";
 import { selectQuest } from "../../../lib/questSelection";
 import type { HpState } from "../../../types/hp";
@@ -50,6 +51,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
   }
 
   function startQuest() {
+    leaveCampfire();
     const nextProgress: QuestProgress = { quest: selectedQuest, status: "active" };
     sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(nextProgress));
     sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
