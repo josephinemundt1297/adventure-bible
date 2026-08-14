@@ -7,7 +7,7 @@ export const Route = createFileRoute("/hp-check")({
 
 function HpCheckPage() {
   return (
-    <div className="flex min-h-full items-center justify-center py-2">
+    <div className="hp-check-page flex min-h-full items-start justify-center">
       <div className="w-full">
         <HpCheck />
       </div>
