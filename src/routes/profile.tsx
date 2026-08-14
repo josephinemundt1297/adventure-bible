@@ -1,4 +1,11 @@
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from "@clerk/react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useUser,
+} from "@clerk/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { CharacterView } from "../features/profile/components/characterView";
 
@@ -21,33 +28,50 @@ function ProfilePage() {
 
 function ProfileSignedOut() {
   return (
-    <section className="mx-auto flex max-w-md flex-col gap-6" aria-labelledby="profile-heading">
-      <header className="space-y-2">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">
+    <section
+      className="mx-auto flex w-full max-w-md flex-col gap-[2.5dvh]"
+      aria-labelledby="profile-heading"
+    >
+      <header className="space-y-[1dvh]">
+        <p className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-primary">
           Neues Abenteuer
         </p>
-        <h1 id="profile-heading" className="text-2xl font-bold tracking-tight">
+        <h1
+          id="profile-heading"
+          className="text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight text-primary"
+        >
           Dein Abenteuer wartet
         </h1>
-        <p className="text-sm leading-6 text-base-content/70">
-          Melde dich an oder erstelle dein Konto, damit dein Charakter und dein Fortschritt
-          erhalten bleiben.
+        <p className="max-w-[34rem] text-[0.95rem] leading-6 text-base-content/70">
+          Melde dich an oder erstelle dein Konto, damit dein Charakter und dein
+          Fortschritt sicher bei dir bleiben.
         </p>
       </header>
 
-      <div className="card border border-base-300 bg-base-100 shadow-sm">
-        <div className="card-body gap-3">
+      <div className="rounded-3xl border border-primary/20 bg-base-100 p-[4vw] shadow-sm">
+        <div className="space-y-[1.5dvh]">
           <SignInButton mode="modal">
-            <button type="button" className="btn btn-primary min-h-12 w-full">
+            <button
+              type="button"
+              className="btn btn-primary min-h-12 w-full rounded-2xl text-base"
+            >
               Anmelden
             </button>
           </SignInButton>
+
           <SignUpButton mode="modal">
-            <button type="button" className="btn btn-outline min-h-12 w-full">
+            <button
+              type="button"
+              className="btn btn-outline min-h-12 w-full rounded-2xl border-primary/30 bg-base-100 text-base-content"
+            >
               Konto erstellen
             </button>
           </SignUpButton>
         </div>
+
+        <p className="mt-[1.5dvh] text-center text-xs leading-5 text-base-content/55">
+          Dein Adventure-Bible-Fortschritt gehört zu deinem Konto.
+        </p>
       </div>
     </section>
   );
@@ -58,18 +82,34 @@ function ProfileSignedIn() {
   const name = user.fullName ?? user.firstName ?? user.username ?? "Abenteurer";
 
   return (
-    <section className="mx-auto flex max-w-md flex-col gap-5" aria-labelledby="account-heading">
-      <header className="flex items-start justify-between gap-4">
-        <div className="space-y-2">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">
+    <section
+      className="mx-auto flex w-full max-w-md flex-col gap-[2.5dvh]"
+      aria-labelledby="account-heading"
+    >
+      <header className="flex items-center justify-between gap-4">
+        <div className="min-w-0 space-y-[0.75dvh]">
+          <p className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-primary">
             Dein Konto
           </p>
-          <h1 id="account-heading" className="text-2xl font-bold tracking-tight">{name}</h1>
+          <h1
+            id="account-heading"
+            className="truncate text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight text-primary"
+          >
+            {name}
+          </h1>
           <p className="text-sm leading-5 text-base-content/70">
-            Dein Clerk-Konto ist mit deinem Adventure-Bible-Profil verbunden.
+            Dein Konto ist mit deinem Adventure-Bible-Profil verbunden.
           </p>
         </div>
-        <UserButton />
+        <div className="shrink-0 rounded-full border border-primary/15 bg-base-100 p-1 shadow-sm">
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "size-11",
+              },
+            }}
+          />
+        </div>
       </header>
 
       <CharacterView name={name} />
