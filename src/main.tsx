@@ -10,16 +10,16 @@ createRoot(document.getElementById("root")!).render(
       afterSignOutUrl="/"
       appearance={{
         variables: {
-          colorPrimary: "#1f4d2e",
-          colorBackground: "#fff8ef",
-          colorInputText: "#3a1d10",
-          borderRadius: "1rem",
+          colorPrimary: "#294b32",
+          colorBackground: "#fbf5ea",
+          colorInputText: "#263127",
+          borderRadius: "0.75rem",
         },
         elements: {
-          card: "border border-[#efc9a9] bg-[#fff8ef] shadow-sm",
-          formButtonPrimary: "bg-[#1f4d2e] hover:bg-[#173b23] text-white",
-          formFieldInput: "border-[#e8cdb9] bg-[#fff8ef]",
-          footerActionLink: "text-[#1f4d2e]",
+          card: "border border-[#ddceb8] bg-[#fbf5ea] shadow-sm",
+          formButtonPrimary: "bg-[#294b32] hover:bg-[#203b28] text-white",
+          formFieldInput: "border-[#ddceb8] bg-[#fbf5ea]",
+          footerActionLink: "text-[#294b32]",
           headerTitle: "font-bold",
         },
       }}
