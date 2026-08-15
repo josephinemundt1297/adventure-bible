@@ -26,12 +26,10 @@ function ProfileSignedOut() {
       aria-labelledby="profile-heading"
     >
       <header className="mx-auto w-[86%] space-y-[2dvh] pt-[7dvh] text-center">
-        <p className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-primary">
-          Neues Abenteuer
-        </p>
+        <p className="app-kicker text-[0.75rem] font-bold uppercase">Neues Abenteuer</p>
         <h1
           id="profile-heading"
-          className="text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight text-primary"
+          className="app-heading text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight"
         >
           Dein Abenteuer
           <br />
@@ -48,21 +46,15 @@ function ProfileSignedOut() {
         </p>
       </header>
       <div className="flex flex-1 items-center justify-center pb-[8dvh] pt-[5dvh]">
-        <div className="w-full rounded-3xl border border-primary/20 bg-base-100 px-[4vw] py-[2.5dvh] shadow-sm">
+        <div className="adventure-card w-full rounded-3xl border px-[4vw] py-[2.5dvh]">
           <div className="mx-auto flex w-[72%] flex-col items-center gap-[1dvh]">
             <SignInButton mode="modal">
-              <button
-                type="button"
-                className="btn btn-primary min-h-12 w-full rounded-2xl text-base"
-              >
+              <button type="button" className="btn btn-primary min-h-12 w-full rounded-2xl text-base">
                 Anmelden
               </button>
             </SignInButton>
             <SignUpButton mode="modal">
-              <button
-                type="button"
-                className="btn btn-outline min-h-12 w-full rounded-2xl border-primary/30 bg-base-100 text-base-content"
-              >
+              <button type="button" className="btn btn-outline min-h-12 w-full rounded-2xl border-primary/30 bg-base-100 text-base-content">
                 Konto erstellen
               </button>
             </SignUpButton>
@@ -75,29 +67,7 @@ function ProfileSignedOut() {
 
 function ProfileSignedIn() {
   const { user } = useUser();
-  const name =
-    user?.fullName ?? user?.firstName ?? user?.username ?? "Abenteurer";
+  const name = user?.fullName ?? user?.firstName ?? user?.username ?? "Abenteurer";
 
-  return (
-    <section
-      className="mx-auto flex w-full max-w-md flex-col gap-[2.5dvh]"
-      aria-labelledby="account-heading"
-    >
-      <header className="min-w-0 space-y-[0.75dvh]">
-        <p className="text-[0.75rem] font-bold uppercase tracking-[0.14em] text-primary">
-          Dein Konto
-        </p>
-        <h1
-          id="account-heading"
-          className="truncate text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight text-primary"
-        >
-          {name}
-        </h1>
-        <p className="text-sm leading-5 text-base-content/70">
-          Dein Konto ist mit deinem Adventure-Bible-Profil verbunden.
-        </p>
-      </header>
-      <CharacterView name={name} />
-    </section>
-  );
+  return <CharacterView name={name} />;
 }
