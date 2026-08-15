@@ -1,7 +1,83 @@
 @import "tailwindcss";
 
 @plugin "daisyui" {
-  themes: caramellatte --default;
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name: "adventure-bible";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #fbf5ea;
+  --color-base-200: #f1e7d6;
+  --color-base-300: #ddceb8;
+  --color-base-content: #263127;
+
+  --color-primary: #294b32;
+  --color-primary-content: #fbf5ea;
+  --color-secondary: #b68a45;
+  --color-secondary-content: #fffaf0;
+  --color-accent: #d2ad64;
+  --color-accent-content: #263127;
+  --color-neutral: #263127;
+  --color-neutral-content: #fbf5ea;
+
+  --color-info: #66808a;
+  --color-info-content: #f8fbfa;
+  --color-success: #66845d;
+  --color-success-content: #f7fbf4;
+  --color-warning: #c28b3d;
+  --color-warning-content: #fff8ec;
+  --color-error: #a34d3e;
+  --color-error-content: #fff8f5;
+
+  --radius-selector: 0.75rem;
+  --radius-field: 0.7rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background: #f1e7d6;
+  color: #263127;
+}
+
+.app-heading {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #294b32;
+}
+
+.app-kicker {
+  color: #b68a45;
+  letter-spacing: 0.14em;
+}
+
+.adventure-card {
+  border-color: color-mix(in srgb, #294b32 14%, transparent);
+  background: #fbf5ea;
+  box-shadow: 0 8px 24px rgba(72, 52, 30, 0.07);
+}
+
+.adventure-soft-card {
+  border-color: #ddceb8;
+  background: #f6eddf;
+}
+
+.adventure-art {
+  object-fit: contain;
+  filter: drop-shadow(0 8px 10px rgba(60, 45, 28, 0.08));
 }
 
 .hp-check-page {
