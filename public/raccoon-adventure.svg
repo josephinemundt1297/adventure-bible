@@ -1,5 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 144" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" role="img" aria-labelledby="title desc">
   <title id="title">Adventure-Bible-Waschbär</title>
-  <desc id="desc">Kleiner gerüsteter Waschbär mit Wanderstab als Abenteuer-Bible-Charakter.</desc>
-  <image href="data:image/jpeg;base64,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" x="0" y="0" width="96" height="144" preserveAspectRatio="xMidYMid meet" />
+  <desc id="desc">Ein kleiner freundlicher Waschbär als Abenteuer-Bible-Begleiter, mit Umhang, Tasche und Wanderstab.</desc>
+  <defs>
+    <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a765e"/>
+      <stop offset="1" stop-color="#5f5040"/>
+    </linearGradient>
+    <linearGradient id="cloak" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3d6546"/>
+      <stop offset="1" stop-color="#233e2c"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="122" cy="282" rx="67" ry="10" fill="#d8c9b3" opacity=".55"/>
+  <path d="M168 185c28 4 42 19 47 37 4 15-5 29-18 31-16 3-29-7-34-24-5-17-3-33 5-44z" fill="url(#fur)" stroke="#493d31" stroke-width="5"/>
+  <path d="M184 199c13 2 22 9 25 19 3 10-1 17-9 19-10 3-18-5-22-15-4-11-2-18 6-23z" fill="#a58f73" opacity=".8"/>
+  <path d="M75 182c-20 7-32 24-30 42 2 15 15 23 28 19 15-5 22-20 22-37 0-15-7-23-20-24z" fill="url(#fur)" stroke="#493d31" stroke-width="5"/>
+  <path d="M72 194c-9 4-15 12-14 21 1 7 6 11 12 9 8-3 12-12 12-20 0-7-4-10-10-10z" fill="#a58f73" opacity=".8"/>
+  <path d="M82 122c-7-29-3-57 17-72l13 26 22-29 17 31c25 11 36 35 31 65-5 31-28 50-57 49-28-1-45-23-43-70z" fill="url(#fur)" stroke="#493d31" stroke-width="6"/>
+  <path d="M105 76c-8 17-10 36-4 53 8 22 26 32 46 31 21-1 35-13 41-31 6-18 3-36-7-51l-19 17-18-18-18 17z" fill="#d8c7ac"/>
+  <path d="M109 90c-7-9-18-13-27-8-10 5-12 17-5 25 7 8 19 9 29 2z" fill="#292823"/>
+  <path d="M155 90c7-9 18-13 27-8 10 5 12 17 5 25-7 8-19 9-29 2z" fill="#292823"/>
+  <ellipse cx="125" cy="110" rx="7" ry="9" fill="#1d1c19"/>
+  <ellipse cx="151" cy="110" rx="7" ry="9" fill="#1d1c19"/>
+  <circle cx="127" cy="107" r="2.5" fill="#fff"/>
+  <circle cx="153" cy="107" r="2.5" fill="#fff"/>
+  <path d="M129 123c7-6 13-6 20 0-1 12-18 15-20 0z" fill="#2a2520"/>
+  <path d="M102 148c14 9 31 11 51 2l23 52c-16 15-49 18-73 5z" fill="url(#cloak)" stroke="#233524" stroke-width="5"/>
+  <path d="M103 156c8 8 15 12 23 13l-5 48-28-7z" fill="#b28a4c" opacity=".9"/>
+  <path d="M159 156c-7 8-14 12-23 14l4 47 29-9z" fill="#b28a4c" opacity=".9"/>
+  <path d="M93 178c-15 2-27 8-35 18l15 16 29-13z" fill="#294b32" stroke="#233524" stroke-width="4"/>
+  <path d="M166 177c15 1 27 7 37 17l-14 18-29-12z" fill="#294b32" stroke="#233524" stroke-width="4"/>
+  <rect x="108" y="203" width="22" height="48" rx="9" fill="#5c4b3a" stroke="#493d31" stroke-width="4"/>
+  <rect x="147" y="202" width="22" height="49" rx="9" fill="#5c4b3a" stroke="#493d31" stroke-width="4"/>
+  <path d="M105 245c-5 2-8 9-4 13 5 4 18 4 23-1 3-4-1-10-7-12z" fill="#43372d"/>
+  <path d="M145 245c-5 2-8 9-4 13 5 4 18 4 23-1 3-4-1-10-7-12z" fill="#43372d"/>
+  <path d="M70 196c-5-23-2-44 5-59" fill="none" stroke="#765e3f" stroke-width="7" stroke-linecap="round"/>
+  <path d="M66 137c-7-7-6-18 1-23 5-4 10-3 13 2 3 6-1 13-5 18z" fill="#c29a55" stroke="#765e3f" stroke-width="3"/>
+  <path d="M73 218c7 4 13 7 20 8" fill="none" stroke="#d7bd8b" stroke-width="3" opacity=".75"/>
+  <circle cx="119" cy="177" r="5" fill="#d5b26b"/>
+  <circle cx="157" cy="175" r="5" fill="#d5b26b"/>
 </svg>
