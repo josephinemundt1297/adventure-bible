@@ -69,8 +69,8 @@ Priorität:
 - [x] Hauptnavigation erstellen
 - [x] responsive Grundstruktur erstellen
 - [x] Test-Setup einrichten
-- [x] Production Build grundsätzlich erfolgreich
-- [x] Lint grundsätzlich erfolgreich
+- [x] Production Build erfolgreich verifiziert
+- [x] Lint erfolgreich verifiziert
 
 **Status:** 🟢 abgeschlossen
 
@@ -165,27 +165,28 @@ Priorität:
 - [x] responsive Layout-Grundlagen
 - [x] Unit-Tests für zentrale Domain-Logik
 - [x] Campfire-State getestet
+- [x] zentralen Demo-Flow manuell durchgespielt
 - [ ] vollständiger manueller Keyboard-Test
 - [ ] vollständiger manueller Screenreader-Check
 - [ ] vollständige Kontrastprüfung
 - [ ] finaler Mobile-/Desktop-Durchlauf
 
-**Status:** 🟡 technische Basis fertig, manuelle Abnahme offen
+**Status:** 🟡 technische Basis und funktionale Abnahme abgeschlossen; optionale/abschließende manuelle Accessibility-Prüfungen offen
 
 ---
 
 # 11. Finaler MVP-Check
 
-- [ ] `npm run test`
-- [ ] `npm run lint`
-- [ ] `npm run build`
-- [ ] App lokal starten
-- [ ] vollständigen Demo-Flow einmal durchspielen
-- [ ] keine kritischen Fehler im Demo-Flow
-- [ ] unnötige Debug-/Testartefakte prüfen
-- [ ] finale Dokumentation auf Konsistenz prüfen
+- [x] `npm test`
+- [x] `npm run lint`
+- [x] `npm run build`
+- [x] App lokal starten
+- [x] vollständigen Demo-Flow einmal durchspielen
+- [x] keine kritischen Fehler im Demo-Flow
+- [x] unnötige Debug-/Testartefakte geprüft
+- [x] finale Roadmap-Dokumentation auf Konsistenz geprüft
 
-**Status:** 🟡 finale Verifikation offen
+**Status:** 🟢 MVP-Verifikation abgeschlossen
 
 ---
 
@@ -206,11 +207,13 @@ Der MVP ist fertig, wenn:
 - [x] mobile Grunddarstellung funktioniert
 - [x] zentrale Accessibility-Anforderungen technisch berücksichtigt sind
 - [x] Tests vorhanden sind
-- [ ] finaler Testlauf erfolgreich verifiziert ist
-- [ ] finaler Lint-Lauf erfolgreich verifiziert ist
-- [ ] finaler Production Build erfolgreich verifiziert ist
-- [ ] manuelle Accessibility-Abnahme durchgeführt ist
-- [ ] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
+- [x] finaler Testlauf erfolgreich verifiziert ist
+- [x] finaler Lint-Lauf erfolgreich verifiziert ist
+- [x] finaler Production Build erfolgreich verifiziert ist
+- [x] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
+- [ ] manuelle Keyboard-/Screenreader-/Kontrast-Abnahme vollständig durchgeführt
+
+**MVP-Status:** 🟢 funktional fertig und verifiziert
 
 ---
 
