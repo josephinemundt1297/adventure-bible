@@ -1,6 +1,5 @@
 import { useUser } from "@clerk/react";
 import { Link } from "@tanstack/react-router";
-import { ProfileAvatar } from "../../profile/components/profileAvatar";
 import { readCampfire } from "../../../lib/campfire";
 import { readProgress } from "../../../lib/progress";
 import type { HpState } from "../../../types/hp";
@@ -48,13 +47,12 @@ export function HomeDashboard() {
 
   return (
     <div className="space-y-3">
-      <header className="flex items-start justify-between gap-3 pt-4">
+      <header className="pt-4">
         <div className="min-w-0">
           <p className="app-kicker text-[0.68rem] font-bold uppercase">Dein Abenteuer</p>
           <h1 className="app-heading mt-1 text-2xl font-bold tracking-tight">Hallo, {name}!</h1>
           <p className="mt-1 text-sm text-base-content/65">Was ist heute dein nächster guter Schritt?</p>
         </div>
-        <ProfileAvatar name={name} size="sm" />
       </header>
 
       {hpState ? (
