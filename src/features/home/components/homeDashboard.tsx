@@ -94,13 +94,17 @@ export function HomeDashboard() {
     <div className="space-y-3">
       <header className="flex items-start justify-between gap-3 pt-4">
         <div className="min-w-0">
-          <h1 className="text-xl font-semibold tracking-tight">Hallo, {name}!</h1>
+          <p className="app-kicker text-[0.68rem] font-bold uppercase">Dein Abenteuer</p>
+          <h1 className="app-heading mt-1 text-2xl font-bold tracking-tight">Hallo, {name}!</h1>
           <p className="mt-1 text-sm text-base-content/65">Was ist heute dein nächster guter Schritt?</p>
+        </div>
+        <div className="size-14 shrink-0 overflow-hidden rounded-full border border-secondary/35 bg-base-200/70">
+          <img className="adventure-art size-full" src="/raccoon-adventure.svg" alt="Dein Adventure-Bible-Waschbär" />
         </div>
       </header>
 
       {hpState ? (
-        <section className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm" aria-labelledby="status-heading">
+        <section className="adventure-card rounded-2xl border p-4" aria-labelledby="status-heading">
           <div className="flex items-center justify-between gap-3">
             <h2 id="status-heading" className="text-xs font-semibold uppercase tracking-wide text-base-content/60">Dein Status</h2>
             <span className="text-xs font-semibold text-primary">{hpState.overall}/100 gesamt</span>
@@ -110,7 +114,7 @@ export function HomeDashboard() {
             {statusAreas.map((item) => {
               const value = hpState.areas.find((area) => area.area === item.id)?.score ?? 0;
               return (
-                <div key={item.id} className="rounded-xl bg-base-200/60 p-3">
+                <div key={item.id} className="adventure-soft-card rounded-xl border p-3">
                   <div className="flex items-center gap-2 text-sm">
                     <span aria-hidden="true">{item.icon}</span>
                     <span className="font-medium">{item.label}</span>
@@ -123,18 +127,18 @@ export function HomeDashboard() {
           </div>
         </section>
       ) : (
-        <section className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm" aria-labelledby="welcome-heading">
-          <h2 id="welcome-heading" className="text-base font-semibold">Dein Abenteuer beginnt hier.</h2>
+        <section className="adventure-card rounded-2xl border p-4" aria-labelledby="welcome-heading">
+          <h2 id="welcome-heading" className="app-heading text-lg font-bold">Dein Abenteuer beginnt hier.</h2>
           <p className="mt-1 text-sm leading-5 text-base-content/65">Der große HP-Check gibt dir einen Ausgangspunkt für deinen nächsten Schritt.</p>
         </section>
       )}
 
-      <section className="rounded-2xl border border-primary/20 bg-base-100 p-4 shadow-sm" aria-labelledby="next-action-heading">
+      <section className="adventure-card rounded-2xl border border-primary/20 p-4" aria-labelledby="next-action-heading">
         <div className="flex items-start gap-3">
           <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xl" aria-hidden="true">{action.icon}</div>
           <div className="min-w-0 flex-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-primary">{action.eyebrow}</p>
-            <h2 id="next-action-heading" className="mt-1 text-base font-semibold">{action.title}</h2>
+            <h2 id="next-action-heading" className="app-heading mt-1 text-base font-bold">{action.title}</h2>
             <p className="mt-1 text-sm leading-5 text-base-content/65">{action.description}</p>
           </div>
         </div>
@@ -142,15 +146,15 @@ export function HomeDashboard() {
       </section>
 
       <section className="grid grid-cols-3 gap-2" aria-label="Fortschritt">
-        <div className="rounded-xl border border-base-300 bg-base-100 p-3 text-center shadow-sm">
+        <div className="adventure-card rounded-xl border p-3 text-center">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-base-content/55">XP</p>
           <p className="mt-1 text-base font-bold">{progress.xp}</p>
         </div>
-        <div className="rounded-xl border border-base-300 bg-base-100 p-3 text-center shadow-sm">
+        <div className="adventure-card rounded-xl border p-3 text-center">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-base-content/55">Quests</p>
           <p className="mt-1 text-base font-bold">{progress.completedQuests}</p>
         </div>
-        <div className="rounded-xl border border-base-300 bg-base-100 p-3 text-center shadow-sm">
+        <div className="adventure-card rounded-xl border p-3 text-center">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-base-content/55">Points</p>
           <p className="mt-1 text-base font-bold">{progress.questPoints}</p>
         </div>
