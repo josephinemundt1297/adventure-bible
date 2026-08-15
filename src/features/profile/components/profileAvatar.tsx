@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ChangeEvent } from "react";
 
 const AVATAR_STORAGE_KEY = "adventure-bible:profile-avatar";
 const AVATAR_EVENT = "adventure-bible:avatar-updated";
@@ -28,7 +28,7 @@ export function ProfileAvatar({
     return () => window.removeEventListener(AVATAR_EVENT, updateAvatar);
   }, []);
 
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -56,7 +56,6 @@ export function ProfileAvatar({
       }
     };
     reader.readAsDataURL(file);
-
     event.target.value = "";
   }
 
@@ -67,9 +66,7 @@ export function ProfileAvatar({
   }[size];
 
   const image = (
-    <div
-      className={`overflow-hidden rounded-full border border-secondary/35 bg-[#eee3d1] ${sizeClass}`}
-    >
+    <div className={`overflow-hidden rounded-full border border-secondary/35 bg-[#eee3d1] ${sizeClass}`}>
       {avatar ? (
         <img className="size-full object-cover" src={avatar} alt={`${name} Profilbild`} />
       ) : (
