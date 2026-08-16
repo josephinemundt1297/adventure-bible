@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")!).render(
         variables: {
           colorPrimary: "#294b32",
           colorBackground: "#fbf5ea",
-          colorInputText: "#263127",
+          colorInput: "#263127",
           borderRadius: "0.75rem",
         },
         elements: {
