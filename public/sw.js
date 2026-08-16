@@ -1,10 +1,10 @@
-const CACHE_NAME = "adventure-bible-v1";
+const CACHE_NAME = "adventure-bible-v2";
 const APP_SHELL = [
   "/",
   "/index.html",
   "/manifest.webmanifest",
-  "/pwa-192x192.png",
-  "/pwa-512x512.png",
+  "/pwa-192x192.svg",
+  "/pwa-512x512.svg",
 ];
 
 self.addEventListener("install", (event) => {
