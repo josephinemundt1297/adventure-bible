@@ -67,7 +67,7 @@ export function HpCheck() {
   }
 
   return (
-    <section className="mx-auto flex h-full min-h-0 max-w-md flex-col gap-3" aria-labelledby="hp-heading">
+    <section className="mx-auto flex min-h-full max-w-md flex-col gap-3" aria-labelledby="hp-heading">
       <header className="shrink-0 space-y-1">
         <p className="text-sm font-semibold uppercase tracking-wide text-primary">Neuer Abenteuerzyklus</p>
         <h1 id="hp-heading" className="text-2xl font-bold leading-tight tracking-tight">Wie geht es dir gerade?</h1>
@@ -75,29 +75,29 @@ export function HpCheck() {
       </header>
 
       <div className="shrink-0" aria-label={`Fortschritt: Frage ${questionIndex + 1} von ${hpQuestions.length}`}>
-        <div className="mb-1 flex items-center justify-between text-xs font-semibold"><span>{hpAreaLabels[question.area]}</span><span>Frage {questionIndex + 1} / {hpQuestions.length}</span></div>
+        <div className="mb-1 flex items-center justify-between gap-4 text-xs font-semibold"><span>{hpAreaLabels[question.area]}</span><span className="shrink-0">Frage {questionIndex + 1} / {hpQuestions.length}</span></div>
         <progress className="progress progress-primary h-2 w-full" value={progress} max="100" />
       </div>
 
-      <section className="card min-h-0 flex-1 border border-base-300 bg-base-100 shadow-sm" aria-labelledby="hp-question">
-        <div className="card-body min-h-0 items-center justify-center p-5">
-          <h2 id="hp-question" className="w-full max-w-sm shrink-0 text-center text-lg font-semibold leading-6">{question.question}</h2>
+      <section className="card shrink-0 border border-base-300 bg-base-100 shadow-sm" aria-labelledby="hp-question">
+        <div className="card-body items-center p-4 sm:p-5">
+          <h2 id="hp-question" className="w-full max-w-sm text-center text-lg font-semibold leading-6 text-pretty sm:text-xl">{question.question}</h2>
 
-          <div className="mt-5 grid w-full max-w-sm gap-4" aria-label="Antwort auswählen">
+          <div className="mt-4 grid w-full max-w-sm gap-3" aria-label="Antwort auswählen">
             {hpAnswerLabels.map((label, index) => {
               const value = (index + 1) as HpAnswer["value"];
               const selected = currentAnswer === value;
               return (
-                <button key={label} type="button" aria-pressed={selected} onClick={() => selectAnswer(value)} className={`btn h-11 min-h-11 w-full justify-start px-4 text-left normal-case ${selected ? "btn-primary" : "btn-outline"}`}>
-                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-bold">{value}</span>
-                  {label}
+                <button key={label} type="button" aria-pressed={selected} onClick={() => selectAnswer(value)} className={`btn min-h-12 h-auto w-full justify-start gap-3 whitespace-normal px-4 py-2 text-left normal-case leading-tight ${selected ? "btn-primary" : "btn-outline"}`}>
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-current text-xs font-bold">{value}</span>
+                  <span className="min-w-0">{label}</span>
                 </button>
               );
             })}
           </div>
 
-          <div className="mt-10 w-full max-w-sm shrink-0">
-            <button type="button" className="btn btn-primary h-11 min-h-11 w-full" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
+          <div className="mt-6 w-full max-w-sm">
+            <button type="button" className="btn btn-primary min-h-12 w-full" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
           </div>
         </div>
       </section>
