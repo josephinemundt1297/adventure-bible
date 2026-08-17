@@ -14,7 +14,7 @@ export function AppShell({ children }: AppShellProps) {
   const isPlanRoute = pathname === "/plan";
 
   return (
-    <div className="flex min-h-dvh w-full items-center justify-center bg-[#f1e7d6] px-[3vw] py-[2dvh]">
+    <div className="flex min-h-dvh w-full items-center justify-center bg-base-100 sm:bg-[#f1e7d6] sm:px-[3vw] sm:py-[2dvh]">
       <PhoneFrame>
         <Show when="signed-in">
           <div className="absolute right-4 top-[1dvh] z-20 rounded-full border border-[#ddceb8] bg-[#fbf5ea]/95 p-1 shadow-sm backdrop-blur">
