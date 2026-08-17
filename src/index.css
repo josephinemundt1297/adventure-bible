@@ -1,3 +1,5 @@
+@layer theme, base, clerk, components, utilities;
+
 @import "tailwindcss";
 
 @plugin "daisyui" {
@@ -81,93 +83,7 @@ body {
 }
 
 .hp-check-page {
-  height: 100%;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.hp-check-page > div {
-  height: 100%;
-  min-height: 0;
-}
-
-.hp-check-page section {
-  height: 100%;
-  min-height: 0;
-  gap: 0.55dvh;
-}
-
-.hp-check-page section > header {
-  gap: 0.25dvh;
-}
-
-.hp-check-page section > header h1 {
-  font-size: clamp(1.15rem, 2.8dvh, 1.5rem);
-}
-
-.hp-check-page section > header p:last-child {
-  line-height: 1.18;
-}
-
-.hp-check-page section[aria-labelledby="hp-question"] {
-  min-height: 0;
-}
-
-.hp-check-page section[aria-labelledby="hp-question"] .card-body {
-  gap: 0.45dvh;
-  padding-block: 0.75dvh;
-}
-
-.hp-check-page section[aria-labelledby="hp-question"] h2 {
-  line-height: 1.2;
-}
-
-.hp-check-page section[aria-labelledby="hp-question"] [aria-label="Antwort auswählen"] {
-  gap: 0.55dvh;
-}
-
-.hp-check-page section[aria-labelledby="hp-question"] [aria-label="Antwort auswählen"] button {
-  min-height: 2.75rem;
-  height: 4.7dvh;
-}
-
-.hp-check-page section[aria-labelledby="hp-question"] .card-body > button:last-child {
-  min-height: 2.75rem;
-  height: 4.7dvh;
-  margin-top: 0;
-}
-
-.hp-check-page section > p:last-child {
-  margin: 0;
-  font-size: clamp(0.65rem, 1.45dvh, 0.75rem);
-  line-height: 1.2;
-}
-
-@media (max-height: 720px) {
-  .hp-check-page section > header h1 {
-    font-size: 1.15rem;
-  }
-
-  .hp-check-page section > header p:last-child {
-    font-size: 0.78rem;
-  }
-
-  .hp-check-page section[aria-labelledby="hp-question"] .card-body {
-    gap: 0.35dvh;
-    padding-block: 0.6dvh;
-  }
-
-  .hp-check-page section[aria-labelledby="hp-question"] h2 {
-    font-size: 0.95rem;
-  }
-
-  .hp-check-page section[aria-labelledby="hp-question"] [aria-label="Antwort auswählen"] {
-    gap: 0.45dvh;
-  }
-
-  .hp-check-page section > p:last-child {
-    font-size: 0.65rem;
-  }
+  min-height: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {

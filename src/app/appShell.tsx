@@ -1,5 +1,5 @@
-import { Show, UserButton } from "@clerk/react";
-import { useRouterState } from "@tanstack/react-router";
+import { Show, UserButton, useAuth } from "@clerk/react";
+import { Navigate, useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { BottomNavigation } from "../components/layout/bottomNavigation";
 import { PhoneFrame } from "../components/layout/phoneFrame";
@@ -11,7 +11,10 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const { isLoaded, isSignedIn } = useAuth();
   const isPlanRoute = pathname === "/plan";
+  const isPublicRoute = pathname === "/profile";
+  const shouldRedirectToProfile = isLoaded && !isSignedIn && !isPublicRoute;
 
   return (
     <div className="flex min-h-dvh w-full items-center justify-center bg-base-100 sm:bg-[#f1e7d6] sm:px-[3vw] sm:py-[2dvh]">
@@ -29,9 +32,20 @@ export function AppShell({ children }: AppShellProps) {
         </Show>
         <RewardNotification />
         <main className={`h-full px-4 pb-24 pt-12 ${isPlanRoute ? "min-h-0 overflow-hidden" : "overflow-y-auto"}`}>
-          {children}
+          {shouldRedirectToProfile ? (
+            <Navigate to="/profile" />
+          ) : !isLoaded && !isPublicRoute ? (
+            <div className="flex min-h-full items-center justify-center" role="status" aria-live="polite">
+              <span className="loading loading-spinner loading-md text-primary" aria-hidden="true" />
+              <span className="sr-only">Anmeldung wird geprüft.</span>
+            </div>
+          ) : (
+            children
+          )}
         </main>
-        <BottomNavigation />
+        <Show when="signed-in">
+          <BottomNavigation />
+        </Show>
       </PhoneFrame>
     </div>
   );

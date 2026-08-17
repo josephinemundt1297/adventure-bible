@@ -17,6 +17,7 @@ createRoot(document.getElementById("root")!).render(
     <ClerkProvider
       afterSignOutUrl="/"
       appearance={{
+        cssLayerName: "clerk",
         variables: {
           colorPrimary: "#294b32",
           colorBackground: "#fbf5ea",
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")!).render(
           colorInput: "#fffdf8",
           colorInputForeground: "#263127",
           colorBorder: "#ddceb8",
+          colorRing: "#294b32",
           borderRadius: "0.75rem",
         },
         elements: {
