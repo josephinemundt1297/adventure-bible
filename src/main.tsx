@@ -6,7 +6,9 @@ import App from "./App.tsx";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    void navigator.serviceWorker.register("/sw.js");
+    void navigator.serviceWorker.register("/sw.js").catch((error: unknown) => {
+      console.error("Service Worker konnte nicht registriert werden.", error);
+    });
   });
 }
 
