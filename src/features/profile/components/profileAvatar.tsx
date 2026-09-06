@@ -104,7 +104,7 @@ export function ProfileAvatar({
           ✎
         </span>
       </button>
-      <label htmlFor={inputId} className="btn btn-outline btn-sm">
+      <label htmlFor={inputId} className="btn btn-outline min-h-11">
         {avatar ? "Bild ändern" : "Eigenes Bild hochladen"}
       </label>
       <input

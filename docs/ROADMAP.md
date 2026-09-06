@@ -186,9 +186,9 @@ Priorität:
 - [x] Unit-Tests für zentrale Domain-Logik
 - [x] Campfire-State getestet
 - [x] zentralen Demo-Flow manuell durchgespielt
-- [ ] vollständiger manueller Keyboard-Test
+- [x] vollständiger manueller Keyboard-Test
 - [ ] vollständiger manueller Screenreader-Check
-- [ ] vollständige Kontrastprüfung
+- [x] Lighthouse Accessibility- und Kontrastprüfung bestanden
 - [ ] finaler Mobile-/Desktop-Durchlauf
 
 **Status:** 🟡 technische Basis und funktionale Abnahme abgeschlossen; optionale/abschließende manuelle Accessibility-Prüfungen offen

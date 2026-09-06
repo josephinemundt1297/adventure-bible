@@ -92,7 +92,7 @@ export function MiniHpCheck() {
     return (
       <section className="mx-auto flex w-full max-w-md flex-col gap-4 text-center" aria-labelledby="campfire-heading">
         <header className="space-y-2">
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">Lagerfeuer</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-primary">Lagerfeuer</p>
           <h1 id="campfire-heading" className="text-2xl font-bold tracking-tight">Du darfst jetzt einfach ruhen. 🔥</h1>
           <p className="text-sm leading-5 text-base-content/65">
             Regeneration ist ein Teil deines Abenteuers. Es gibt gerade nichts zu beweisen und nichts nachzuholen.
@@ -124,7 +124,7 @@ export function MiniHpCheck() {
     return (
       <section className="mx-auto flex w-full max-w-md flex-col gap-3" aria-labelledby="mini-hp-recommendation-heading">
         <header className="space-y-1 text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">Check abgeschlossen</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-primary">Check abgeschlossen</p>
           <h1 id="mini-hp-recommendation-heading" className="text-xl font-bold tracking-tight">Was passt gerade zu dir?</h1>
           <p className="text-xs leading-4 text-base-content/65">Dein Check ist gespeichert. Wähle eine Aufgabe – oder gönn dir das Lagerfeuer.</p>
         </header>
@@ -135,9 +135,9 @@ export function MiniHpCheck() {
             return (
               <div key={id} className="rounded-xl border border-base-300/70 bg-base-100/70 px-1.5 py-1.5 text-center">
                 <span className="text-xs" aria-hidden="true">{icon}</span>
-                <p className="text-[10px] font-semibold text-base-content/60">{label}</p>
+                <p className="text-xs font-semibold text-base-content/60">{label}</p>
                 <p className="text-xs font-bold">{values[id]}</p>
-                {previous !== undefined && <p className="text-[9px] text-base-content/45">vorher {previous}</p>}
+                {previous !== undefined && <p className="text-xs leading-4 text-base-content/45">vorher {previous}</p>}
               </div>
             );
           })}
@@ -152,7 +152,7 @@ export function MiniHpCheck() {
               </div>
               <h2 className="mt-1 text-base font-bold">{primary.title}</h2>
               <p className="mt-1 text-xs leading-4 text-base-content/65">{primary.description}</p>
-              <button type="button" className="btn btn-primary btn-sm mt-2 min-h-9 w-full" onClick={() => chooseQuest(primary)} aria-pressed={selectedQuestId === primary.id}>
+              <button type="button" className="btn btn-primary mt-2 min-h-11 w-full" onClick={() => chooseQuest(primary)} aria-pressed={selectedQuestId === primary.id}>
                 {selectedQuestId === primary.id ? "Ausgewählt ✓" : "Diese Aufgabe wählen"}
               </button>
             </article>
@@ -165,7 +165,7 @@ export function MiniHpCheck() {
               </div>
               <h2 className="mt-1 text-base font-bold">{alternative.title}</h2>
               <p className="mt-1 text-xs leading-4 text-base-content/65">{alternative.description}</p>
-              <button type="button" className="btn btn-outline btn-sm mt-2 min-h-9 w-full" onClick={() => chooseQuest(alternative)} aria-pressed={selectedQuestId === alternative.id}>
+              <button type="button" className="btn btn-outline mt-2 min-h-11 w-full" onClick={() => chooseQuest(alternative)} aria-pressed={selectedQuestId === alternative.id}>
                 {selectedQuestId === alternative.id ? "Ausgewählt ✓" : "Alternative wählen"}
               </button>
             </article>
@@ -175,12 +175,12 @@ export function MiniHpCheck() {
         {selectedQuest && (
           <div className="flex flex-col gap-1.5">
             <p className="text-center text-xs font-medium" role="status">„{selectedQuest.title}“ ist ausgewählt.</p>
-            <Link to="/quests" className="btn btn-primary min-h-9 w-full">Aufgabe starten</Link>
+            <Link to="/quests" className="btn btn-primary min-h-11 w-full">Aufgabe starten</Link>
           </div>
         )}
 
         <button type="button" className="btn btn-outline min-h-10 w-full" onClick={chooseCampfire}>🔥 Lagerfeuer wählen</button>
-        <button type="button" className="btn btn-ghost btn-xs" onClick={() => setSavedState(null)}>Werte anpassen</button>
+        <button type="button" className="btn btn-ghost min-h-11 w-full" onClick={() => setSavedState(null)}>Werte anpassen</button>
       </section>
     );
   }
@@ -188,7 +188,7 @@ export function MiniHpCheck() {
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="mini-hp-heading">
       <header className="space-y-1 text-center">
-        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">Schneller HP-Check</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-primary">Schneller HP-Check</p>
         <h1 id="mini-hp-heading" className="text-xl font-bold tracking-tight">Wie geht es dir gerade?</h1>
         <p className="text-xs leading-5 text-base-content/65">Ein kurzer Check genügt. Danach schlägt dir die App eine passende Aufgabe vor – plus eine Alternative.</p>
       </header>
@@ -206,7 +206,7 @@ export function MiniHpCheck() {
       </div>
 
       <button type="button" className="btn btn-primary min-h-10 w-full" onClick={saveCheck}>Aufgabe vorschlagen</button>
-      <p className="text-center text-[10px] leading-4 text-base-content/45">Dein Check ist eine persönliche Einschätzung und keine medizinische Diagnose.</p>
+      <p className="text-center text-xs leading-4 text-base-content/45">Dein Check ist eine persönliche Einschätzung und keine medizinische Diagnose.</p>
     </section>
   );
 }

@@ -11,7 +11,7 @@ export function ProgressStats() {
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="stats-heading">
       <header className="space-y-2 px-1">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">Dein Abenteuer</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-primary">Dein Abenteuer</p>
         <h1 id="stats-heading" className="text-2xl font-bold tracking-tight">Dein Fortschritt</h1>
         <p className="text-sm leading-5 text-base-content/70">Ein ruhiger Überblick darüber, was du bereits geschafft hast.</p>
       </header>
@@ -31,7 +31,7 @@ export function ProgressStats() {
 
       <section className="space-y-3" aria-labelledby="achievements-heading">
         <div className="flex items-end justify-between gap-3 px-1">
-          <div><p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">Meilensteine</p><h2 id="achievements-heading" className="mt-1 text-lg font-bold">Deine Achievements</h2></div>
+          <div><p className="text-xs font-bold uppercase tracking-widest text-primary">Meilensteine</p><h2 id="achievements-heading" className="mt-1 text-lg font-bold">Deine Achievements</h2></div>
           <span className="text-sm font-semibold text-base-content/60">{achievements.length}/{7}</span>
         </div>
         {achievements.length > 0 ? (

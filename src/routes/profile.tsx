@@ -21,13 +21,13 @@ function ProfileSignedOut() {
   return (
     <section className="mx-auto flex min-h-full w-full max-w-md flex-col" aria-labelledby="profile-heading">
       <header className="mx-auto w-[86%] space-y-[2dvh] pt-[7dvh] text-center">
-        <p className="app-kicker text-[0.75rem] font-bold uppercase">Neues Abenteuer</p>
-        <h1 id="profile-heading" className="app-heading text-[clamp(1.6rem,6vw,2rem)] font-bold leading-tight tracking-tight">
+        <p className="app-kicker text-xs font-bold uppercase">Neues Abenteuer</p>
+        <h1 id="profile-heading" className="app-heading text-3xl font-bold leading-tight tracking-tight">
           Dein Abenteuer
           <br />
           wartet
         </h1>
-        <p className="mx-auto max-w-100 text-[0.95rem] leading-6 text-base-content/70">
+        <p className="mx-auto max-w-100 text-base leading-6 text-base-content/70">
           Melde dich an oder erstelle
           <br />
           dein Konto, damit dein

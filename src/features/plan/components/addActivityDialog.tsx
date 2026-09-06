@@ -124,7 +124,7 @@ export function AddActivityDialog({ open, onClose, onAdd }: AddActivityDialogPro
             <p className="text-xs font-semibold uppercase tracking-wide text-primary">Deinen Plan</p>
             <h2 id="add-activity-heading" className="text-xl font-bold">Aktivität hinzufügen</h2>
           </div>
-          <button type="button" onClick={close} aria-label="Dialog schließen" className="btn btn-ghost btn-sm btn-circle">✕</button>
+          <button type="button" onClick={close} aria-label="Dialog schließen" className="btn btn-ghost btn-circle min-h-11 w-11">✕</button>
         </div>
 
         <div className="join mb-4 flex w-full">

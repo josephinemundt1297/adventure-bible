@@ -13,18 +13,18 @@ export function BottomNavigation() {
   return (
     <nav
       aria-label="Hauptnavigation"
-      className="app-floating-surface absolute bottom-4 left-1/2 z-10 w-[calc(100%-2rem)] -translate-x-1/2 rounded-2xl border p-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]"
+      className="app-floating-surface absolute bottom-4 left-4 right-4 z-10 rounded-2xl border p-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]"
     >
-      <ul className="flex items-end gap-1">
+      <ul className="flex min-w-0 items-end gap-1">
         {navigationItems.slice(0, 2).map((item) => (
-          <li key={item.label} className="flex-1">
+          <li key={item.label} className="min-w-0 flex-1">
             <Link
               to={item.path}
               activeProps={{
                 "aria-current": "page",
                 className: activeNavigationClass,
               }}
-              className="flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1 text-xs font-medium text-base-content/65 transition-colors hover:bg-base-200 hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none"
+              className="flex min-h-12 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-1 text-xs font-medium text-base-content/65 transition-colors hover:bg-base-200 hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none"
             >
               <span aria-hidden="true" className="text-lg leading-none">
                 {item.icon}
@@ -34,7 +34,7 @@ export function BottomNavigation() {
           </li>
         ))}
 
-        <li className="relative -mt-7 flex flex-1 justify-center">
+        <li className="relative -mt-7 flex w-16 shrink-0 justify-center">
           <Link
             to="/hp-check"
             aria-label="Großen HP-Check starten"
@@ -46,19 +46,19 @@ export function BottomNavigation() {
             <span aria-hidden="true" className="text-2xl leading-none">
               ♥
             </span>
-            <span className="mt-0.5 text-[0.65rem] font-bold leading-none">HP</span>
+            <span className="mt-0.5 text-xs font-bold leading-none">HP</span>
           </Link>
         </li>
 
         {navigationItems.slice(2).map((item) => (
-          <li key={item.label} className="flex-1">
+          <li key={item.label} className="min-w-0 flex-1">
             <Link
               to={item.path}
               activeProps={{
                 "aria-current": "page",
                 className: activeNavigationClass,
               }}
-              className="flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1 text-xs font-medium text-base-content/65 transition-colors hover:bg-base-200 hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none"
+              className="flex min-h-12 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-1 text-xs font-medium text-base-content/65 transition-colors hover:bg-base-200 hover:text-base-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none"
             >
               <span aria-hidden="true" className="text-lg leading-none">
                 {item.icon}

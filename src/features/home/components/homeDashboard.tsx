@@ -49,7 +49,7 @@ export function HomeDashboard() {
     <div className="space-y-3">
       <header className="pt-4">
         <div className="min-w-0">
-          <p className="app-kicker text-[0.68rem] font-bold uppercase">Dein Abenteuer</p>
+          <p className="app-kicker text-xs font-bold uppercase">Dein Abenteuer</p>
           <h1 className="app-heading mt-1 text-2xl font-bold tracking-tight">Hallo, {name}!</h1>
           <p className="mt-1 text-sm text-base-content/65">Was ist heute dein nächster guter Schritt?</p>
         </div>
@@ -90,9 +90,9 @@ export function HomeDashboard() {
       </section>
 
       <section className="grid grid-cols-3 gap-2" aria-label="Fortschritt">
-        <div className="adventure-card rounded-xl border p-3 text-center"><p className="text-[10px] font-semibold uppercase tracking-wide text-base-content/55">XP</p><p className="mt-1 text-base font-bold">{progress.xp}</p></div>
-        <div className="adventure-card rounded-xl border p-3 text-center"><p className="text-[10px] font-semibold uppercase tracking-wide text-base-content/55">Quests</p><p className="mt-1 text-base font-bold">{progress.completedQuests}</p></div>
-        <div className="adventure-card rounded-xl border p-3 text-center"><p className="text-[10px] font-semibold uppercase tracking-wide text-base-content/55">Points</p><p className="mt-1 text-base font-bold">{progress.questPoints}</p></div>
+        <div className="adventure-card rounded-xl border p-3 text-center"><p className="text-xs font-semibold uppercase tracking-wide text-base-content/55">XP</p><p className="mt-1 text-base font-bold">{progress.xp}</p></div>
+        <div className="adventure-card rounded-xl border p-3 text-center"><p className="text-xs font-semibold uppercase tracking-wide text-base-content/55">Quests</p><p className="mt-1 text-base font-bold">{progress.completedQuests}</p></div>
+        <div className="adventure-card rounded-xl border p-3 text-center"><p className="text-xs font-semibold uppercase tracking-wide text-base-content/55">Points</p><p className="mt-1 text-base font-bold">{progress.questPoints}</p></div>
       </section>
     </div>
   );

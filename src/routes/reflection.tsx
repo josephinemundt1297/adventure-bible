@@ -63,7 +63,7 @@ function ReflectionPage() {
       )}
 
       <header className="px-2 pt-1 text-center">
-        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
+        <p className="text-xs font-bold uppercase tracking-widest text-primary">
           Abenteuerabschluss
         </p>
         <h1 id="reflection-heading" className="mt-2 text-2xl font-bold tracking-tight">
@@ -109,7 +109,7 @@ function ReflectionPage() {
       <button
         type="button"
         onClick={saveReflection}
-        className="min-h-12 w-full rounded-xl bg-primary px-4 text-sm font-bold text-primary-content shadow-sm transition-transform hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none motion-reduce:hover:scale-100"
+        className="min-h-12 w-full rounded-xl bg-primary px-4 text-sm font-bold text-primary-content shadow-sm transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none motion-reduce:hover:scale-100"
       >
         Reflexion speichern
       </button>

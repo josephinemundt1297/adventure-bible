@@ -401,3 +401,145 @@ Alle Checks waren erfolgreich.
 ### Offene Punkte
 
 Manuelle Prüfung im Browser mit dem langen Testtext aus der Reflexion steht noch aus.
+
+---
+
+## 2026-09-06 - Sehr kleine Schrift im Mini HP-Check angepasst
+
+### Ziel
+
+Sehr kleine UI-Texte sollen vermieden werden, damit die App auf mobilen Geräten besser lesbar bleibt.
+
+### Ist-Zustand
+
+Der vorherige Vergleichswert im Mini HP-Check wurde mit einer zu kleinen Sonderklasse angezeigt.
+
+### Umsetzung
+
+- Schriftgröße für den vorherigen HP-Wert im Mini HP-Check auf eine normale Tailwind-Klasse angehoben.
+- Eigene Zeilenhöhe ergänzt, damit der kompakte Wertebereich stabil bleibt.
+
+### Betroffene Bereiche
+
+- `src/features/hpCheck/components/miniHpCheck.tsx`
+- `docs/DEVELOPMENT_LOG.md`
+
+### Prüfung
+
+- Suche nach Schriftgrößen unter 10px im `src`-Code.
+- `npm test`
+- `npm run lint`
+- `npm run build`
+
+Alle Checks waren erfolgreich.
+
+---
+
+## 2026-09-06 - Ersetzbare Tailwind-Sonderwerte reduziert
+
+### Ziel
+
+Tailwind-Klassen mit eckigen Klammern sollen nur dort bleiben, wo es wirklich keine passende Standardklasse gibt.
+
+### Ist-Zustand
+
+Mehrere Texte nutzten Sonderwerte wie eigene Pixelgrößen oder eigenes Letter-Spacing.
+
+### Umsetzung
+
+- Ersetzbare `text-[...]`-Klassen durch normale Tailwind-Textgrößen ersetzt.
+- Ersetzbare `tracking-[...]`-Klassen durch `tracking-widest` ersetzt.
+- `hover:scale-[1.01]` durch eine normale Scale-Klasse ersetzt.
+- Layout-Sonderwerte mit `vw`, `dvh`, `calc()` und `env()` bleiben vorerst stehen, weil sie keine saubere 1:1-Standardklasse haben.
+
+### Betroffene Bereiche
+
+- `src/routes/profile.tsx`
+- `src/routes/reflection.tsx`
+- `src/features/home/components/homeDashboard.tsx`
+- `src/features/hpCheck/components/miniHpCheck.tsx`
+- `src/features/plan/components/dayPlan.tsx`
+- `src/features/profile/components/progressStats.tsx`
+- `src/components/layout/bottomNavigation.tsx`
+- `src/components/ui/rewardNotification.tsx`
+- `docs/DEVELOPMENT_LOG.md`
+
+### Prüfung
+
+- Suche nach `text-[...]`, `tracking-[...]` und `scale-[...]` im `src`-Code.
+- `npm test`
+- `npm run lint`
+- `npm run build`
+
+---
+
+## 2026-09-06 - Touch-Ziele kritisch geprüft
+
+### Ziel
+
+Wichtige Aktionen sollen auf mobilen Geräten zuverlässig antippbar sein.
+
+### Ist-Zustand
+
+Einige interaktive Elemente waren kleiner als 44px oder nutzten kompakte DaisyUI-Buttonklassen.
+
+### Umsetzung
+
+- Plan-Aktionsbuttons von `size-9` auf `size-11` angehoben.
+- Mini HP-Check-Aktionen auf mindestens `min-h-11` angehoben.
+- Kleines Dialog-Schließen auf `min-h-11 w-11` angehoben.
+- Profilbild-Upload-Label auf `min-h-11` angehoben.
+
+### Betroffene Bereiche
+
+- `src/features/plan/components/dayPlan.tsx`
+- `src/features/hpCheck/components/miniHpCheck.tsx`
+- `src/features/plan/components/addActivityDialog.tsx`
+- `src/features/profile/components/profileAvatar.tsx`
+- `docs/DEVELOPMENT_LOG.md`
+
+### Prüfung
+
+- Suche nach `size-9`, `min-h-9`, `btn-xs` und `btn-sm` im App-Code.
+- `npm test`
+- `npm run lint`
+- `npm run build`
+
+Alle Checks waren erfolgreich.
+
+---
+
+## 2026-09-06 - Bottom Navigation bei Desktop-Skalierung stabilisiert
+
+### Ziel
+
+Die Bottom Navigation soll im Desktop-PhoneFrame nicht rechts abgeschnitten werden.
+
+### Ist-Zustand
+
+Bei einer Prüfung auf einem anderen PC wurde sichtbar, dass die Navigation durch Skalierung und enge Breite rechts aus dem sichtbaren Bereich laufen konnte.
+
+### Umsetzung
+
+- Navigation wird über `left-4 right-4` im Frame gehalten statt über eine berechnete Breite.
+- Seitliche Link-Paddings wurden reduziert.
+- Flexible Navigationseinträge bekommen `min-w-0`.
+- Der mittlere HP-Button bekommt eine feste Breite, damit er die anderen Einträge nicht wegdrückt.
+
+### Betroffene Bereiche
+
+- `src/components/layout/bottomNavigation.tsx`
+- `docs/ROADMAP.md`
+- `docs/DEVELOPMENT_LOG.md`
+
+### Prüfung
+
+- Keyboard-Test wurde manuell bestätigt.
+- Google Lighthouse wurde geprüft und bestanden.
+- `npm test`
+- `npm run lint`
+- `npm run build`
+
+### Offene Punkte
+
+Der konkrete Desktop-Skalierungsfall sollte nach dem Fix nochmal auf dem betroffenen PC geprüft werden.
