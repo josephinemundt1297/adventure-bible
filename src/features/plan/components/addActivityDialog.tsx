@@ -127,9 +127,9 @@ export function AddActivityDialog({ open, onClose, onAdd }: AddActivityDialogPro
           <button type="button" onClick={close} aria-label="Dialog schließen" className="btn btn-ghost btn-sm btn-circle">✕</button>
         </div>
 
-        <div className="join mb-4 grid w-full grid-cols-2">
-          <button type="button" onClick={() => setKind("quest")} aria-pressed={kind === "quest"} className={`join-item btn ${kind === "quest" ? "btn-primary" : "btn-outline"}`}>Quest</button>
-          <button type="button" onClick={() => setKind("personal")} aria-pressed={kind === "personal"} className={`join-item btn ${kind === "personal" ? "btn-primary" : "btn-outline"}`}>Eigene Aufgabe</button>
+        <div className="join mb-4 flex w-full">
+          <button type="button" onClick={() => setKind("quest")} aria-pressed={kind === "quest"} className={`join-item btn flex-1 ${kind === "quest" ? "btn-primary" : "btn-outline"}`}>Quest</button>
+          <button type="button" onClick={() => setKind("personal")} aria-pressed={kind === "personal"} className={`join-item btn flex-1 ${kind === "personal" ? "btn-primary" : "btn-outline"}`}>Eigene Aufgabe</button>
         </div>
 
         {kind === "quest" ? (
@@ -154,9 +154,9 @@ export function AddActivityDialog({ open, onClose, onAdd }: AddActivityDialogPro
           <input type="time" value={time} onChange={(event) => setTime(event.target.value)} className="input input-bordered w-full" />
         </label>
 
-        <div className="mt-5 grid grid-cols-2 gap-3">
-          <button type="button" onClick={close} className="btn btn-outline">Abbrechen</button>
-          <button type="button" onClick={addActivity} disabled={!canAdd} className="btn btn-primary">Hinzufügen</button>
+        <div className="mt-5 flex gap-3">
+          <button type="button" onClick={close} className="btn btn-outline flex-1">Abbrechen</button>
+          <button type="button" onClick={addActivity} disabled={!canAdd} className="btn btn-primary flex-1">Hinzufügen</button>
         </div>
       </section>
     </div>

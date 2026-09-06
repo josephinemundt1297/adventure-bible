@@ -66,7 +66,7 @@ export function ProfileAvatar({
   }[size];
 
   const image = (
-    <div className={`overflow-hidden rounded-full border border-secondary/35 bg-[#eee3d1] ${sizeClass}`}>
+    <div className={`app-avatar-surface overflow-hidden rounded-full border border-secondary/35 ${sizeClass}`}>
       {avatar ? (
         <img className="size-full object-cover" src={avatar} alt={`${name} Profilbild`} />
       ) : (

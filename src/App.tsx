@@ -1,4 +1,3 @@
-import "./App.css";
 import { routeTree } from "./routeTree.gen";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { resetDemoUserData } from "./lib/demoData";

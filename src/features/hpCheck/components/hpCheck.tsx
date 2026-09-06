@@ -83,7 +83,7 @@ export function HpCheck() {
         <div className="card-body items-center p-4 sm:p-5">
           <h2 id="hp-question" className="w-full max-w-sm text-center text-lg font-semibold leading-6 text-pretty sm:text-xl">{question.question}</h2>
 
-          <div className="mt-4 grid w-full max-w-sm gap-3" aria-label="Antwort auswählen">
+          <div className="mt-4 flex w-full max-w-sm flex-col gap-3" aria-label="Antwort auswählen">
             {hpAnswerLabels.map((label, index) => {
               const value = (index + 1) as HpAnswer["value"];
               const selected = currentAnswer === value;

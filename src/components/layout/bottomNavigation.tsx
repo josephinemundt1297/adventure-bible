@@ -13,11 +13,11 @@ export function BottomNavigation() {
   return (
     <nav
       aria-label="Hauptnavigation"
-      className="absolute bottom-4 left-1/2 z-10 w-[calc(100%-2rem)] -translate-x-1/2 rounded-2xl border border-[#ddceb8] bg-[#fbf5ea]/96 p-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] shadow-lg backdrop-blur"
+      className="app-floating-surface absolute bottom-4 left-1/2 z-10 w-[calc(100%-2rem)] -translate-x-1/2 rounded-2xl border p-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]"
     >
-      <ul className="grid grid-cols-5 items-end gap-1">
+      <ul className="flex items-end gap-1">
         {navigationItems.slice(0, 2).map((item) => (
-          <li key={item.label}>
+          <li key={item.label} className="flex-1">
             <Link
               to={item.path}
               activeProps={{
@@ -34,14 +34,14 @@ export function BottomNavigation() {
           </li>
         ))}
 
-        <li className="relative -mt-7 flex justify-center">
+        <li className="relative -mt-7 flex flex-1 justify-center">
           <Link
             to="/hp-check"
             aria-label="Großen HP-Check starten"
             activeProps={{
               "aria-current": "page",
             }}
-            className="flex size-16 flex-col items-center justify-center rounded-full border-4 border-[#fbf5ea] bg-primary text-primary-content shadow-xl outline-offset-2 transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-primary motion-reduce:transition-none motion-reduce:hover:scale-100"
+            className="app-hp-navigation-button flex size-16 flex-col items-center justify-center rounded-full border-4 bg-primary text-primary-content shadow-xl outline-offset-2 transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-primary motion-reduce:transition-none motion-reduce:hover:scale-100"
           >
             <span aria-hidden="true" className="text-2xl leading-none">
               ♥
@@ -51,7 +51,7 @@ export function BottomNavigation() {
         </li>
 
         {navigationItems.slice(2).map((item) => (
-          <li key={item.label}>
+          <li key={item.label} className="flex-1">
             <Link
               to={item.path}
               activeProps={{

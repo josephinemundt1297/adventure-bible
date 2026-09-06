@@ -28,7 +28,7 @@ export function CharacterView({ name }: CharacterViewProps) {
 
       <div className="adventure-card rounded-2xl border shadow-sm">
         <div className="card-body items-center gap-3 text-center">
-          <div className="flex h-40 w-32 items-end justify-center overflow-hidden rounded-2xl bg-[#f2e8d8]" aria-hidden="true">
+          <div className="app-character-surface flex h-40 w-32 items-end justify-center overflow-hidden rounded-2xl" aria-hidden="true">
             <img className="adventure-art h-full w-full" src="/raccoon-adventure.svg" alt="" />
           </div>
           <div>

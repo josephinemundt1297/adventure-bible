@@ -52,29 +52,39 @@ body,
 }
 
 body {
-  background: #f1e7d6;
-  color: #263127;
+  background: var(--color-base-200);
+  color: var(--color-base-content);
+}
+
+:root {
+  --ab-color-primary-hover: #203b28;
+  --ab-color-paper: #fffdf8;
+  --ab-color-avatar: #eee3d1;
+  --ab-color-character: #f2e8d8;
+  --ab-color-soft-surface: #f6eddf;
+  --ab-shadow-card: 0 8px 24px rgba(72, 52, 30, 0.07);
+  --ab-shadow-floating: 0 10px 24px rgba(72, 52, 30, 0.14);
 }
 
 .app-heading {
   font-family: Georgia, "Times New Roman", serif;
-  color: #294b32;
+  color: var(--color-primary);
 }
 
 .app-kicker {
-  color: #b68a45;
+  color: var(--color-secondary);
   letter-spacing: 0.14em;
 }
 
 .adventure-card {
-  border-color: color-mix(in srgb, #294b32 14%, transparent);
-  background: #fbf5ea;
-  box-shadow: 0 8px 24px rgba(72, 52, 30, 0.07);
+  border-color: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  background: var(--color-base-100);
+  box-shadow: var(--ab-shadow-card);
 }
 
 .adventure-soft-card {
-  border-color: #ddceb8;
-  background: #f6eddf;
+  border-color: var(--color-base-300);
+  background: var(--ab-color-soft-surface);
 }
 
 .adventure-art {
@@ -84,6 +94,68 @@ body {
 
 .hp-check-page {
   min-height: 100%;
+}
+
+/* App-Flächen: hier sammeln wir wiederkehrende Farben statt sie in TSX zu verstreuen. */
+.app-shell-background {
+  background: var(--color-base-100);
+}
+
+.app-floating-surface {
+  border-color: var(--color-base-300);
+  background: color-mix(in srgb, var(--color-base-100) 96%, transparent);
+  box-shadow: var(--ab-shadow-floating);
+  backdrop-filter: blur(8px);
+}
+
+.app-user-menu-surface {
+  border-color: var(--color-base-300);
+  background: color-mix(in srgb, var(--color-base-100) 95%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.app-hp-navigation-button {
+  border-color: var(--color-base-100);
+}
+
+.app-avatar-surface {
+  background: var(--ab-color-avatar);
+}
+
+.app-character-surface {
+  background: var(--ab-color-character);
+}
+
+@media (min-width: 40rem) {
+  .app-shell-background {
+    background: var(--color-base-200);
+  }
+}
+
+/* Clerk nutzt eigene Klassen, aber dieselben Theme-Werte wie die App. */
+.clerk-card {
+  border: 1px solid var(--color-base-300);
+  background: var(--color-base-100);
+  box-shadow: 0 1px 2px rgba(72, 52, 30, 0.05);
+}
+
+.clerk-primary-button {
+  background: var(--color-primary);
+  color: white;
+}
+
+.clerk-primary-button:hover {
+  background: var(--ab-color-primary-hover);
+}
+
+.clerk-form-input {
+  border-color: var(--color-base-300);
+  background: var(--ab-color-paper);
+  color: var(--color-base-content);
+}
+
+.clerk-action-link {
+  color: var(--color-primary);
 }
 
 @media (prefers-reduced-motion: reduce) {

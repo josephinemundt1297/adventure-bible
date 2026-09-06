@@ -140,7 +140,7 @@ export function MiniHpCheck() {
           })}
         </div>
 
-        <div className="grid gap-2">
+        <div className="flex flex-col gap-2">
           {primary && (
             <article className={`rounded-2xl border p-3 shadow-sm ${selectedQuestId === primary.id ? "border-primary bg-primary/10" : "border-primary/30 bg-primary/5"}`}>
               <div className="flex items-center justify-between gap-2">
@@ -170,7 +170,7 @@ export function MiniHpCheck() {
         </div>
 
         {selectedQuest && (
-          <div className="grid gap-1.5">
+          <div className="flex flex-col gap-1.5">
             <p className="text-center text-xs font-medium" role="status">„{selectedQuest.title}“ ist ausgewählt.</p>
             <Link to="/quests" className="btn btn-primary min-h-9 w-full">Aufgabe starten</Link>
           </div>
@@ -190,7 +190,7 @@ export function MiniHpCheck() {
         <p className="text-xs leading-5 text-base-content/65">Ein kurzer Check genügt. Danach schlägt dir die App eine passende Aufgabe vor – plus eine Alternative.</p>
       </header>
 
-      <div className="grid gap-2.5" aria-label="Aktuellen Zustand einschätzen">
+      <div className="flex flex-col gap-2.5" aria-label="Aktuellen Zustand einschätzen">
         {areas.map(({ id, label, icon }) => (
           <div key={id} className="space-y-0.5">
             <div className="flex items-center justify-between gap-2 text-sm">

@@ -77,14 +77,14 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
   if (progress?.status === "completed") {
     return (
       <section className="space-y-5" aria-labelledby="quest-complete-heading">
-        <header className="grid h-[168px] grid-rows-[24px_58px_72px] gap-2">
+        <header className="flex flex-col gap-2">
           <p className="text-sm font-semibold uppercase tracking-wide text-primary">Quest abgeschlossen</p>
           <h1 id="quest-complete-heading" className="app-heading text-2xl font-bold leading-7 tracking-tight">Gut gemacht! 🎉</h1>
           <p className="text-sm leading-6 text-base-content/70">Du hast „{quest.title}“ abgeschlossen. Dein Fortschritt ist gespeichert.</p>
         </header>
 
-        <article className="adventure-card card h-[220px] border border-primary/20">
-          <div className="card-body grid grid-rows-[32px_52px_28px] place-items-center content-center gap-3 text-center">
+        <article className="adventure-card card border border-primary/20">
+          <div className="card-body items-center gap-3 text-center">
             <span className="badge badge-primary badge-lg">Reward</span>
             <p className="app-heading text-3xl font-bold text-primary">+{quest.rewardXp} XP</p>
             <p className="font-semibold">+1 Quest Point</p>
@@ -99,16 +99,16 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
   if (progress?.status === "active") {
     return (
       <section className="space-y-5" aria-labelledby="active-quest-heading">
-        <header className="grid h-[168px] grid-rows-[24px_58px_72px] gap-2">
+        <header className="flex flex-col gap-2">
           <p className="text-sm font-semibold uppercase tracking-wide text-primary">Aktive Quest</p>
-          <h1 id="active-quest-heading" className="app-heading overflow-hidden text-2xl font-bold leading-7 tracking-tight">{quest.title}</h1>
+          <h1 id="active-quest-heading" className="app-heading text-2xl font-bold leading-7 tracking-tight">{quest.title}</h1>
           <p className="text-sm leading-6 text-base-content/70">Nimm dir den Raum, den diese Aufgabe braucht. Du entscheidest selbst, wann du sie abschließt.</p>
         </header>
 
-        <article className="adventure-card card h-[250px] border border-primary/20">
-          <div className="card-body grid grid-rows-[24px_72px_24px_40px] gap-3">
+        <article className="adventure-card card border border-primary/20">
+          <div className="card-body gap-3">
             <span className="badge badge-primary w-fit">In Arbeit</span>
-            <p className="overflow-hidden text-sm leading-6">{quest.description}</p>
+            <p className="text-sm leading-6">{quest.description}</p>
             <div className="flex items-center justify-between text-sm text-base-content/60">
               <span>Aufwand: {quest.effort === "short" ? "kurz" : "mittel"}</span>
               <span>+{quest.rewardXp} XP</span>
@@ -122,20 +122,20 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
 
   return (
     <section className="space-y-5" aria-labelledby="quest-heading">
-      <header className="grid h-[168px] grid-rows-[24px_58px_72px] gap-2">
+      <header className="flex flex-col gap-2">
         <p className="text-sm font-semibold uppercase tracking-wide text-primary">Deine nächste Quest</p>
-        <h1 id="quest-heading" className="app-heading overflow-hidden text-2xl font-bold leading-7 tracking-tight">Eine passende Aufgabe wartet auf dich.</h1>
+        <h1 id="quest-heading" className="app-heading text-2xl font-bold leading-7 tracking-tight">Eine passende Aufgabe wartet auf dich.</h1>
         <p className="text-sm leading-6 text-base-content/70">Deine Empfehlung orientiert sich an dem Bereich, der gerade am meisten Unterstützung gebrauchen kann.</p>
       </header>
 
-      <article className="adventure-card card h-[280px] border border-primary/20">
-        <div className="card-body grid grid-rows-[24px_32px_72px_24px_40px] gap-3">
+      <article className="adventure-card card border border-primary/20">
+        <div className="card-body gap-3">
           <div className="flex items-center justify-between gap-3">
             <span className="badge badge-primary">{quest.type === "recovery" ? "Recovery Quest" : "Side Quest"}</span>
             <span className="text-sm font-semibold text-primary">+{quest.rewardXp} XP</span>
           </div>
-          <h2 className="app-heading overflow-hidden text-xl font-bold leading-7">{quest.title}</h2>
-          <p className="overflow-hidden text-sm leading-6 text-base-content/70">{quest.description}</p>
+          <h2 className="app-heading text-xl font-bold leading-7">{quest.title}</h2>
+          <p className="text-sm leading-6 text-base-content/70">{quest.description}</p>
           <div className="flex items-center justify-between text-sm text-base-content/60">
             <span>Aufwand: {quest.effort === "short" ? "kurz" : "mittel"}</span>
             <span>Empfohlen für dich</span>
