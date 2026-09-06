@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { notifyAchievements } from "../lib/rewardNotifications";
 import { recordReflection } from "../lib/achievements";
+import { saveDayReflection } from "../lib/dayJournal";
 
 const REFLECTION_KEY = "adventure-bible:reflection";
 
@@ -44,12 +45,21 @@ function ReflectionPage() {
 
   function saveReflection() {
     sessionStorage.setItem(REFLECTION_KEY, JSON.stringify(reflection));
+    saveDayReflection(reflection);
+    sessionStorage.removeItem(REFLECTION_KEY);
+    setReflection(emptyReflection);
     notifyAchievements(recordReflection());
     setSaved(true);
   }
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="reflection-heading">
+      {saved && (
+        <div className="rounded-2xl border border-success/30 bg-success/10 px-4 py-3 text-sm font-semibold text-success" role="status" aria-live="polite">
+          ✓ Reflexion gespeichert und in dein Tagesjournal übertragen.
+        </div>
+      )}
+
       <header className="px-2 pt-1 text-center">
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
           Abenteuerabschluss
@@ -103,7 +113,7 @@ function ReflectionPage() {
       </button>
 
       <p className="min-h-5 text-center text-xs font-medium text-primary" aria-live="polite">
-        {saved ? "✓ Für heute gespeichert." : ""}
+        {saved ? "Deine Felder sind wieder frei für einen neuen Eintrag." : ""}
       </p>
     </section>
   );

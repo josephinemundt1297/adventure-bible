@@ -22,6 +22,8 @@ Profil
 → XP / Quest Points / Reward
 → Mini HP-Check
 → neue Quest ODER Lagerfeuer
+→ abendliche Reflexion
+→ Tagesverlauf im Kalender nachvollziehen
 → nächster Abenteuerzyklus
 ```
 
@@ -149,8 +151,26 @@ Priorität:
 - [x] Plan scrollt intern, Navigation bleibt sichtbar
 - [x] Profilbereich / Ich
 - [x] Reflexion als vorhandene Zusatzfunktion
+- [x] Reflexion wird einem Kalendertag zugeordnet
+- [x] HP-/Quest-/Mini-HP-Verlauf wird im Kalender sichtbar
 
-**Status:** 🟢 abgeschlossen
+**Status:** 🟢 Grundfunktionen und Tagesjournal-Verknüpfung vorhanden
+
+---
+
+# 9.1 Tagesjournal und Kalenderverlauf
+
+- [x] Produkt-Scope für Tagesjournal definiert
+- [x] lokales Tagesjournal-Datenmodell angelegt
+- [x] Tagesjournal-Logik testbar vorbereitet
+- [x] großer HP-Check schreibt Journal-Event
+- [x] Quest-Start schreibt Journal-Event
+- [x] Quest-Abschluss schreibt Journal-Event
+- [x] Mini HP-Check schreibt Journal-Event
+- [x] Lagerfeuer schreibt Journal-Event
+- [x] Abendliche Reflexion schreibt Tagesjournal-Eintrag
+- [x] Kalender zeigt Tage mit Journal-Einträgen
+- [x] Kalender zeigt Tagesverlauf und Reflexion
 
 ---
 
@@ -184,9 +204,9 @@ Priorität:
 - [x] vollständigen Demo-Flow einmal durchspielen
 - [x] keine kritischen Fehler im Demo-Flow
 - [x] unnötige Debug-/Testartefakte geprüft
-- [x] finale Roadmap-Dokumentation auf Konsistenz geprüft
+- [ ] finale Roadmap-Dokumentation nach Tagesjournal-Erweiterung erneut prüfen
 
-**Status:** 🟢 MVP-Verifikation abgeschlossen
+**Status:** 🟡 technische Checks grün; Tagesjournal-Erweiterung und finale manuelle Abnahme offen
 
 ---
 
@@ -202,6 +222,8 @@ Der MVP ist fertig, wenn:
 - [x] XP / Quest Points aktualisiert werden
 - [x] Mini HP-Check durchgeführt werden kann
 - [x] zwischen neuer Quest und Lagerfeuer gewählt werden kann
+- [x] abendliche Reflexion im Kalender nachvollziehbar ist
+- [x] HP-/Quest-/Mini-HP-Verlauf pro Tag sichtbar ist
 - [x] Home den nächsten sinnvollen Schritt zeigt
 - [x] Hauptnavigation funktioniert
 - [x] mobile Grunddarstellung funktioniert
@@ -213,7 +235,7 @@ Der MVP ist fertig, wenn:
 - [x] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
 - [ ] manuelle Keyboard-/Screenreader-/Kontrast-Abnahme vollständig durchgeführt
 
-**MVP-Status:** 🟢 funktional fertig und verifiziert
+**MVP-Status:** 🟡 Kern-Loop funktioniert; Tagesjournal/Kalenderverlauf wird ergänzt
 
 ---
 
@@ -229,6 +251,7 @@ Nicht Teil der aktuellen React-MVP-Abnahme:
 - KI-Unterstützung
 - Voice Input
 - Kalenderintegration
+- externe Kalenderintegration
 - umfangreiche Statistiken
 - komplexes Inventar / RPG-System
 - langfristige Mustererkennung

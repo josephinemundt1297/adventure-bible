@@ -6,6 +6,7 @@ import { recordCampfire, recordMiniHpCheck } from "../../../lib/achievements";
 import { readCompletedQuestIds } from "../../../lib/questHistory";
 import { selectMiniQuest } from "../../../lib/miniQuestSelection";
 import { leaveCampfire, startCampfire } from "../../../lib/campfire";
+import { appendDayJournalEvent } from "../../../lib/dayJournal";
 import type { MiniHpArea, MiniHpState } from "../../../types/miniHp";
 import type { Quest } from "../../../types/quest";
 import type { HpState } from "../../../types/hp";
@@ -53,6 +54,7 @@ export function MiniHpCheck() {
     leaveCampfire();
     sessionStorage.setItem(MINI_HP_STATE_KEY, JSON.stringify(state));
     sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
+    appendDayJournalEvent({ type: "mini-hp-check", state });
     notifyAchievements(recordMiniHpCheck());
     setSelectedQuestId(null);
     setCampfireStarted(false);
@@ -70,6 +72,7 @@ export function MiniHpCheck() {
     startCampfire();
     sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
     setSelectedQuestId(null);
+    appendDayJournalEvent({ type: "campfire-started" });
     notifyAchievements(recordCampfire());
     setCampfireStarted(true);
   }

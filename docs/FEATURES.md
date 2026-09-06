@@ -295,11 +295,38 @@ Der Plan soll Orientierung geben, ohne den Nutzer in eine starre Routine zu zwin
 - Änderungen am Plan sind erlaubt.
 - Der Plan ist Unterstützung und keine Bestrafung.
 
-Der MVP benötigt keinen vollständigen Kalender.
+Der MVP benötigt keinen vollständigen externen Kalender.
+
+Ein interner Kalender darf aber den eigenen Tagesverlauf sichtbar machen,
+wenn dadurch der zentrale Produkt-Loop nachvollziehbarer wird.
 
 ---
 
-## 1.12 XP und Fortschritt
+## 1.12 Tagesjournal / Verlauf
+
+Adventure Bible soll nicht nur den aktuellen Zustand zeigen, sondern auch
+nachvollziehbar machen, was an einem Tag passiert ist.
+
+Ein Kalendertag kann deshalb als Tagesjournal dargestellt werden.
+
+### Anforderungen
+
+- Ein großer HP-Check kann als Startpunkt im Tagesjournal erscheinen.
+- Gestartete und abgeschlossene Quests können im Tagesjournal erscheinen.
+- Rewards können im Tagesjournal verständlich sichtbar werden.
+- Mini-HP-Checks können mit Zeitpunkt im Tagesjournal erscheinen.
+- Lagerfeuer / Regeneration kann als bewusste Entscheidung erscheinen.
+- Die abendliche Reflexion wird dem jeweiligen Tag zugeordnet.
+- Der Tagesverlauf wird zeitlich verständlich dargestellt.
+- Reflexionen bleiben persönliche Notizen und werden nicht bewertet.
+- Der Verlauf darf den Nutzer nicht mit Daten überladen.
+
+Im React-MVP erfolgt diese Persistenz lokal im Browser. Ein Backend und
+Synchronisation bleiben außerhalb dieses Schritts.
+
+---
+
+## 1.13 XP und Fortschritt
 
 Abgeschlossene Quests können XP vergeben.
 
@@ -315,7 +342,7 @@ XP machen Fortschritt sichtbar und unterstützen das Game Feeling.
 
 ---
 
-## 1.13 Profilbereich / „Ich“
+## 1.14 Profilbereich / „Ich“
 
 Der Nutzer kann sein Profil und persönliche Einstellungen einsehen.
 
@@ -344,12 +371,12 @@ Diese Funktionen gehören zum Produkt, sind aber nicht notwendig, um den React-M
 
 ---
 
-## 2.2 Detaillierter Tagesverlauf
+## 2.2 Erweiterter Tagesverlauf
 
 - mehrere große HP-Checks pro Tag bzw. Abenteuerzyklen
-- Mini-HP-Verläufe nach Quests
-- Verlauf der einzelnen HP-Bereiche
-- Tageszusammenfassung
+- erweiterte Mini-HP-Verläufe nach Quests
+- ausführlicher Verlauf der einzelnen HP-Bereiche
+- automatische Tageszusammenfassung
 - Vergleich zwischen Ausgangszustand und Quest-Auswirkungen
 
 ---
@@ -395,10 +422,10 @@ Diese Systeme sind Ergänzungen zum Kernprodukt und dürfen dessen Bedienung nic
 
 ## 2.6 Journal / Reflexion
 
-- kurze Tagesreflexion
-- persönliche Notizen
+- mehrere Reflexionen pro Tag
+- längere persönliche Notizen
 - Rückblick auf schwierige oder erfolgreiche Tage
-- optionale Verknüpfung mit Quests und Zuständen
+- Filter und Suche in vergangenen Einträgen
 
 ---
 

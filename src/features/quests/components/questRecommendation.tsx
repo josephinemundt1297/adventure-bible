@@ -5,6 +5,7 @@ import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { addProgress } from "../../../lib/progress";
 import { recordQuestCompletion } from "../../../lib/achievements";
 import { leaveCampfire } from "../../../lib/campfire";
+import { appendDayJournalEvent } from "../../../lib/dayJournal";
 import { readCompletedQuestIds, recordQuestCompletion as recordQuestHistory } from "../../../lib/questHistory";
 import { selectQuest } from "../../../lib/questSelection";
 import type { HpState } from "../../../types/hp";
@@ -55,6 +56,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
     const nextProgress: QuestProgress = { quest, status: "active" };
     sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(nextProgress));
     sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
+    appendDayJournalEvent({ type: "quest-started", quest });
     setProgress(nextProgress);
   }
 
@@ -70,6 +72,12 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
     sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(completedProgress));
     recordQuestHistory(quest.id);
     addProgress(quest.rewardXp, 1);
+    appendDayJournalEvent({
+      type: "quest-completed",
+      quest,
+      rewardXp: quest.rewardXp,
+      rewardQuestPoints: 1,
+    });
     notifyAchievements(recordQuestCompletion());
     setProgress(completedProgress);
   }

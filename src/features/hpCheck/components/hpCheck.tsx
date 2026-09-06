@@ -5,6 +5,7 @@ import { calculateHpState } from "../../../lib/hpScore";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { recordHpCheck } from "../../../lib/achievements";
 import { leaveCampfire } from "../../../lib/campfire";
+import { appendDayJournalEvent } from "../../../lib/dayJournal";
 import type { HpAnswer } from "../../../types/hp";
 
 const HP_STATE_KEY = "adventure-bible:hp-state";
@@ -41,6 +42,7 @@ export function HpCheck() {
       sessionStorage.setItem(HP_STATE_KEY, JSON.stringify(finalState));
       sessionStorage.removeItem(QUEST_PROGRESS_KEY);
       sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
+      appendDayJournalEvent({ type: "hp-check", state: finalState });
       notifyAchievements(recordHpCheck());
       setAnswers(allAnswers);
       setCompletedState(finalState);

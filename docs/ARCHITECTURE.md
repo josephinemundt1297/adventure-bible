@@ -70,7 +70,6 @@ src/
 ├── types/
 ├── assets/
 ├── App.tsx
-├── App.css
 ├── index.css
 ├── main.tsx
 └── routeTree.gen.ts
@@ -235,8 +234,25 @@ Beispiele:
 - technische Helper
 - API-Client-Helfer
 - Validierungs-Utilities, sofern sie nicht eindeutig zu einem Feature gehören
+- lokale MVP-Persistenz für Tagesjournal und Verlauf
 
 Feature-spezifische Logik gehört nicht automatisch nach `lib/`.
+
+### Lokales Tagesjournal
+
+`src/lib/dayJournal.ts` sammelt den nachvollziehbaren Tagesverlauf des MVPs.
+
+Dazu gehören unter anderem:
+
+- großer HP-Check
+- Quest gestartet
+- Quest abgeschlossen
+- Mini HP-Check
+- Lagerfeuer
+- abendliche Reflexion
+
+Diese Daten werden im MVP lokal im Browser gespeichert. Das ist noch keine
+serverseitige Persistenz und keine Sicherheitsgrenze.
 
 ## `src/types/` – geteilte Typen
 
@@ -250,11 +266,9 @@ Ein globaler Typ-Ordner darf nicht zu einem Ablageort für jeden beliebigen Typ 
 
 `assets/` enthält lokal eingebundene Bilder und andere statische Assets, die Bestandteil des Frontends sind.
 
-## `App.css` und `index.css`
+## `index.css`
 
 `index.css` enthält globale Styles bzw. globale Tailwind-/DaisyUI-Einbindungen.
-
-`App.css` darf app-spezifische Styles enthalten, sofern diese nicht besser global oder featurebezogen aufgehoben sind.
 
 ---
 
