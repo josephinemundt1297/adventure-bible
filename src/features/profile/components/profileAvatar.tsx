@@ -4,6 +4,11 @@ const AVATAR_STORAGE_KEY = "adventure-bible:profile-avatar";
 const AVATAR_EVENT = "adventure-bible:avatar-updated";
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
+interface UploadMessage {
+  type: "success" | "error";
+  text: string;
+}
+
 function readAvatar(): string | null {
   return localStorage.getItem(AVATAR_STORAGE_KEY);
 }
@@ -18,6 +23,7 @@ export function ProfileAvatar({
   editable?: boolean;
 }) {
   const [avatar, setAvatar] = useState<string | null>(() => readAvatar());
+  const [uploadMessage, setUploadMessage] = useState<UploadMessage | null>(null);
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const initial = name.trim().charAt(0).toUpperCase() || "A";
@@ -33,12 +39,14 @@ export function ProfileAvatar({
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      window.alert("Bitte wähle eine Bilddatei aus.");
+      setUploadMessage({ type: "error", text: "Bitte wähle eine Bilddatei aus." });
+      event.target.value = "";
       return;
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      window.alert("Das Bild darf höchstens 5 MB groß sein.");
+      setUploadMessage({ type: "error", text: "Das Bild darf höchstens 5 MB groß sein." });
+      event.target.value = "";
       return;
     }
 
@@ -50,9 +58,13 @@ export function ProfileAvatar({
       try {
         localStorage.setItem(AVATAR_STORAGE_KEY, result);
         setAvatar(result);
+        setUploadMessage({ type: "success", text: "Profilbild wurde gespeichert." });
         window.dispatchEvent(new Event(AVATAR_EVENT));
       } catch {
-        window.alert("Das Bild konnte lokal nicht gespeichert werden. Bitte versuche ein kleineres Bild.");
+        setUploadMessage({
+          type: "error",
+          text: "Das Bild konnte lokal nicht gespeichert werden. Bitte versuche ein kleineres Bild.",
+        });
       }
     };
     reader.readAsDataURL(file);
@@ -106,6 +118,16 @@ export function ProfileAvatar({
       <p className="max-w-xs text-center text-xs leading-4 text-base-content/55">
         Dein Bild bleibt lokal in diesem Browser gespeichert.
       </p>
+      {uploadMessage && (
+        <p
+          className={`max-w-xs text-center text-xs font-semibold leading-4 ${
+            uploadMessage.type === "success" ? "text-success" : "text-error"
+          }`}
+          role={uploadMessage.type === "success" ? "status" : "alert"}
+        >
+          {uploadMessage.text}
+        </p>
+      )}
     </div>
   );
 }

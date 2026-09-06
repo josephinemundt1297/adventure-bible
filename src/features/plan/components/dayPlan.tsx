@@ -4,6 +4,7 @@ import { initialPlan } from "../../../data/plan";
 import type { PlannedActivity } from "../../../types/plan";
 import { EmptyState } from "../../../components/ui/emptyState";
 import { ErrorState } from "../../../components/ui/errorState";
+import { formatShortGermanDate } from "../../../lib/dateFormat";
 import { AddActivityDialog } from "./addActivityDialog";
 
 const PLAN_KEY = "adventure-bible:plan";
@@ -86,6 +87,7 @@ export function DayPlan() {
   }
 
   const completedCount = activities.filter((activity) => activity.completed).length;
+  const todayLabel = formatShortGermanDate();
 
   if (loadError) {
     return (
@@ -105,7 +107,7 @@ export function DayPlan() {
         <div className="flex items-start justify-between gap-3">
           <div>
             <h1 id="plan-heading" className="text-xl font-bold tracking-tight">Mein Plan für heute</h1>
-            <p className="mt-1 text-xs text-base-content/60">Di, 28.07.2026</p>
+            <p className="mt-1 text-xs text-base-content/60">{todayLabel}</p>
           </div>
           <Link to="/calendar" aria-label="Kalender öffnen" className="flex size-11 shrink-0 items-center justify-center rounded-xl text-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">📅</Link>
         </div>

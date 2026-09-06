@@ -36,7 +36,7 @@ export function RewardNotification() {
           </span>
           <div className="min-w-0 flex-1">
             <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">Achievement freigeschaltet</p>
-            <p className="mt-0.5 truncate font-bold">{current.title}</p>
+            <p className="mt-0.5 font-bold leading-5">{current.title}</p>
             <p className="text-xs leading-4 text-base-content/65">{current.description}</p>
           </div>
           <span className="shrink-0 text-sm font-extrabold text-primary">+{current.xp} XP</span>

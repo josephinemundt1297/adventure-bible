@@ -204,9 +204,9 @@ Priorität:
 - [x] vollständigen Demo-Flow einmal durchspielen
 - [x] keine kritischen Fehler im Demo-Flow
 - [x] unnötige Debug-/Testartefakte geprüft
-- [ ] finale Roadmap-Dokumentation nach Tagesjournal-Erweiterung erneut prüfen
+- [x] finale Roadmap-Dokumentation nach Tagesjournal-Erweiterung erneut prüfen
 
-**Status:** 🟡 technische Checks grün; Tagesjournal-Erweiterung und finale manuelle Abnahme offen
+**Status:** 🟡 technische Checks grün; finale manuelle Abnahme offen
 
 ---
 
@@ -235,7 +235,7 @@ Der MVP ist fertig, wenn:
 - [x] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
 - [ ] manuelle Keyboard-/Screenreader-/Kontrast-Abnahme vollständig durchgeführt
 
-**MVP-Status:** 🟡 Kern-Loop funktioniert; Tagesjournal/Kalenderverlauf wird ergänzt
+**MVP-Status:** 🟡 Kern-Loop funktioniert; finale manuelle Accessibility-Abnahme offen
 
 ---
 

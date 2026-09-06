@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { notifyAchievements } from "../lib/rewardNotifications";
 import { recordReflection } from "../lib/achievements";
 import { saveDayReflection } from "../lib/dayJournal";
+import { formatLongGermanDate } from "../lib/dateFormat";
 
 const REFLECTION_KEY = "adventure-bible:reflection";
 
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/reflection")({ component: ReflectionPage 
 function ReflectionPage() {
   const [reflection, setReflection] = useState<ReflectionData>(loadReflection);
   const [saved, setSaved] = useState(false);
+  const todayLabel = formatLongGermanDate();
 
   function updateField(field: keyof ReflectionData, value: string) {
     setSaved(false);
@@ -70,7 +72,7 @@ function ReflectionPage() {
         <p className="mt-2 text-sm leading-5 text-base-content/65">
           Kein Test. Kein Urteil. Nur ein kurzer Blick zurück auf deinen Tag.
         </p>
-        <p className="mt-2 text-xs text-base-content/50">Dienstag, 28.07.2026</p>
+        <p className="mt-2 text-xs text-base-content/50">{todayLabel}</p>
       </header>
 
       <div className="flex flex-col gap-3">

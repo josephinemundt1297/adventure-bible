@@ -120,6 +120,15 @@ Fortschritt wird nicht nur über XP sichtbar.
 - interne Scrollfläche für lange Listen
 - Navigation bleibt sichtbar
 
+### 📖 Tagesjournal & Kalender
+
+Der Kalender macht den Verlauf eines Tages nachvollziehbar.
+
+- HP-Check, Quest-Start, Quest-Abschluss, Mini HP-Check und Lagerfeuer werden als Tagesereignisse gespeichert
+- abendliche Reflexion erscheint als Tagebuch-Eintrag
+- Tage mit Einträgen sind in der Wochenansicht erkennbar
+- Verlauf und Reflexion bleiben im MVP lokal im Browser gespeichert
+
 ### 👤 Profil & Authentifizierung
 
 - persönlicher Charakterbereich
@@ -170,6 +179,7 @@ adventure-bible/
 │   ├── components/          # Wiederverwendbare UI-Komponenten
 │   ├── data/                # Lokale Quest- und HP-Daten
 │   ├── features/            # Feature-spezifische Komponenten und Logik
+│   │   ├── calendar/
 │   │   ├── hpCheck/
 │   │   ├── plan/
 │   │   ├── profile/
@@ -255,6 +265,8 @@ npm run preview
 
 Der aktuelle MVP wurde abschließend manuell durch den vollständigen Kern-Flow geprüft – von HP-Check und Quest-Auswahl über Quest-Abschluss und Rewards bis hin zu Mini-HP-Check und Lagerfeuer.
 
+Zusätzlich wurden Tagesjournal und Kalenderverlauf technisch geprüft. Die finale manuelle Keyboard-, Screenreader- und Kontrast-Abnahme ist laut Roadmap noch offen.
+
 ---
 
 ## 🧩 Produktprinzipien
@@ -297,15 +309,15 @@ Die ausführliche Projektdokumentation liegt unter `docs/`.
 | [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Technische Architektur |
 | [`SECURITY.md`](docs/SECURITY.md) | Sicherheitsregeln |
 | [`ROADMAP.md`](docs/ROADMAP.md) | Entwicklungsstand und MVP-Abnahme |
-| [`DEVELOPMENT_LOG.md`](docs/DEVELOPMENT_LOG.md) | Entwicklungs- und Lerndokumentation |
+| [`DEVELOPMENT_LOG.md`](docs/DEVELOPMENT_LOG.md) | Technische Entwicklungsdokumentation |
 
 ---
 
 ## 🗺️ MVP & zukünftige Entwicklung
 
-### MVP — 🟢 abgeschlossen
+### MVP — 🟡 Kern-Loop abgeschlossen, finale Accessibility-Abnahme offen
 
-Der zentrale Adventure-Bible-Loop ist implementiert, getestet und manuell durchgespielt.
+Der zentrale Adventure-Bible-Loop ist implementiert, getestet und manuell durchgespielt. Tagesjournal und Kalenderverlauf sind ebenfalls vorhanden. Offen bleibt die finale manuelle Keyboard-, Screenreader- und Kontrast-Abnahme.
 
 ### Post-MVP
 

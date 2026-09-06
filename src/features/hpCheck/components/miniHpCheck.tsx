@@ -151,7 +151,7 @@ export function MiniHpCheck() {
                 <span className="text-xs font-bold text-primary">+{primary.rewardXp} XP</span>
               </div>
               <h2 className="mt-1 text-base font-bold">{primary.title}</h2>
-              <p className="mt-1 line-clamp-2 text-xs leading-4 text-base-content/65">{primary.description}</p>
+              <p className="mt-1 text-xs leading-4 text-base-content/65">{primary.description}</p>
               <button type="button" className="btn btn-primary btn-sm mt-2 min-h-9 w-full" onClick={() => chooseQuest(primary)} aria-pressed={selectedQuestId === primary.id}>
                 {selectedQuestId === primary.id ? "Ausgewählt ✓" : "Diese Aufgabe wählen"}
               </button>
@@ -164,7 +164,7 @@ export function MiniHpCheck() {
                 <span className="text-xs font-bold text-base-content/60">+{alternative.rewardXp} XP</span>
               </div>
               <h2 className="mt-1 text-base font-bold">{alternative.title}</h2>
-              <p className="mt-1 line-clamp-2 text-xs leading-4 text-base-content/65">{alternative.description}</p>
+              <p className="mt-1 text-xs leading-4 text-base-content/65">{alternative.description}</p>
               <button type="button" className="btn btn-outline btn-sm mt-2 min-h-9 w-full" onClick={() => chooseQuest(alternative)} aria-pressed={selectedQuestId === alternative.id}>
                 {selectedQuestId === alternative.id ? "Ausgewählt ✓" : "Alternative wählen"}
               </button>
