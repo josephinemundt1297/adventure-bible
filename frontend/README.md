@@ -221,7 +221,21 @@ Die Anwendung verwendet Clerk für Sign-in und Sign-up.
 
 Für eine lokale Entwicklungsumgebung wird eine gültige Clerk Publishable Key-Konfiguration benötigt. Sensible Schlüssel gehören **nicht** ins Repository.
 
-Die Clerk CLI kann für die Projekteinrichtung verwendet werden:
+Die Datei `.env.example` zeigt die benötigte Variable:
+
+```env
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_dein_clerk_publishable_key
+```
+
+Für die lokale Entwicklung wird daraus eine private `.env` erstellt:
+
+```bash
+cp .env.example .env
+```
+
+Danach wird in `.env` der echte Clerk Publishable Key eingetragen.
+
+Die Clerk CLI kann optional für die Projekteinrichtung verwendet werden:
 
 ```bash
 clerk auth login
