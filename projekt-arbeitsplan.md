@@ -27,6 +27,7 @@ Der Backend-Modulabschluss startet mit Planung:
 - Tagesdokumentation für den 30.09.2026 ist vorhanden.
 - Der erste sinnvolle Backend-Scope ist noch zu konkretisieren.
 - Backend-Code, Datenbankmodell, Tests und Deployment sind noch nicht angelegt.
+- Das Repository ist in `frontend/` für die bestehende React-App und `backend/` für die geplante REST-API getrennt.
 
 ## Kleinster sinnvoller Backend-Scope
 
@@ -64,7 +65,7 @@ Die genauen Request- und Response-Formate werden vor der Implementierung dokumen
 
 ### Phase 2: Backend-Grundstruktur
 
-- Backend-Ordner oder separates Backend-Repository festlegen.
+- Backend im vorhandenen `backend/`-Ordner aufbauen.
 - Express-App mit zentralem Error-Handling aufsetzen.
 - Environment-Konfiguration mit `.env.example` vorbereiten.
 - Prisma und PostgreSQL konfigurieren.

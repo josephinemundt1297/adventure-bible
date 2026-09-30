@@ -11,6 +11,7 @@ Der Workflow hilft dabei, nicht direkt in Code zu springen, sondern zuerst Zweck
 - Projektstart Backend-Workflow: 30.09.2026, 10:05 Uhr
 - Aktueller Fokus am 30.09.2026 um 10:24 Uhr: Planung, Scope und Risiko einschätzen
 - Grundlage: bestehendes Frontend-Projekt `adventure-bible`
+- Repository-Struktur: bestehende React-App in `frontend/`, geplante REST-API in `backend/`
 - Ziel: REST-API für serverseitige Persistenz und geschützte Nutzerdaten
 
 ## Arbeitsreihenfolge

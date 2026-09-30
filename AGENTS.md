@@ -51,13 +51,14 @@ Frontend-Arbeit betrifft die bestehende Adventure-Bible-App.
 
 Typische Frontend-Dateien und Bereiche:
 
-- `src/components/`
-- `src/features/`
-- `src/routes/`
-- `src/lib/`
-- `src/types/`
-- `src/data/`
-- `tests/`
+- `frontend/src/components/`
+- `frontend/src/features/`
+- `frontend/src/routes/`
+- `frontend/src/lib/`
+- `frontend/src/types/`
+- `frontend/src/data/`
+- `frontend/tests/`
+- `frontend/package.json`
 - `docs/PROJECT.md`
 - `docs/FEATURES.md`
 - `docs/DESIGN.md`
@@ -110,19 +111,19 @@ Backend-Arbeit betrifft die neue oder ergänzte REST-API für den Backend-Modula
 
 Typische Backend-Dateien und Bereiche:
 
-- `server.js` oder `app.js`
-- `src/server/`
-- `src/routes/`
-- `src/controllers/`
-- `src/middlewares/`
-- `src/schemas/`
-- `src/services/`
-- `src/database/`
-- `prisma/schema.prisma`
-- `prisma/migrations/`
-- `tests/` oder `test/`
-- `.env.example`
-- `README.md`
+- `backend/server.js` oder `backend/app.js`
+- `backend/src/server/`
+- `backend/src/routes/`
+- `backend/src/controllers/`
+- `backend/src/middlewares/`
+- `backend/src/schemas/`
+- `backend/src/services/`
+- `backend/src/database/`
+- `backend/prisma/schema.prisma`
+- `backend/prisma/migrations/`
+- `backend/tests/` oder `backend/test/`
+- `backend/.env.example`
+- `backend/README.md`
 - Backend-Planung und API-Dokumentation
 
 Backend-Technologien sollen sich an den Unterrichtsinhalten orientieren:

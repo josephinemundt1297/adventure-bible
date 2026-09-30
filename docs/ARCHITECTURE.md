@@ -18,7 +18,7 @@ Architekturentscheidungen sollen praktisch bleiben. Ordner, Patterns und Abstrak
 
 # 1. Aktueller Stack
 
-Der aktuell verwendete Stack wird durch `package.json` bestimmt.
+Der aktuell verwendete Frontend-Stack wird durch `frontend/package.json` bestimmt.
 
 Aktuell relevant:
 
@@ -50,12 +50,12 @@ Adventure Bible folgt diesen Grundsätzen:
 
 ---
 
-# 3. Aktuelle `src/`-Struktur
+# 3. Aktuelle `frontend/src/`-Struktur
 
 Die aktuelle Frontend-Struktur ist bewusst in Application-, Routing-, Feature-, Shared- und technische Bereiche getrennt:
 
 ```text
-src/
+frontend/src/
 ├── app/
 │   └── appShell.tsx
 ├── components/
@@ -83,7 +83,7 @@ Die Verzeichnisse `components`, `data`, `features`, `lib` und `types` dürfen zu
 
 # 4. Verantwortlichkeiten der Bereiche
 
-## `src/main.tsx` – technischer Einstiegspunkt
+## `frontend/src/main.tsx` – technischer Einstiegspunkt
 
 `main.tsx` ist der Vite-/React-Einstiegspunkt der Anwendung.
 
@@ -91,7 +91,7 @@ Seine Aufgabe ist es, die React-Anwendung in das HTML-Dokument einzuhängen und 
 
 `main.tsx` enthält keine fachliche Feature-Logik.
 
-## `src/App.tsx` – Router-Einstieg
+## `frontend/src/App.tsx` – Router-Einstieg
 
 `App.tsx` stellt den TanStack Router über den `RouterProvider` bereit.
 
@@ -111,7 +111,7 @@ routeTree
 
 Die `AppShell` wird deshalb nicht in `App.tsx` eingebettet.
 
-## `src/app/` – Application-Ebene
+## `frontend/src/app/` – Application-Ebene
 
 `app/` enthält anwendungsweite Infrastruktur und Zusammensetzung.
 
@@ -123,7 +123,7 @@ Beispiele:
 
 Die Application-Ebene ist nicht dasselbe wie ein UI-Component-Ordner.
 
-## `src/routes/` – Routing-Ebene
+## `frontend/src/routes/` – Routing-Ebene
 
 `routes/` enthält die TanStack-File-Based-Routes.
 
@@ -155,7 +155,7 @@ App.tsx
                 └── aktive Route
 ```
 
-Dadurch bleibt `App.tsx` ein schlanker Router-Einstiegspunkt und die Application-Shell bleibt unter `src/app/`.
+Dadurch bleibt `App.tsx` ein schlanker Router-Einstiegspunkt und die Application-Shell bleibt unter `frontend/src/app/`.
 
 Die Root-Route darf globale Layout-Struktur bereitstellen, soll aber keine fachliche Feature-Logik enthalten.
 
@@ -167,7 +167,7 @@ Beispiele können später Onboarding-, Detail-, Modal- oder andere interne Flows
 
 Ein nicht sichtbarer oder schwer auffindbarer Pfad ist **keine Sicherheitsgrenze**. Zugriffsschutz erfolgt später über Authentifizierung und serverseitige Autorisierung.
 
-## `src/features/` – fachliche Features
+## `frontend/src/features/` – fachliche Features
 
 `features/` ist der wichtigste Bereich für die eigentliche Produktlogik.
 
@@ -198,7 +198,7 @@ features/
 
 Feature-Code wird nicht ohne Grund in globale Ordner verschoben.
 
-## `src/components/` – Shared UI
+## `frontend/src/components/` – Shared UI
 
 `components/` enthält UI-Bausteine, die tatsächlich von mehreren Bereichen oder Features wiederverwendet werden.
 
@@ -216,7 +216,7 @@ components/
 
 Feature-spezifische Komponenten bleiben dagegen im jeweiligen Feature.
 
-## `src/data/` – Datenquellen
+## `frontend/src/data/` – Datenquellen
 
 `data/` enthält statische oder lokale Datenquellen des MVPs.
 
@@ -224,7 +224,7 @@ Später können hier klar definierte Datenzugriffe liegen, wenn dies für den Ü
 
 UI-Komponenten sollen nicht überall direkt auf Rohdaten zugreifen.
 
-## `src/lib/` – technische Hilfsfunktionen
+## `frontend/src/lib/` – technische Hilfsfunktionen
 
 `lib/` enthält technische, fachlich möglichst neutrale Utilities und Infrastruktur-Helfer.
 
@@ -240,7 +240,7 @@ Feature-spezifische Logik gehört nicht automatisch nach `lib/`.
 
 ### Lokales Tagesjournal
 
-`src/lib/dayJournal.ts` sammelt den nachvollziehbaren Tagesverlauf des MVPs.
+`frontend/src/lib/dayJournal.ts` sammelt den nachvollziehbaren Tagesverlauf des MVPs.
 
 Dazu gehören unter anderem:
 
@@ -254,7 +254,7 @@ Dazu gehören unter anderem:
 Diese Daten werden im MVP lokal im Browser gespeichert. Das ist noch keine
 serverseitige Persistenz und keine Sicherheitsgrenze.
 
-## `src/types/` – geteilte Typen
+## `frontend/src/types/` – geteilte Typen
 
 `types/` ist für Typen gedacht, die tatsächlich von mehreren unabhängigen Bereichen benötigt werden.
 
@@ -262,7 +262,7 @@ Feature-spezifische Typen gehören bevorzugt in das jeweilige Feature.
 
 Ein globaler Typ-Ordner darf nicht zu einem Ablageort für jeden beliebigen Typ werden.
 
-## `src/assets/` – statische Frontend-Assets
+## `frontend/src/assets/` – statische Frontend-Assets
 
 `assets/` enthält lokal eingebundene Bilder und andere statische Assets, die Bestandteil des Frontends sind.
 
@@ -474,7 +474,7 @@ Nicht sichtbare interne Routen sind möglich, ersetzen aber keine Authentifizier
 
 # 9. Generierter Route Tree
 
-`src/routeTree.gen.ts` wird automatisch durch das TanStack Router Vite Plugin erzeugt.
+`frontend/src/routeTree.gen.ts` wird automatisch durch das TanStack Router Vite Plugin erzeugt.
 
 Die Datei ist **generated code**.
 
@@ -487,11 +487,11 @@ Regeln:
 Der Datenfluss lautet:
 
 ```text
-src/routes/*.tsx
+frontend/src/routes/*.tsx
         ↓
 TanStack Router Vite Plugin
         ↓
-src/routeTree.gen.ts
+frontend/src/routeTree.gen.ts
         ↓
 App.tsx → createRouter({ routeTree })
 ```

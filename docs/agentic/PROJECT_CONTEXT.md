@@ -6,7 +6,7 @@
 
 - Projektname: Adventure Bible
 - Fachlicher Zweck: Mobile-first Habit Tracker mit RPG-Elementen
-- Haupttechnologien: React + TypeScript + Vite
+- Haupttechnologien Frontend: React + TypeScript + Vite
 - UI-System: DaisyUI, vorgesehen für die Implementierung
 - Authentifizierung: Clerk, für die spätere Backend-Phase vorgesehen
 - Test-Stack: Vitest + React Testing Library, für die Projektumsetzung vorgesehen
@@ -20,14 +20,16 @@ Die Produkt-, Design-, Accessibility-, Security-, Architektur-, Roadmap- und Age
 
 | Bereich | Pfad | Aufgabe | Status |
 |---|---|---|---|
-| Einstiegspunkt | `src/main.tsx` | React-Einstiegspunkt | vorhanden |
-| App | `src/App.tsx` | Haupt-App-Komponente | vorhanden |
-| Styling | `src/index.css` | globale Styles | vorhanden |
-| Routing | offen | Navigation/Routing | noch nicht implementiert |
-| UI/Komponenten | `src/` | React-Komponenten | wird aufgebaut |
+| Frontend | `frontend/` | React-, TypeScript- und Vite-App | vorhanden |
+| Backend | `backend/` | REST-API für den Modulabschluss | vorbereitet |
+| Einstiegspunkt | `frontend/src/main.tsx` | React-Einstiegspunkt | vorhanden |
+| App | `frontend/src/App.tsx` | Haupt-App-Komponente | vorhanden |
+| Styling | `frontend/src/index.css` | globale Styles | vorhanden |
+| Routing | `frontend/src/routes/` | Navigation/Routing | vorhanden |
+| UI/Komponenten | `frontend/src/` | React-Komponenten | vorhanden |
 | State | offen | Domain-/UI-State | noch nicht festgelegt |
-| API/Daten | offen | Datenzugriff | Backend später |
-| Tests | offen | Unit-/Component-Tests | wird aufgebaut |
+| API/Daten | `backend/` | Datenzugriff | geplant |
+| Tests | `frontend/tests/` | Unit-/Logiktests | vorhanden |
 
 ## Tooling und Befehle
 
@@ -35,12 +37,12 @@ Befehle dürfen erst in den Projektkontext eingetragen werden, wenn sie im Repos
 
 | Zweck | Befehl | Quelle | Status |
 |---|---|---|---|
-| Installation | `npm install` | `package.json` / npm-Projekt | bestätigt |
-| Entwicklung | `npm run dev` | `package.json` | bestätigt |
-| Build | `npm run build` | `package.json` | bestätigt |
-| Tests | offen | `package.json` | noch nicht eingerichtet |
-| Lint | offen | `package.json` | noch nicht eingerichtet |
-| Typecheck | offen | `package.json` / TypeScript-Konfiguration | noch zu prüfen |
+| Installation Frontend | `cd frontend && npm install` | `frontend/package.json` / npm-Projekt | bestätigt |
+| Entwicklung Frontend | `cd frontend && npm run dev` | `frontend/package.json` | bestätigt |
+| Build Frontend | `cd frontend && npm run build` | `frontend/package.json` | bestätigt |
+| Tests Frontend | `cd frontend && npm test` | `frontend/package.json` | bestätigt |
+| Lint Frontend | `cd frontend && npm run lint` | `frontend/package.json` | bestätigt |
+| Typecheck Frontend | `cd frontend && npm run build` | `frontend/package.json` / TypeScript-Konfiguration | bestätigt |
 | E2E | offen | noch keine Konfiguration | nicht eingerichtet |
 
 ## Architektur und Konventionen
@@ -79,6 +81,5 @@ Befehle dürfen erst in den Projektkontext eingetragen werden, wenn sie im Repos
 |---|---|---|
 | Routing-Lösung | offen | Architekturentscheidung vor Implementierung |
 | State-Management | offen | tatsächlicher MVP-Bedarf |
-| konkrete Test- und Lint-Commands | offen | `package.json` nach Tooling-Setup |
-| Backend-Technologie | offen | Backend-Modul / spätere Architekturentscheidung |
-| Datenbank | offen | Backend-Phase |
+| Backend-Implementierung | offen | Backend-Phase |
+| Datenbank-Schema | offen | Backend-Phase |

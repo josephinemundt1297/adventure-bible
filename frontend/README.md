@@ -174,7 +174,7 @@ Die Quest-Daten liegen im MVP bewusst in einer lokalen JSON-Datei. Backend, Date
 ## 📁 Projektstruktur
 
 ```text
-adventure-bible/
+frontend/
 ├── src/
 │   ├── components/          # Wiederverwendbare UI-Komponenten
 │   ├── data/                # Lokale Quest- und HP-Daten
@@ -189,12 +189,12 @@ adventure-bible/
 │   ├── types/               # TypeScript-Domain-Typen
 │   └── main.tsx             # App-Einstiegspunkt
 ├── tests/                   # Vitest-Tests
-├── docs/                    # Produkt-, Design-, Architektur- und Projektdoku
-├── skills/                  # Projektspezifische Agentic Skills
 ├── LayoutIdee.png           # Ursprüngliche Layout-Idee
 ├── package.json
 └── README.md
 ```
+
+Gemeinsame Produkt-, Design-, Architektur- und Backend-Dokumentation liegt im Repository-Root unter `docs/`.
 
 ---
 
@@ -211,6 +211,7 @@ adventure-bible/
 Repository klonen und Dependencies installieren:
 
 ```bash
+cd frontend
 npm install
 ```
 
