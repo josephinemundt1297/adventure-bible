@@ -21,9 +21,16 @@ backend/
 ├── src/
 │   ├── app.ts
 │   ├── config.ts
+│   ├── database/
+│   ├── middlewares/
+│   ├── routes/
+│   ├── schemas/
+│   ├── services/
 │   └── server.ts
 ├── tests/
-│   └── health.test.ts
+│   ├── auth.test.ts
+│   ├── health.test.ts
+│   └── profile.test.ts
 ├── .env.example
 ├── package.json
 ├── tsconfig.json
@@ -32,7 +39,9 @@ backend/
 
 ## Status
 
-Die Backend-Grundstruktur ist vorbereitet. Implementiert ist bisher nur der öffentliche Healthcheck `GET /health`.
+Die Backend-Grundstruktur ist vorbereitet. Implementiert sind bisher der öffentliche Healthcheck `GET /health`, der geschützte Auth-Test-Endpunkt `GET /api/auth-check`, die geschützten Profil-Endpunkte `GET /api/profile` und `PUT /api/profile` sowie eine zentrale Fehlerantwort ohne interne Details.
+
+Während der Entwicklung und in Tests liest die Auth-Middleware den Header `x-test-auth-user-id`. Dieser Übergang ist außerhalb von `production` erlaubt und wird später durch die echte Authentifizierungsprüfung ersetzt.
 
 Der erste API-Plan steht in [api-plan.md](api-plan.md).
 

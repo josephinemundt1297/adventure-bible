@@ -3,9 +3,16 @@ import express, { type Request, type Response } from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { config } from "./config.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 import { authCheckRouter } from "./routes/authCheck.js";
+import { createProfileRouter } from "./routes/profile.js";
+import type { ProfileService } from "./services/profileService.js";
 
-export function createApp() {
+interface AppOptions {
+  profileService?: ProfileService;
+}
+
+export function createApp(options: AppOptions = {}) {
   const app = express();
 
   app.use(helmet());
@@ -32,6 +39,8 @@ export function createApp() {
     });
   });
   app.use("/api", authCheckRouter);
+  app.use("/api", createProfileRouter(options.profileService));
+  app.use(errorHandler);
 
   return app;
 }
