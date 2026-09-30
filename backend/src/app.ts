@@ -5,10 +5,13 @@ import helmet from "helmet";
 import { config } from "./config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { authCheckRouter } from "./routes/authCheck.js";
+import { createHpChecksRouter } from "./routes/hpChecks.js";
 import { createProfileRouter } from "./routes/profile.js";
+import type { HpCheckService } from "./services/hpCheckService.js";
 import type { ProfileService } from "./services/profileService.js";
 
 interface AppOptions {
+  hpCheckService?: HpCheckService;
   profileService?: ProfileService;
 }
 
@@ -40,6 +43,7 @@ export function createApp(options: AppOptions = {}) {
   });
   app.use("/api", authCheckRouter);
   app.use("/api", createProfileRouter(options.profileService));
+  app.use("/api", createHpChecksRouter(options.hpCheckService));
   app.use(errorHandler);
 
   return app;
