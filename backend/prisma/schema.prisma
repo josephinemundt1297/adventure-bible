@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum HpCheckType {
+  FULL
+  MINI
+}
+
+enum QuestType {
+  MAIN
+  SIDE
+  DAILY
+  RECOVERY
+}
+
+enum QuestLogStatus {
+  STARTED
+  COMPLETED
+  POSTPONED
+  SKIPPED
+}
+
+enum JournalEntryType {
+  EVENT
+  REFLECTION
+}
+
+model UserProfile {
+  id             String         @id @default(uuid())
+  authUserId     String         @unique
+  displayName    String
+  characterName  String
+  level          Int            @default(1)
+  xp             Int            @default(0)
+  questPoints    Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  hpChecks       HpCheck[]
+  quests         Quest[]
+  questLogs      QuestLog[]
+  journalEntries JournalEntry[]
+}
+
+model HpCheck {
+  id             String         @id @default(uuid())
+  userProfileId  String
+  type           HpCheckType
+  body           Int
+  energy         Int
+  focus          Int
+  mood           Int
+  muscle         Int
+  nutrition      Int
+  recovery       Int
+  overallScore   Int
+  createdAt      DateTime       @default(now())
+
+  userProfile    UserProfile    @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  journalEntries JournalEntry[] @relation("HpCheckJournalEntries")
+
+  @@index([userProfileId])
+  @@index([createdAt])
+}
+
+model Quest {
+  id               String      @id @default(uuid())
+  userProfileId    String
+  title            String
+  description      String?
+  type             QuestType
+  difficulty       Int
+  estimatedMinutes Int?
+  xpReward         Int         @default(0)
+  questPointReward Int         @default(0)
+  isArchived       Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  userProfile      UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  questLogs        QuestLog[]
+
+  @@index([userProfileId])
+  @@index([type])
+  @@index([isArchived])
+}
+
+model QuestLog {
+  id             String         @id @default(uuid())
+  userProfileId  String
+  questId        String
+  status         QuestLogStatus
+  startedAt      DateTime?
+  completedAt    DateTime?
+  scorePoints    Int?
+  note           String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  userProfile    UserProfile    @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  quest          Quest          @relation(fields: [questId], references: [id])
+  journalEntries JournalEntry[] @relation("QuestLogJournalEntries")
+
+  @@index([userProfileId])
+  @@index([questId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([completedAt])
+}
+
+model JournalEntry {
+  id            String           @id @default(uuid())
+  userProfileId String
+  entryDate     DateTime?
+  entryTime     String?
+  type          JournalEntryType
+  title         String
+  content       String?
+  questLogId    String?
+  hpCheckId     String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  userProfile   UserProfile      @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  questLog      QuestLog?        @relation("QuestLogJournalEntries", fields: [questLogId], references: [id])
+  hpCheck       HpCheck?         @relation("HpCheckJournalEntries", fields: [hpCheckId], references: [id])
+
+  @@index([userProfileId])
+  @@index([entryDate])
+  @@index([type])
+}

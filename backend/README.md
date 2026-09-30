@@ -16,13 +16,52 @@ Das Backend soll den Adventure-Bible-Loop serverseitig speichern und über klare
 
 ```text
 backend/
-├── src/       # Express-App, Routen, Controller, Services, Middleware
-├── prisma/    # Prisma-Schema und Migrationen
-├── tests/     # API- und Integrationstests
+├── prisma/
+│   └── schema.prisma
+├── src/
+│   ├── app.ts
+│   ├── config.ts
+│   └── server.ts
+├── tests/
+│   └── health.test.ts
+├── .env.example
+├── package.json
+├── tsconfig.json
 └── README.md
 ```
 
 ## Status
 
-Noch keine API implementiert. Der nächste Schritt ist die konkrete API-Planung mit Datenmodell, Endpunkten, Authentifizierung, Sicherheitsmaßnahmen und Teststrategie.
+Die Backend-Grundstruktur ist vorbereitet. Implementiert ist bisher nur der öffentliche Healthcheck `GET /health`.
 
+Der erste API-Plan steht in [api-plan.md](api-plan.md).
+
+Das erste Datenmodell steht in [data-model.md](data-model.md).
+
+Der erste Prisma-Plan steht in [prisma-plan.md](prisma-plan.md).
+
+## Lokale Entwicklung
+
+Dependencies installieren:
+
+```bash
+npm install
+```
+
+Entwicklungsserver starten:
+
+```bash
+npm run dev
+```
+
+Tests ausführen:
+
+```bash
+npm test
+```
+
+Build prüfen:
+
+```bash
+npm run build
+```
