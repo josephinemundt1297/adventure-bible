@@ -40,6 +40,8 @@ Das erste Datenmodell steht in [data-model.md](data-model.md).
 
 Der erste Prisma-Plan steht in [prisma-plan.md](prisma-plan.md).
 
+Die Auth-Übergangsstrategie steht in [auth-strategy.md](auth-strategy.md).
+
 ## Lokale Entwicklung
 
 Dependencies installieren:

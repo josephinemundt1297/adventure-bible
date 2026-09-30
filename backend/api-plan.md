@@ -389,7 +389,9 @@ Beispiel `POST /api/journal-entries`:
 
 ## Authentifizierung und Autorisierung
 
-Geplant ist eine Authentifizierung über Clerk-Backend-Integration oder eine nachvollziehbare JWT-Prüfung.
+Langfristig geplant ist eine Authentifizierung über Clerk-Backend-Integration oder eine nachvollziehbare JWT-Prüfung.
+
+Für die erste testbare Backend-Version gibt es eine Übergangs-Middleware mit dem Header `x-test-auth-user-id`. Dieser Header ist nur außerhalb von `NODE_ENV=production` gültig und ersetzt keine echte Produktions-Authentifizierung.
 
 Regeln:
 

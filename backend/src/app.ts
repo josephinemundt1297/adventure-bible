@@ -3,6 +3,7 @@ import express, { type Request, type Response } from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { config } from "./config.js";
+import { authCheckRouter } from "./routes/authCheck.js";
 
 export function createApp() {
   const app = express();
@@ -30,6 +31,7 @@ export function createApp() {
       },
     });
   });
+  app.use("/api", authCheckRouter);
 
   return app;
 }
