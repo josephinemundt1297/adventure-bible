@@ -37,6 +37,7 @@ function createHpCheckService(
 ): HpCheckService {
   return {
     listForAuthUserId: vi.fn().mockResolvedValue([createHpCheck()]),
+    getByIdForAuthUserId: vi.fn().mockResolvedValue(createHpCheck()),
     createForAuthUserId: vi.fn().mockResolvedValue(createHpCheck()),
     ...overrides,
   };
@@ -156,6 +157,58 @@ describe("hp-check API", () => {
         error: {
           code: "PROFILE_NOT_FOUND",
           message: "Profil wurde nicht gefunden.",
+        },
+      });
+    });
+  });
+
+  it("returns one authenticated user's hp-check by id", async () => {
+    const hpCheckService = createHpCheckService();
+
+    await withServer(hpCheckService, async (server) => {
+      const response = await request(server)
+        .get("/api/hp-checks/hp_check_123")
+        .set("x-test-auth-user-id", "user_test_123")
+        .expect(200);
+
+      expect(hpCheckService.getByIdForAuthUserId).toHaveBeenCalledWith(
+        "user_test_123",
+        "hp_check_123",
+      );
+      expect(response.body).toEqual({
+        data: {
+          id: "hp_check_123",
+          userProfileId: "profile_123",
+          type: "FULL",
+          body: 50,
+          energy: 25,
+          focus: 75,
+          mood: 50,
+          muscle: 25,
+          nutrition: 75,
+          recovery: 50,
+          overallScore: 50,
+          createdAt: "2026-09-30T15:10:00.000Z",
+        },
+      });
+    });
+  });
+
+  it("returns 404 when one hp-check does not belong to the authenticated user", async () => {
+    const hpCheckService = createHpCheckService({
+      getByIdForAuthUserId: vi.fn().mockResolvedValue(null),
+    });
+
+    await withServer(hpCheckService, async (server) => {
+      const response = await request(server)
+        .get("/api/hp-checks/hp_check_foreign")
+        .set("x-test-auth-user-id", "user_test_123")
+        .expect(404);
+
+      expect(response.body).toEqual({
+        error: {
+          code: "HP_CHECK_NOT_FOUND",
+          message: "HP-Check wurde nicht gefunden.",
         },
       });
     });

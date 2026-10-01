@@ -62,6 +62,33 @@ export function createHpChecksRouter(
     });
   });
 
+  router.get(
+    "/hp-checks/:id",
+    requireAuth,
+    async (request, response: Response) => {
+      const authenticatedRequest = request as AuthenticatedRequest;
+      const hpCheckId = String(request.params.id);
+      const hpCheck = await hpCheckService.getByIdForAuthUserId(
+        authenticatedRequest.auth.authUserId,
+        hpCheckId,
+      );
+
+      if (!hpCheck) {
+        response.status(404).json({
+          error: {
+            code: "HP_CHECK_NOT_FOUND",
+            message: "HP-Check wurde nicht gefunden.",
+          },
+        });
+        return;
+      }
+
+      response.status(200).json({
+        data: serializeHpCheck(hpCheck),
+      });
+    },
+  );
+
   router.post("/hp-checks", requireAuth, async (request, response: Response) => {
     const authenticatedRequest = request as AuthenticatedRequest;
     const parsedBody = hpCheckInputSchema.safeParse(request.body);

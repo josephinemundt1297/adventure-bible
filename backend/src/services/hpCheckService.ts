@@ -7,6 +7,10 @@ export type HpCheckRecord = HpCheck;
 
 export interface HpCheckService {
   listForAuthUserId(authUserId: string): Promise<HpCheckRecord[] | null>;
+  getByIdForAuthUserId(
+    authUserId: string,
+    hpCheckId: string,
+  ): Promise<HpCheckRecord | null>;
   createForAuthUserId(
     authUserId: string,
     input: HpCheckInput,
@@ -34,6 +38,28 @@ export const prismaHpCheckService: HpCheckService = {
       },
       orderBy: {
         createdAt: "desc",
+      },
+    });
+  },
+
+  async getByIdForAuthUserId(authUserId, hpCheckId) {
+    const profile = await prisma.userProfile.findUnique({
+      where: {
+        authUserId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!profile) {
+      return null;
+    }
+
+    return prisma.hpCheck.findFirst({
+      where: {
+        id: hpCheckId,
+        userProfileId: profile.id,
       },
     });
   },
