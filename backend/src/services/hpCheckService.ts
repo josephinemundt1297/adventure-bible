@@ -6,6 +6,7 @@ import { calculateHpCheckScores } from "./hpScore.js";
 export type HpCheckRecord = HpCheck;
 
 export interface HpCheckService {
+  listForAuthUserId(authUserId: string): Promise<HpCheckRecord[] | null>;
   createForAuthUserId(
     authUserId: string,
     input: HpCheckInput,
@@ -13,6 +14,30 @@ export interface HpCheckService {
 }
 
 export const prismaHpCheckService: HpCheckService = {
+  async listForAuthUserId(authUserId) {
+    const profile = await prisma.userProfile.findUnique({
+      where: {
+        authUserId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!profile) {
+      return null;
+    }
+
+    return prisma.hpCheck.findMany({
+      where: {
+        userProfileId: profile.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  },
+
   async createForAuthUserId(authUserId, input) {
     const profile = await prisma.userProfile.findUnique({
       where: {

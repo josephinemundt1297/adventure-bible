@@ -36,6 +36,7 @@ function createHpCheckService(
   overrides: Partial<HpCheckService> = {},
 ): HpCheckService {
   return {
+    listForAuthUserId: vi.fn().mockResolvedValue([createHpCheck()]),
     createForAuthUserId: vi.fn().mockResolvedValue(createHpCheck()),
     ...overrides,
   };
@@ -67,6 +68,94 @@ describe("hp-check API", () => {
         error: {
           code: "UNAUTHORIZED",
           message: "Authentifizierung erforderlich.",
+        },
+      });
+    });
+  });
+
+  it("returns the authenticated user's hp-checks", async () => {
+    const secondCreatedAt = new Date("2026-10-01T09:30:00.000Z");
+    const hpCheckService = createHpCheckService({
+      listForAuthUserId: vi.fn().mockResolvedValue([
+        createHpCheck({
+          id: "hp_check_new",
+          type: "MINI",
+          body: 100,
+          energy: 75,
+          focus: 50,
+          mood: 50,
+          muscle: 25,
+          nutrition: 75,
+          recovery: 100,
+          overallScore: 68,
+          createdAt: secondCreatedAt,
+        }),
+        createHpCheck(),
+      ]),
+    });
+
+    await withServer(hpCheckService, async (server) => {
+      const response = await request(server)
+        .get("/api/hp-checks")
+        .set("x-test-auth-user-id", "user_test_123")
+        .expect(200);
+
+      expect(hpCheckService.listForAuthUserId).toHaveBeenCalledWith(
+        "user_test_123",
+      );
+      expect(response.body).toEqual({
+        data: [
+          {
+            id: "hp_check_new",
+            userProfileId: "profile_123",
+            type: "MINI",
+            body: 100,
+            energy: 75,
+            focus: 50,
+            mood: 50,
+            muscle: 25,
+            nutrition: 75,
+            recovery: 100,
+            overallScore: 68,
+            createdAt: "2026-10-01T09:30:00.000Z",
+          },
+          {
+            id: "hp_check_123",
+            userProfileId: "profile_123",
+            type: "FULL",
+            body: 50,
+            energy: 25,
+            focus: 75,
+            mood: 50,
+            muscle: 25,
+            nutrition: 75,
+            recovery: 50,
+            overallScore: 50,
+            createdAt: "2026-09-30T15:10:00.000Z",
+          },
+        ],
+        meta: {
+          count: 2,
+        },
+      });
+    });
+  });
+
+  it("returns 404 when reading hp-checks without an existing profile", async () => {
+    const hpCheckService = createHpCheckService({
+      listForAuthUserId: vi.fn().mockResolvedValue(null),
+    });
+
+    await withServer(hpCheckService, async (server) => {
+      const response = await request(server)
+        .get("/api/hp-checks")
+        .set("x-test-auth-user-id", "user_without_profile")
+        .expect(404);
+
+      expect(response.body).toEqual({
+        error: {
+          code: "PROFILE_NOT_FOUND",
+          message: "Profil wurde nicht gefunden.",
         },
       });
     });

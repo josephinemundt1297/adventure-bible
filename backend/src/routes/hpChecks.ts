@@ -38,6 +38,30 @@ export function createHpChecksRouter(
 ) {
   const router = Router();
 
+  router.get("/hp-checks", requireAuth, async (request, response: Response) => {
+    const authenticatedRequest = request as AuthenticatedRequest;
+    const hpChecks = await hpCheckService.listForAuthUserId(
+      authenticatedRequest.auth.authUserId,
+    );
+
+    if (!hpChecks) {
+      response.status(404).json({
+        error: {
+          code: "PROFILE_NOT_FOUND",
+          message: "Profil wurde nicht gefunden.",
+        },
+      });
+      return;
+    }
+
+    response.status(200).json({
+      data: hpChecks.map(serializeHpCheck),
+      meta: {
+        count: hpChecks.length,
+      },
+    });
+  });
+
   router.post("/hp-checks", requireAuth, async (request, response: Response) => {
     const authenticatedRequest = request as AuthenticatedRequest;
     const parsedBody = hpCheckInputSchema.safeParse(request.body);
