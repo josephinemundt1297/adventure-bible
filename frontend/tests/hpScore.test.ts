@@ -20,7 +20,7 @@ describe("calculateHpState", () => {
   it("uses the lowest valid score when an area has no answer", () => {
     const state = calculateHpState([]);
 
-    expect(state.areas).toHaveLength(7);
+    expect(state.areas).toHaveLength(4);
     expect(state.overall).toBe(0);
   });
 });

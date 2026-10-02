@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useUser } from "@clerk/react";
 import { Link } from "@tanstack/react-router";
-import { hpAnswerLabels, hpAreaLabels, hpQuestions } from "../../../data/hpQuestions";
+import { hpAreaLabels, hpQuestions } from "../../../data/hpQuestions";
+import { saveBackendHpCheck } from "../../../lib/backendHpChecks";
 import { calculateHpState } from "../../../lib/hpScore";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { recordHpCheck } from "../../../lib/achievements";
@@ -13,10 +15,13 @@ const QUEST_PROGRESS_KEY = "adventure-bible:quest-progress";
 const MINI_SELECTED_QUEST_KEY = "adventure-bible:mini-selected-quest";
 
 export function HpCheck() {
+  const { user } = useUser();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<HpAnswer[]>([]);
   const [completed, setCompleted] = useState(false);
   const [completedState, setCompletedState] = useState<ReturnType<typeof calculateHpState> | null>(null);
+  const [saveError, setSaveError] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const question = hpQuestions[questionIndex];
   const currentAnswer = answers.find((answer) => answer.questionId === question.id)?.value;
@@ -30,7 +35,7 @@ export function HpCheck() {
     });
   }
 
-  function next() {
+  async function next() {
     if (currentAnswer === undefined) return;
     if (isLastQuestion) {
       const allAnswers = [
@@ -38,15 +43,30 @@ export function HpCheck() {
         { questionId: question.id, value: currentAnswer },
       ];
       const finalState = calculateHpState(allAnswers);
+      setSaving(true);
+      setSaveError(false);
       leaveCampfire();
       sessionStorage.setItem(HP_STATE_KEY, JSON.stringify(finalState));
       sessionStorage.removeItem(QUEST_PROGRESS_KEY);
       sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
       appendDayJournalEvent({ type: "hp-check", state: finalState });
       notifyAchievements(recordHpCheck());
+
+      if (user) {
+        try {
+          await saveBackendHpCheck({
+            authUserId: user.id,
+            answers: allAnswers,
+          });
+        } catch {
+          setSaveError(true);
+        }
+      }
+
       setAnswers(allAnswers);
       setCompletedState(finalState);
       setCompleted(true);
+      setSaving(false);
       return;
     }
     setQuestionIndex((current) => current + 1);
@@ -62,6 +82,7 @@ export function HpCheck() {
         </header>
         <div className="card border border-base-300 bg-base-100 shadow-sm"><div className="card-body items-center p-4 text-center"><span className="text-sm font-semibold uppercase tracking-wide text-base-content/60">Gesamtzustand</span><span className="text-5xl font-bold text-primary" aria-label={`${completedState.overall} von 100`}>{completedState.overall}</span><span className="text-sm text-base-content/60">von 100</span></div></div>
         <div className="card border border-base-300 bg-base-100 shadow-sm"><div className="card-body gap-3 p-4"><h2 className="text-lg font-semibold">Deine Bereiche</h2><div className="space-y-3">{completedState.areas.map(({ area, score }) => (<div key={area}><div className="mb-1 flex items-center justify-between text-sm"><span>{hpAreaLabels[area]}</span><span className="font-semibold">{score}/100</span></div><progress className="progress progress-primary w-full" value={score} max="100" aria-label={`${hpAreaLabels[area]}: ${score} von 100`} /></div>))}</div></div></div>
+        {saveError ? <div className="alert alert-warning text-sm" role="status">Dein HP-Check konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
         <Link to="/quests" className="btn btn-primary w-full">Meine Quest ansehen</Link>
         <p className="text-center text-xs leading-5 text-base-content/60">Dieser Check ist eine persönliche Einschätzung und keine medizinische Diagnose.</p>
       </section>
@@ -86,11 +107,11 @@ export function HpCheck() {
           <h2 id="hp-question" className="w-full max-w-sm text-center text-lg font-semibold leading-6 text-pretty sm:text-xl">{question.question}</h2>
 
           <div className="mt-4 flex w-full max-w-sm flex-col gap-3" aria-label="Antwort auswählen">
-            {hpAnswerLabels.map((label, index) => {
+            {question.answerLabels.map((label, index) => {
               const value = (index + 1) as HpAnswer["value"];
               const selected = currentAnswer === value;
               return (
-                <button key={label} type="button" aria-pressed={selected} onClick={() => selectAnswer(value)} className={`btn min-h-12 h-auto w-full justify-start gap-3 whitespace-normal px-4 py-2 text-left normal-case leading-tight ${selected ? "btn-primary" : "btn-outline"}`}>
+                <button key={`${question.id}-${value}`} type="button" aria-pressed={selected} onClick={() => selectAnswer(value)} className={`btn min-h-12 h-auto w-full justify-start gap-3 whitespace-normal px-4 py-2 text-left normal-case leading-tight ${selected ? "btn-primary" : "btn-outline"}`}>
                   <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-current text-xs font-bold">{value}</span>
                   <span className="min-w-0">{label}</span>
                 </button>
@@ -99,7 +120,7 @@ export function HpCheck() {
           </div>
 
           <div className="mt-6 w-full max-w-sm">
-            <button type="button" className="btn btn-primary min-h-12 w-full" disabled={currentAnswer === undefined} onClick={next}>{isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
+            <button type="button" className="btn btn-primary min-h-12 w-full" disabled={currentAnswer === undefined || saving} onClick={() => void next()}>{saving ? "Speichern..." : isLastQuestion ? "Zustand ansehen" : "Weiter"}</button>
           </div>
         </div>
       </section>

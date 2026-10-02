@@ -14,6 +14,7 @@ export interface HpQuestion {
   id: string;
   area: HpArea;
   question: string;
+  answerLabels: readonly [string, string, string, string, string];
 }
 
 export interface HpAnswer {
