@@ -221,10 +221,11 @@ Die Anwendung verwendet Clerk für Sign-in und Sign-up.
 
 Für eine lokale Entwicklungsumgebung wird eine gültige Clerk Publishable Key-Konfiguration benötigt. Sensible Schlüssel gehören **nicht** ins Repository.
 
-Die Datei `.env.example` zeigt die benötigte Variable:
+Die Datei `.env.example` zeigt die benötigten Variablen:
 
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=pk_test_dein_clerk_publishable_key
+VITE_API_BASE_URL=http://localhost:3000
 ```
 
 Für die lokale Entwicklung wird daraus eine private `.env` erstellt:
@@ -233,7 +234,7 @@ Für die lokale Entwicklung wird daraus eine private `.env` erstellt:
 cp .env.example .env
 ```
 
-Danach wird in `.env` der echte Clerk Publishable Key eingetragen.
+Danach wird in `.env` der echte Clerk Publishable Key eingetragen. `VITE_API_BASE_URL` zeigt lokal auf das Backend. Für ein späteres Deployment muss dort die veröffentlichte Backend-URL stehen.
 
 Die Clerk CLI kann optional für die Projekteinrichtung verwendet werden:
 

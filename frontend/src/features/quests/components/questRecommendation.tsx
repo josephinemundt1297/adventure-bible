@@ -138,9 +138,11 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
 
       <article className="adventure-card card border border-primary/20">
         <div className="card-body gap-3">
-          <div className="flex items-center justify-between gap-3">
-            <span className="badge badge-primary">{quest.type === "recovery" ? "Recovery Quest" : "Side Quest"}</span>
-            <span className="text-sm font-semibold text-primary">+{quest.rewardXp} XP</span>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="badge badge-primary h-auto min-h-7 whitespace-nowrap px-3 py-1 text-xs leading-none">
+              {quest.type === "recovery" ? "Recovery Quest" : "Side Quest"}
+            </span>
+            <span className="shrink-0 text-sm font-semibold text-primary">+{quest.rewardXp} XP</span>
           </div>
           <h2 className="app-heading text-xl font-bold leading-7">{quest.title}</h2>
           <p className="text-sm leading-6 text-base-content/70">{quest.description}</p>

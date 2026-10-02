@@ -1,49 +1,89 @@
 import type { HpQuestion } from "../types/hp";
 
 export const hpQuestions: HpQuestion[] = [
-  { id: "body-1", area: "body", question: "Wie angenehm fühlt sich dein Körper gerade an?" },
-  { id: "body-2", area: "body", question: "Wie gut kannst du dich heute körperlich bewegen?" },
-  { id: "body-3", area: "body", question: "Wie wohl fühlst du dich gerade in deinem Körper?" },
+  {
+    id: "energy-1",
+    area: "energy",
+    question: "Wie wach fühlst du dich gerade?",
+    answerLabels: ["gar nicht wach", "kaum wach", "halbwegs wach", "wach", "sehr wach"],
+  },
+  {
+    id: "energy-2",
+    area: "energy",
+    question: "Wie leicht könntest du jetzt aufstehen oder dich aufrichten?",
+    answerLabels: ["sehr schwer", "eher schwer", "mittel", "eher leicht", "sehr leicht"],
+  },
+  {
+    id: "energy-3",
+    area: "energy",
+    question: "Wie viel Kraft hast du für eine Aufgabe von 5 Minuten?",
+    answerLabels: ["keine Kraft", "wenig Kraft", "etwas Kraft", "genug Kraft", "viel Kraft"],
+  },
 
-  { id: "energy-1", area: "energy", question: "Wie viel Energie steht dir gerade zur Verfügung?" },
-  { id: "energy-2", area: "energy", question: "Wie leicht fällt es dir, heute aktiv zu werden?" },
-  { id: "energy-3", area: "energy", question: "Wie lange glaubst du, dass deine Energie heute reicht?" },
+  {
+    id: "mood-1",
+    area: "mood",
+    question: "Wie ruhig fühlt sich dein Inneres gerade an?",
+    answerLabels: ["gar nicht ruhig", "kaum ruhig", "etwas ruhig", "ruhig", "sehr ruhig"],
+  },
+  {
+    id: "mood-2",
+    area: "mood",
+    question: "Wie freundlich sind deine Gedanken über dich gerade?",
+    answerLabels: ["gar nicht freundlich", "kaum freundlich", "etwas freundlich", "freundlich", "sehr freundlich"],
+  },
+  {
+    id: "mood-3",
+    area: "mood",
+    question: "Wie gut kannst du gerade etwas Angenehmes bemerken?",
+    answerLabels: ["gar nicht", "mit Mühe", "manchmal", "recht gut", "sehr gut"],
+  },
 
-  { id: "focus-1", area: "focus", question: "Wie gut kannst du dich gerade konzentrieren?" },
-  { id: "focus-2", area: "focus", question: "Wie leicht fällt es dir, bei einer Sache zu bleiben?" },
-  { id: "focus-3", area: "focus", question: "Wie klar fühlt sich dein Kopf gerade an?" },
+  {
+    id: "focus-1",
+    area: "focus",
+    question: "Wie klar ist dein Kopf gerade?",
+    answerLabels: ["gar nicht klar", "kaum klar", "etwas klar", "klar", "sehr klar"],
+  },
+  {
+    id: "focus-2",
+    area: "focus",
+    question: "Wie gut kannst du gerade 5 Minuten bei einer Aufgabe bleiben?",
+    answerLabels: ["gar nicht", "etwa 1 Minute", "etwa 3 Minuten", "fast 5 Minuten", "die ganzen 5 Minuten"],
+  },
+  {
+    id: "focus-3",
+    area: "focus",
+    question: "Wie gut kannst du Geräusche, Nachrichten oder Gedanken ausblenden?",
+    answerLabels: ["gar nicht", "ein wenig", "teilweise", "meistens", "sehr gut"],
+  },
 
-  { id: "mood-1", area: "mood", question: "Wie fühlt sich deine Stimmung gerade an?" },
-  { id: "mood-2", area: "mood", question: "Wie leicht kannst du gerade positive Momente wahrnehmen?" },
-  { id: "mood-3", area: "mood", question: "Wie ausgeglichen fühlst du dich gerade?" },
-
-  { id: "muscles-1", area: "muscles", question: "Wie entspannt fühlen sich deine Muskeln gerade an?" },
-  { id: "muscles-2", area: "muscles", question: "Wie frei kannst du dich ohne körperliche Spannung bewegen?" },
-  { id: "muscles-3", area: "muscles", question: "Wie erholt fühlen sich deine Muskeln gerade an?" },
-
-  { id: "nutrition-1", area: "nutrition", question: "Wie gut bist du heute mit Essen und Trinken versorgt?" },
-  { id: "nutrition-2", area: "nutrition", question: "Wie zufrieden bist du gerade mit deiner Versorgung?" },
-  { id: "nutrition-3", area: "nutrition", question: "Wie gut fühlt sich dein körperlicher Bedarf gerade gedeckt an?" },
-
-  { id: "recovery-1", area: "recovery", question: "Wie erholt fühlst du dich gerade?" },
-  { id: "recovery-2", area: "recovery", question: "Wie gut konntest du in letzter Zeit Pausen oder Schlaf bekommen?" },
-  { id: "recovery-3", area: "recovery", question: "Wie viel Raum hast du gerade für Regeneration?" },
+  {
+    id: "body-1",
+    area: "body",
+    question: "Wie angenehm fühlt sich dein Körper gerade an?",
+    answerLabels: ["gar nicht angenehm", "kaum angenehm", "etwas angenehm", "angenehm", "sehr angenehm"],
+  },
+  {
+    id: "body-2",
+    area: "body",
+    question: "Wie frei kannst du Arme, Beine oder Rücken gerade bewegen?",
+    answerLabels: ["gar nicht frei", "kaum frei", "etwas frei", "frei", "sehr frei"],
+  },
+  {
+    id: "body-3",
+    area: "body",
+    question: "Bemerkst du Hunger oder Durst von selbst?",
+    answerLabels: ["gar nicht", "erst sehr spät", "manchmal", "meistens", "zuverlässig"],
+  },
 ];
 
 export const hpAreaLabels: Record<HpQuestion["area"], string> = {
   body: "Körper",
   energy: "Energie",
-  focus: "Konzentration",
+  focus: "Fokus",
   mood: "Stimmung",
   muscles: "Muskelzustand",
   nutrition: "Ernährung",
   recovery: "Regeneration",
 };
-
-export const hpAnswerLabels = [
-  "sehr wenig",
-  "wenig",
-  "mittel",
-  "gut",
-  "sehr gut",
-] as const;

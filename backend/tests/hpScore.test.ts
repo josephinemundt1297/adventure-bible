@@ -25,4 +25,24 @@ describe("hp score calculation", () => {
       overallScore: 43,
     });
   });
+
+  it("supports averaged area answers from the frontend questionnaire", () => {
+    expect(
+      calculateHpCheckScores({
+        type: "FULL",
+        body: 3.3333333333333335,
+        energy: 2,
+        focus: 4,
+        mood: 3,
+        muscle: 2,
+        nutrition: 4,
+        recovery: 3,
+      }),
+    ).toMatchObject({
+      body: 58,
+      energy: 25,
+      focus: 75,
+      overallScore: 51,
+    });
+  });
 });

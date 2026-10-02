@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const hpAnswerSchema = z.number().int().min(1).max(5);
+const hpAnswerSchema = z.number().min(1).max(5);
 
 export const hpCheckInputSchema = z
   .object({
