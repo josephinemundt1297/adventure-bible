@@ -32,7 +32,8 @@ backend/
 │   ├── health.test.ts
 │   ├── hpChecks.test.ts
 │   ├── hpScore.test.ts
-│   └── profile.test.ts
+│   ├── profile.test.ts
+│   └── quests.test.ts
 ├── .env.example
 ├── package.json
 ├── tsconfig.json
@@ -41,7 +42,7 @@ backend/
 
 ## Status
 
-Die Backend-Grundstruktur ist vorbereitet. Implementiert sind bisher der öffentliche Healthcheck `GET /health`, der geschützte Auth-Test-Endpunkt `GET /api/auth-check`, die geschützten Profil-Endpunkte `GET /api/profile` und `PUT /api/profile`, die geschützten HP-Check-Endpunkte `GET /api/hp-checks`, `GET /api/hp-checks/:id` und `POST /api/hp-checks` sowie eine zentrale Fehlerantwort ohne interne Details.
+Die Backend-Grundstruktur ist vorbereitet. Implementiert sind bisher der öffentliche Healthcheck `GET /health`, der geschützte Auth-Test-Endpunkt `GET /api/auth-check`, die geschützten Profil-Endpunkte `GET /api/profile` und `PUT /api/profile`, die geschützten HP-Check-Endpunkte `GET /api/hp-checks`, `GET /api/hp-checks/:id` und `POST /api/hp-checks`, die geschützten Quest-Endpunkte `GET /api/quests`, `POST /api/quests`, `GET /api/quests/:id` und `PATCH /api/quests/:id` sowie eine zentrale Fehlerantwort ohne interne Details.
 
 Der HP-Check-Endpunkt nimmt Bereichswerte von `1` bis `5` entgegen und speichert daraus berechnete HP-Werte auf der bestehenden Skala `0` bis `100`.
 

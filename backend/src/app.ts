@@ -7,12 +7,15 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import { authCheckRouter } from "./routes/authCheck.js";
 import { createHpChecksRouter } from "./routes/hpChecks.js";
 import { createProfileRouter } from "./routes/profile.js";
+import { createQuestsRouter } from "./routes/quests.js";
 import type { HpCheckService } from "./services/hpCheckService.js";
 import type { ProfileService } from "./services/profileService.js";
+import type { QuestService } from "./services/questService.js";
 
 interface AppOptions {
   hpCheckService?: HpCheckService;
   profileService?: ProfileService;
+  questService?: QuestService;
 }
 
 export function createApp(options: AppOptions = {}) {
@@ -44,6 +47,7 @@ export function createApp(options: AppOptions = {}) {
   app.use("/api", authCheckRouter);
   app.use("/api", createProfileRouter(options.profileService));
   app.use("/api", createHpChecksRouter(options.hpCheckService));
+  app.use("/api", createQuestsRouter(options.questService));
   app.use(errorHandler);
 
   return app;
