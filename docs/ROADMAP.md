@@ -2,9 +2,9 @@
 
 ## Zweck
 
-Diese Roadmap beschreibt den aktuellen Stand und die verbleibenden Schritte für das React-Abschlussprojekt.
+Diese Roadmap beschreibt den aktuellen Stand und die verbleibenden Schritte für den gemeinsamen Frontend-Backend-MVP.
 
-Ziel ist ein fokussierter, präsentierbarer MVP mit einem vollständigen und getesteten Adventure-Bible-Loop.
+Ziel ist ein fokussierter, präsentierbarer MVP mit einem vollständigen und getesteten Adventure-Bible-Loop, dessen zentrale Daten über das Backend gespeichert werden.
 
 ---
 
@@ -78,18 +78,19 @@ Priorität:
 
 ---
 
-# 5. Profil und Charakter
+# 5. Profil und Onboarding
 
 - [x] Profil-/Account-Bereich
 - [x] Clerk Sign-in / Sign-up UI
-- [x] Character View
+- [x] grundlegender Profilbereich
 - [x] XP / Level / Quest Points
 - [x] grundlegende Fortschrittsanzeige
 - [x] responsive Darstellung
+- [ ] abgespecktes Onboarding mit Anzeigename und Pronomen finalisieren
 
-**Status:** 🟢 abgeschlossen
+**Status:** 🟡 Grundfunktionen vorhanden; Onboarding im MVP noch zu schärfen
 
-> Hinweis: Clerk ist bereits als Authentifizierungs-UI integriert. Backend-Persistenz und serverseitige Autorisierung bleiben außerhalb des React-MVP.
+> Hinweis: Clerk bleibt die Authentifizierungsbasis. Die produktive Backend-Prüfung ist noch offen.
 
 ---
 
@@ -98,6 +99,7 @@ Priorität:
 - [x] großer HP-Check
 - [x] 3 Fragen pro HP-Bereich
 - [x] 5 Antwortmöglichkeiten pro Frage
+- [x] vier HP-Bereiche: Energie, Fokus, Stimmung und Körper
 - [x] nachvollziehbare HP-Berechnung
 - [x] HP-Zusammenfassung
 - [x] regelbasierte Quest-Auswahl
@@ -205,8 +207,10 @@ Priorität:
 - [x] keine kritischen Fehler im Demo-Flow
 - [x] unnötige Debug-/Testartefakte geprüft
 - [x] finale Roadmap-Dokumentation nach Tagesjournal-Erweiterung erneut prüfen
+- [ ] Backend-Persistenz für alle MVP-Daten prüfen
+- [ ] Frontend-Backend-Anbindung für alle MVP-Daten prüfen
 
-**Status:** 🟡 technische Checks grün; finale manuelle Abnahme offen
+**Status:** 🟡 Frontend-Kernflow funktioniert; vollständiger gemeinsamer MVP braucht noch Backend-Anbindung
 
 ---
 
@@ -215,7 +219,8 @@ Priorität:
 Der MVP ist fertig, wenn:
 
 - [x] zentraler Produkt-Loop implementiert ist
-- [x] Profil / Charakter vorhanden sind
+- [x] Profilbereich vorhanden ist
+- [ ] abgespecktes Onboarding mit Anzeigename und Pronomen vorhanden ist
 - [x] Zustand erfasst werden kann
 - [x] Quest passend ausgewählt werden kann
 - [x] Quest gestartet und abgeschlossen werden kann
@@ -234,19 +239,16 @@ Der MVP ist fertig, wenn:
 - [x] finaler Production Build erfolgreich verifiziert ist
 - [x] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
 - [ ] manuelle Keyboard-/Screenreader-/Kontrast-Abnahme vollständig durchgeführt
+- [ ] zentrale Daten werden über das Backend gespeichert und wieder geladen
 
-**MVP-Status:** 🟡 Kern-Loop funktioniert; finale manuelle Accessibility-Abnahme offen
+**MVP-Status:** 🟡 Kern-Loop funktioniert; vollständige Backend-Persistenz und finale manuelle Accessibility-Abnahme offen
 
 ---
 
 # 13. Nach dem MVP
 
-Nicht Teil der aktuellen React-MVP-Abnahme:
+Nicht Teil des gemeinsamen MVP:
 
-- Backend
-- Datenbank
-- serverseitige Persistenz
-- serverseitige Autorisierung
 - komplexere adaptive Logik
 - KI-Unterstützung
 - Voice Input
@@ -255,5 +257,6 @@ Nicht Teil der aktuellen React-MVP-Abnahme:
 - umfangreiche Statistiken
 - komplexes Inventar / RPG-System
 - langfristige Mustererkennung
+- ausführliche Charakter-Erstellung
 
 Diese Funktionen werden erst nach einem stabilen MVP betrachtet.

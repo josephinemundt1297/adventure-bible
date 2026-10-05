@@ -40,7 +40,7 @@ Technisch wird die API vom Adventure-Bible-Frontend genutzt. Lehrkräfte und Rev
 - keine externe Kalenderintegration
 - kein Inventar-System
 - keine komplexe Statistik-Auswertung
-- keine umfangreichen Achievements
+- keine erweiterten Achievements über die bereits vorhandenen App-Achievements hinaus
 
 ## Geplanter Stack
 
@@ -49,10 +49,10 @@ Technisch wird die API vom Adventure-Bible-Frontend genutzt. Lehrkräfte und Rev
 - PostgreSQL
 - Prisma
 - Zod
-- Clerk-Backend-Integration oder JWT-Prüfung für geschützte Routen
+- Clerk-Backend-Integration für geschützte Routen
 - Supertest mit einem passenden Test-Runner
 
-Die genaue Auth-Variante und der Test-Runner werden vor der Implementierung endgültig festgelegt.
+Clerk bleibt die geplante Authentifizierungsbasis. Der Test-Runner ist inzwischen Vitest.
 
 ## Datenmodell
 
@@ -92,9 +92,6 @@ Wichtige Felder:
 - `energy`
 - `focus`
 - `mood`
-- `muscle`
-- `nutrition`
-- `recovery`
 - `overallScore`
 - `createdAt`
 
@@ -289,10 +286,7 @@ Beispiel `POST /api/hp-checks`:
   "body": 3,
   "energy": 2,
   "focus": 4,
-  "mood": 3,
-  "muscle": 2,
-  "nutrition": 4,
-  "recovery": 3
+  "mood": 3
 }
 ```
 
@@ -389,7 +383,7 @@ Beispiel `POST /api/journal-entries`:
 
 ## Authentifizierung und Autorisierung
 
-Langfristig geplant ist eine Authentifizierung über Clerk-Backend-Integration oder eine nachvollziehbare JWT-Prüfung.
+Langfristig geplant ist eine produktive Authentifizierung über Clerk-Backend-Integration.
 
 Für die erste testbare Backend-Version gibt es eine Übergangs-Middleware mit dem Header `x-test-auth-user-id`. Dieser Header ist nur außerhalb von `NODE_ENV=production` gültig und ersetzt keine echte Produktions-Authentifizierung.
 
@@ -450,8 +444,7 @@ Mindestens zu testen:
 
 ## Offene Entscheidungen
 
-- Wird die Backend-Integration direkt mit Clerk umgesetzt oder zunächst mit testbarer JWT-Middleware vorbereitet?
-- Welcher Test-Runner wird genutzt: Vitest, Jest oder Node-Test?
+- Wie wird die produktive Clerk-Prüfung konkret in Middleware und Tests eingebunden?
 - Werden Quests komplett nutzereigen gespeichert oder gibt es zusätzlich globale Quest-Vorlagen?
 - Soll `DELETE /api/quests/:id` wirklich löschen oder nur `isArchived` setzen?
 - Sollen Journal-Ereignisse automatisch aus HP-Checks und QuestLogs entstehen oder explizit über eigene Requests?

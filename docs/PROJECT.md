@@ -139,15 +139,13 @@ sichtbar machen, wie sich Aktivitäten auf den Nutzer auswirken.
 
 ### HP / Zustand
 
-Der aktuelle Zustand des Nutzers kann mehrere Bereiche umfassen:
+Der aktuelle Zustand des Nutzers wird im MVP über vier bewusst einfache
+Bereiche beschrieben:
 
-- Körper
 - Energie
-- Konzentration
+- Fokus
 - Stimmung
-- Muskelzustand
-- Ernährung
-- Regeneration
+- Körper
 
 Der **große HP-Check** verwendet pro Bereich drei Fragen mit jeweils fünf
 Antwortmöglichkeiten. Die Antworten werden zu Bereichswerten und einem
@@ -302,11 +300,13 @@ Die detaillierten Sicherheitsregeln stehen in `docs/SECURITY.md`.
 
 ## MVP
 
-Der React-MVP konzentriert sich auf den zentralen Produkt-Loop:
+Der MVP ist ein gemeinsamer Frontend-Backend-MVP. Das Frontend soll den
+Produkt-Loop bedienbar machen; das Backend soll die wichtigen MVP-Daten
+dauerhaft speichern.
 
 Profil
 ↓
-Charakter
+abgespecktes Onboarding mit Clerk, Anzeigename und Pronomen
 ↓
 Großer HP-Check
 ↓
@@ -335,12 +335,11 @@ Der MVP muss nicht vollständig enthalten:
 - komplexe AI
 - umfangreiche Mustererkennung
 - vollständiges Inventarsystem
-- komplexes Achievement-System
+- komplexes Achievement-System über die bereits vorhandenen Achievements hinaus
 - umfassende Statistiken
 - vollständige Kalenderintegration
 - Voice Input
-- Backend
-- Authentifizierung
+- ausführliche Charakter-Erstellung
 - Multiplayer
 - komplexe RPG-Mechaniken
 
@@ -357,14 +356,13 @@ Die langfristige Adventure Bible kann unter anderem umfassen:
 - Routinen
 - Kalender
 - Statistiken
-- Achievements
 - Inventar
 - Buffs und Debuffs
 - Journal
 - Voice Input
 - KI-Unterstützung
-- Backend und Persistenz
-- Clerk-basierte Authentifizierung
+- ausführliche Charakter-Erstellung
+- PWA-Nutzung im kleinen Freundeskreis
 
 Diese Vision darf den MVP nicht unnötig vergrößern.
 
