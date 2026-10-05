@@ -376,14 +376,54 @@ Filter:
 
 Beispiel `POST /api/journal-entries`:
 
+Request:
+
+```text
+POST /api/journal-entries
+Header: x-test-auth-user-id: user_test_123
+Header: Content-Type: application/json
+```
+
 ```json
 {
-  "entryDate": "2026-09-30",
+  "entryDate": "2026-10-05",
+  "entryTime": "13:20",
   "type": "REFLECTION",
-  "title": "Abendreflexion",
-  "content": "Heute habe ich meinen Backend-Scope geklärt."
+  "title": "Mittagsstand",
+  "content": "Heute habe ich die Journal-Endpunkte getestet."
 }
 ```
+
+Beispiel `GET /api/journal-entries/:id`:
+
+```text
+GET /api/journal-entries/1d2853d1-f1b9-41b1-98b6-da2a43f85b92
+Header: x-test-auth-user-id: user_test_123
+```
+
+Beispiel `PATCH /api/journal-entries/:id`:
+
+```text
+PATCH /api/journal-entries/1d2853d1-f1b9-41b1-98b6-da2a43f85b92
+Header: x-test-auth-user-id: user_test_123
+Header: Content-Type: application/json
+```
+
+```json
+{
+  "title": "Aktualisierte Reflexion",
+  "content": "Ich habe den Journal-Eintrag erfolgreich geändert."
+}
+```
+
+Beispiel `DELETE /api/journal-entries/:id`:
+
+```text
+DELETE /api/journal-entries/1d2853d1-f1b9-41b1-98b6-da2a43f85b92
+Header: x-test-auth-user-id: user_test_123
+```
+
+Erwartete Antwort: `204 No Content`.
 
 ## Authentifizierung und Autorisierung
 

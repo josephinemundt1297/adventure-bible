@@ -16,7 +16,7 @@ Der MVP soll alle nötigen Backend-Endpunkte haben, damit die wichtigen Frontend
 | Hoch | Prisma-HP-Modell auf vier finale HP-Bereiche bereinigen | Backend/Datenmodell | erledigt |
 | Hoch | Frontend an Quest-/QuestLog-Daten aus dem Backend anbinden | Frontend/Backend | offen |
 | Mittel | Frontend an JournalEntry-Daten aus dem Backend anbinden | Frontend/Backend | offen |
-| Mittel | API-Dokumentation mit Beispielrequests ergänzen | Doku | offen |
+| Mittel | API-Dokumentation mit Beispielrequests ergänzen | Doku | teilweise erledigt |
 | Mittel | Deployment-Ziel für Backend entscheiden | Deployment | offen |
 | Mittel | kostenlose oder kostenkontrollierte Datenbank-/Hosting-Lösung prüfen | Deployment | offen |
 
