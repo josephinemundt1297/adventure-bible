@@ -10,19 +10,13 @@ describe("hp score calculation", () => {
         energy: 2,
         focus: 3,
         mood: 4,
-        muscle: 5,
-        nutrition: 3,
-        recovery: 1,
       }),
     ).toEqual({
       body: 0,
       energy: 25,
       focus: 50,
       mood: 75,
-      muscle: 100,
-      nutrition: 50,
-      recovery: 0,
-      overallScore: 43,
+      overallScore: 38,
     });
   });
 
@@ -34,15 +28,12 @@ describe("hp score calculation", () => {
         energy: 2,
         focus: 4,
         mood: 3,
-        muscle: 2,
-        nutrition: 4,
-        recovery: 3,
       }),
     ).toMatchObject({
       body: 58,
       energy: 25,
       focus: 75,
-      overallScore: 51,
+      overallScore: 52,
     });
   });
 });

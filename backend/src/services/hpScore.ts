@@ -8,9 +8,6 @@ export interface HpCheckScores {
   energy: number;
   focus: number;
   mood: number;
-  muscle: number;
-  nutrition: number;
-  recovery: number;
   overallScore: number;
 }
 
@@ -24,9 +21,6 @@ export function calculateHpCheckScores(input: HpCheckInput): HpCheckScores {
     energy: toScore(input.energy),
     focus: toScore(input.focus),
     mood: toScore(input.mood),
-    muscle: toScore(input.muscle),
-    nutrition: toScore(input.nutrition),
-    recovery: toScore(input.recovery),
   };
 
   return {

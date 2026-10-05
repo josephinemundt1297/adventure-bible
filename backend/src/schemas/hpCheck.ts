@@ -9,9 +9,6 @@ export const hpCheckInputSchema = z
     energy: hpAnswerSchema,
     focus: hpAnswerSchema,
     mood: hpAnswerSchema,
-    muscle: hpAnswerSchema,
-    nutrition: hpAnswerSchema,
-    recovery: hpAnswerSchema,
   })
   .strict();
 

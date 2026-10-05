@@ -34,9 +34,6 @@ CREATE TABLE "HpCheck" (
     "energy" INTEGER NOT NULL,
     "focus" INTEGER NOT NULL,
     "mood" INTEGER NOT NULL,
-    "muscle" INTEGER NOT NULL,
-    "nutrition" INTEGER NOT NULL,
-    "recovery" INTEGER NOT NULL,
     "overallScore" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

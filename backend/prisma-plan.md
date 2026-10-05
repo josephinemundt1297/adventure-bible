@@ -108,9 +108,6 @@ model HpCheck {
   energy        Int
   focus         Int
   mood          Int
-  muscle        Int
-  nutrition     Int
-  recovery      Int
   overallScore  Int
   createdAt     DateTime     @default(now())
 

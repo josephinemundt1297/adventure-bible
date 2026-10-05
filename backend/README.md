@@ -63,7 +63,7 @@ Nicht Teil des Backend-MVP:
 | Profil | Lesen und Aktualisieren | Profil-Löschung erst später |
 | HP-Checks | Erstellen, Liste, Einzelansicht | produktive Frontend-Anbindung ausbauen |
 | Quests | Erstellen, Liste, Einzelansicht, Update | Archivieren/Löschen, Filter |
-| QuestLogs | Datenmodell geplant | Endpunkte fehlen |
+| QuestLogs | Liste, Starten und Aktualisieren/Abschließen | Einzelansicht und Filter |
 | JournalEntries | Datenmodell geplant | Endpunkte fehlen |
 | Deployment | noch nicht vorhanden | Live-URL und sichere Env-Konfiguration |
 
@@ -84,9 +84,9 @@ Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
 | `POST` | `/api/quests` | implementiert |
 | `GET` | `/api/quests/:id` | implementiert |
 | `PATCH` | `/api/quests/:id` | implementiert |
-| `GET` | `/api/quest-logs` | geplant |
-| `POST` | `/api/quest-logs` | geplant |
-| `PATCH` | `/api/quest-logs/:id` | geplant |
+| `GET` | `/api/quest-logs` | implementiert |
+| `POST` | `/api/quest-logs` | implementiert |
+| `PATCH` | `/api/quest-logs/:id` | implementiert |
 | `GET` | `/api/journal-entries` | geplant |
 | `POST` | `/api/journal-entries` | geplant |
 
@@ -129,7 +129,8 @@ backend/
 │   ├── hpChecks.test.ts
 │   ├── hpScore.test.ts
 │   ├── profile.test.ts
-│   └── quests.test.ts
+│   ├── quests.test.ts
+│   └── questLogs.test.ts
 ├── .env.example
 ├── package.json
 ├── tsconfig.json

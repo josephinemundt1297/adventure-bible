@@ -322,11 +322,13 @@ Beispiel `POST /api/quests`:
 
 ### QuestLogs
 
+Aktueller Implementierungsstand: Liste, Starten und Aktualisieren/Abschließen sind umgesetzt. Einzelansicht und Filter bleiben spätere Ausbaustufen.
+
 | Methode | Pfad | Schutz | Zweck |
 |---|---|---|---|
 | `GET` | `/api/quest-logs` | geschützt | Eigenen Quest-Verlauf lesen |
 | `POST` | `/api/quest-logs` | geschützt | Quest starten oder Ereignis speichern |
-| `GET` | `/api/quest-logs/:id` | geschützt | Einzelnen eigenen QuestLog lesen |
+| `GET` | `/api/quest-logs/:id` | geschützt | Einzelnen eigenen QuestLog lesen, später |
 | `PATCH` | `/api/quest-logs/:id` | geschützt | QuestLog aktualisieren, z. B. abschließen |
 
 Filter:
