@@ -1,4 +1,3 @@
-import type { QuestLogStatus } from "@prisma/client";
 import type { Server } from "node:http";
 import request from "supertest";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -209,7 +208,7 @@ describe("quest-log API", () => {
         .set("x-test-auth-user-id", "user_test_123")
         .send({
           questId: "quest_123",
-          status: "COMPLETED" satisfies QuestLogStatus,
+          status: "COMPLETED",
         })
         .expect(201);
 
