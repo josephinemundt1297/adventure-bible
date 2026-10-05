@@ -1,367 +1,180 @@
-# 🧭 Adventure Bible
+# 🧭 Adventure Bible Frontend
 
-> **Dein Alltag wird zum Abenteuer.**
->
-> Adventure Bible ist ein mobile-first Habit- und Quest-Tracker mit RPG-Elementen, der Aufgaben und Selbstfürsorge an den aktuellen Zustand des Nutzers anpasst.
+> Dein Alltag wird zum Abenteuer.
 
-![Adventure Bible – Layout-Idee](LayoutIdee.png)
+Das Frontend ist die mobile-first React-App von Adventure Bible. Es zeigt den Produktflow: Onboarding, Profil, HP-Check, passende Quests, Plan, Reflexion, Kalender und Fortschritt.
 
-## ✨ Über das Projekt
+![Adventure Bible Layout-Idee](LayoutIdee.png)
 
-Adventure Bible wurde als React-Abschlussprojekt entwickelt. Die zentrale Idee: **Nicht der Mensch passt sich der App an – die App passt sich dem Menschen an.**
+## ✨ Auf Einen Blick
 
-Statt eine starre To-do-Liste vorzugeben, erfasst Adventure Bible zunächst den aktuellen Zustand des Nutzers. Daraus werden passende Quests vorgeschlagen. Nach einer abgeschlossenen Quest kann der Nutzer seinen Zustand erneut einschätzen und entscheiden, ob er eine weitere Quest angehen oder am Lagerfeuer regenerieren möchte.
+| Bereich | Stand |
+|---|---|
+| App-Typ | Mobile-first React-App |
+| MVP | Gemeinsamer Frontend-Backend-MVP |
+| Authentifizierung | Clerk UI für Anmeldung und Nutzerkonto |
+| HP-Bereiche | Energie, Fokus, Stimmung, Körper |
+| Persistenz | teilweise lokal, teilweise Backend-Anbindung |
+| Langfristig | PWA für kleinen Freundeskreis |
 
-Der MVP konzentriert sich bewusst auf einen kleinen, vollständigen und getesteten Produkt-Loop.
+## 🌿 Produktidee
 
-## 🎯 Der zentrale Adventure-Bible-Loop
+Adventure Bible soll sich wie eine ruhige Begleitung anfühlen. Der Nutzer soll nicht gegen eine starre Aufgabenliste arbeiten, sondern aus seinem aktuellen Zustand heraus einen machbaren nächsten Schritt finden.
 
-```text
-┌─────────────────────┐
-│   Großer HP-Check   │
-└──────────┬──────────┘
-           ↓
-┌─────────────────────┐
-│    HP-Zustand       │
-└──────────┬──────────┘
-           ↓
-┌─────────────────────┐
-│ Adaptive Quests     │
-│  ≥ 2 Vorschläge     │
-└──────────┬──────────┘
-           ↓
-┌─────────────────────┐
-│    Quest starten    │
-└──────────┬──────────┘
-           ↓
-┌─────────────────────┐
-│   Quest abschließen │
-└──────────┬──────────┘
-           ↓
-┌─────────────────────┐
-│ XP · Quest Points   │
-│ · Reward            │
-└──────────┬──────────┘
-           ↓
-┌─────────────────────┐
-│    Mini HP-Check    │
-└──────────┬──────────┘
-           ↓
-      ┌────┴────┐
-      ↓         ↓
-  Neue Quest  🔥 Lagerfeuer
-      │         │
-      └────┬────┘
-           ↓
-    Nächster Zyklus
-```
+Der Leitgedanke:
 
-Der HP-Check ist **keine medizinische Diagnose**. Er dient ausschließlich dazu, den eigenen aktuellen Zustand bewusst wahrzunehmen und daraus passende nächste Schritte abzuleiten.
+> Die App passt sich an den Nutzer an, nicht umgekehrt.
 
----
+## 🎯 MVP-Scope
 
-## 🌟 Features
+Der MVP ist ab jetzt ein gemeinsamer Frontend-Backend-MVP. Das Frontend soll die nötigen Daten nicht nur lokal halten, sondern über das Backend speichern und wieder laden.
 
-### 🖤 Großer HP-Check
+| Gehört zum Frontend-MVP | Später |
+|---|---|
+| abgespecktes Onboarding | ausführliche Charakter-Erstellung |
+| Clerk-Konto für Authentifizierung und Verifizierung | Inventar |
+| Anzeigename und Pronomen | Routinen |
+| Profil mit XP, Level und Quest Points | erweiterte Statistiken |
+| vier HP-Bereiche | KI-Unterstützung |
+| großer HP-Check und Mini HP-Check | App-Store-Veröffentlichung |
+| Dashboard/Home mit aktuellem Status |  |
+| adaptive Quest-Auswahl |  |
+| Quests starten und abschließen |  |
+| XP, Quest Points und Achievements |  |
+| Tagesplan, Kalender, Reflexion und Journal |  |
 
-- strukturierter Check zu sieben HP-Bereichen
-- drei Fragen pro Bereich
-- fünf Antwortmöglichkeiten pro Frage
-- nachvollziehbare HP-Berechnung
-- übersichtliche Zusammenfassung des aktuellen Zustands
-- bewusst ohne medizinischen Diagnoseanspruch
+## 🧩 Projektstatus
 
-### ⚔️ Adaptive Quest-Auswahl
+| Umgesetzt | Offen |
+|---|---|
+| App-Shell und Navigation | Frontend-Anbindung für Quests |
+| Dashboard/Home | Frontend-Anbindung für QuestLogs |
+| großer HP-Check | Frontend-Anbindung für JournalEntries |
+| Mini HP-Check | produktive Auth-Weitergabe an das Backend |
+| Quest-Flow | vollständige Persistenz aller MVP-Daten |
+| Plan, Kalender und Reflexion | finale manuelle Accessibility-Abnahme |
+| Profilbereich | PWA-Check für Installierbarkeit |
+| Achievements |  |
+| Clerk UI |  |
+| erste Backend-Anbindung für Profil und HP-Checks |  |
 
-Quests werden anhand des aktuellen HP-Zustands priorisiert.
+Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
 
-- mindestens zwei passende Quest-Optionen
-- lokale Quest-Bibliothek als JSON
-- Quest-Historie wird berücksichtigt
-- Quest starten und abschließen
-- XP und Quest Points
-- sichtbares Reward-Feedback
+## 🚀 Langfristige App-Vision
 
-### 🌿 Mini HP-Check
+Adventure Bible soll langfristig wie eine echte App nutzbar sein, aber zuerst als PWA statt über App Store oder Play Store.
 
-Nach einer Quest kann der Nutzer seinen aktuellen Zustand schnell erneut einschätzen.
+Ziel:
 
-- zugängliche Regler
-- aktuelle Werte direkt sichtbar
-- Vergleich mit vorherigen Werten
-- Grundlage für den nächsten Quest-Vorschlag
-
-### 🔥 Lagerfeuer & Regeneration
-
-Der Nutzer kann sich bewusst für eine Pause entscheiden.
-
-Das Lagerfeuer ist kein Fehler- oder Abbruchzustand, sondern ein bewusstes Element des Fortschritts:
-
-> **Regeneration ist Teil des Abenteuers.**
-
-### 🏆 Rewards & Achievements
-
-Fortschritt wird nicht nur über XP sichtbar.
-
-- Achievements für Meilensteine
-- Quest- und Lagerfeuer-Rewards
-- sichtbare Reward-Benachrichtigungen
-- keine doppelten Achievement-Auslösungen
-- lokale Fortschrittslogik ohne Backend-Abhängigkeit im MVP
-
-### 📅 Plan & Aufgaben
-
-- Aufgaben hinzufügen
-- eigene Aufgaben erstellen
-- Quests in den Plan übernehmen
-- Aufgaben verschieben
-- Aufgaben erledigen oder wieder öffnen
-- Aufgaben entfernen
-- interne Scrollfläche für lange Listen
-- Navigation bleibt sichtbar
-
-### 📖 Tagesjournal & Kalender
-
-Der Kalender macht den Verlauf eines Tages nachvollziehbar.
-
-- HP-Check, Quest-Start, Quest-Abschluss, Mini HP-Check und Lagerfeuer werden als Tagesereignisse gespeichert
-- abendliche Reflexion erscheint als Tagebuch-Eintrag
-- Tage mit Einträgen sind in der Wochenansicht erkennbar
-- Verlauf und Reflexion bleiben im MVP lokal im Browser gespeichert
-
-### 👤 Profil & Authentifizierung
-
-- persönlicher Charakterbereich
-- XP / Level / Quest Points
-- Clerk Sign-in / Sign-up
-- eingeloggter Zustand in der Navigation sichtbar
-- User Account über Clerk verwaltbar
-
-### ♿ Accessibility & Responsive UX
-
-Der MVP wurde mit Accessibility als Bestandteil der UI-Entwicklung umgesetzt.
-
-- semantische HTML-Strukturen
-- Tastaturbedienung zentraler Interaktionen
-- sichtbare Focus-States
-- verständliche Labels
-- Statusmeldungen über zugängliche Live-Regionen
-- ausreichende Touch-Ziele
-- `prefers-reduced-motion`
-- mobile-first Layout
-- kein unnötiges Scrollen in den zentralen Flows
-
----
+- installierbare Website mit App-Icon
+- Nutzung durch kleinen Freundeskreis
+- kostenfrei für Nutzer
+- möglichst keine laufenden Kosten für die Entwicklerin
+- später mehr RPG-Elemente wie Charakter-Erstellung, Inventar und Routinen
 
 ## 🛠️ Tech Stack
 
 | Technologie | Verwendung |
 |---|---|
-| **React 19** | UI und Komponentenarchitektur |
-| **TypeScript** | Typisierung und Domain-Logik |
-| **Vite** | Development Server und Build |
-| **TanStack Router** | File-based Routing |
-| **Tailwind CSS 4** | Styling |
-| **DaisyUI 5** | UI-Komponenten und Theme |
-| **Clerk** | Authentifizierung |
-| **Vitest** | Unit- und Logiktests |
-| **ESLint** | Codequalität |
-
-Die Quest-Daten liegen im MVP bewusst in einer lokalen JSON-Datei. Backend, Datenbank und serverseitige Persistenz gehören zum Post-MVP-Scope.
-
----
+| React | UI und Komponenten |
+| TypeScript | Typisierung und Domain-Logik |
+| Vite | Entwicklungsserver und Build |
+| TanStack Router | Routing |
+| Tailwind CSS | Styling |
+| DaisyUI | UI-Basis |
+| Clerk | Authentifizierungs-UI |
+| Vitest | Tests |
+| ESLint | Codequalität |
 
 ## 📁 Projektstruktur
 
 ```text
 frontend/
+├── public/
 ├── src/
-│   ├── components/          # Wiederverwendbare UI-Komponenten
-│   ├── data/                # Lokale Quest- und HP-Daten
-│   ├── features/            # Feature-spezifische Komponenten und Logik
+│   ├── components/
+│   ├── data/
+│   ├── features/
 │   │   ├── calendar/
 │   │   ├── hpCheck/
 │   │   ├── plan/
 │   │   ├── profile/
 │   │   └── quests/
-│   ├── lib/                 # Domain- und Hilfslogik
-│   ├── routes/              # TanStack-Router-Routen
-│   ├── types/               # TypeScript-Domain-Typen
-│   └── main.tsx             # App-Einstiegspunkt
-├── tests/                   # Vitest-Tests
-├── LayoutIdee.png           # Ursprüngliche Layout-Idee
+│   ├── lib/
+│   ├── routes/
+│   ├── types/
+│   └── main.tsx
+├── tests/
+├── LayoutIdee.png
 ├── package.json
 └── README.md
 ```
 
-Gemeinsame Produkt-, Design-, Architektur- und Backend-Dokumentation liegt im Repository-Root unter `docs/`.
+## 💻 Lokale Entwicklung
 
----
-
-## 🚀 Lokale Entwicklung
-
-### Voraussetzungen
-
-- Node.js
-- npm
-- ein Clerk-Account für die Authentifizierung
-
-### Installation
-
-Repository klonen und Dependencies installieren:
+Dependencies installieren:
 
 ```bash
-cd frontend
 npm install
 ```
 
-### Clerk konfigurieren
+Private `.env` aus Beispiel anlegen:
 
-Die Anwendung verwendet Clerk für Sign-in und Sign-up.
+```bash
+cp .env.example .env
+```
 
-Für eine lokale Entwicklungsumgebung wird eine gültige Clerk Publishable Key-Konfiguration benötigt. Sensible Schlüssel gehören **nicht** ins Repository.
-
-Die Datei `.env.example` zeigt die benötigten Variablen:
+Benötigte Variablen:
 
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=pk_test_dein_clerk_publishable_key
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
-Für die lokale Entwicklung wird daraus eine private `.env` erstellt:
-
-```bash
-cp .env.example .env
-```
-
-Danach wird in `.env` der echte Clerk Publishable Key eingetragen. `VITE_API_BASE_URL` zeigt lokal auf das Backend. Für ein späteres Deployment muss dort die veröffentlichte Backend-URL stehen.
-
-Die Clerk CLI kann optional für die Projekteinrichtung verwendet werden:
-
-```bash
-clerk auth login
-clerk init
-```
-
-### Development Server starten
+Entwicklungsserver starten:
 
 ```bash
 npm run dev
 ```
 
-Danach ist die Anwendung standardmäßig unter `http://localhost:5173` erreichbar.
+Die App ist lokal standardmäßig unter `http://localhost:5173` erreichbar.
 
----
-
-## 🧪 Tests & Qualitätssicherung
-
-Die wichtigsten Domain- und Feature-Regeln werden mit Vitest getestet.
+## 🧪 Tests und Qualität
 
 ```bash
 npm test
-```
-
-Linting:
-
-```bash
 npm run lint
-```
-
-Production Build:
-
-```bash
 npm run build
-```
-
-Preview des Production Builds:
-
-```bash
 npm run preview
 ```
 
-Der aktuelle MVP wurde abschließend manuell durch den vollständigen Kern-Flow geprüft – von HP-Check und Quest-Auswahl über Quest-Abschluss und Rewards bis hin zu Mini-HP-Check und Lagerfeuer.
+## 🔐 Authentifizierung und Daten
 
-Zusätzlich wurden Tagesjournal und Kalenderverlauf technisch geprüft. Die finale manuelle Keyboard-, Screenreader- und Kontrast-Abnahme ist laut Roadmap noch offen.
+Clerk übernimmt im Frontend die Authentifizierungs-UI. Das Backend nutzt lokal vorübergehend einen Entwicklungsheader und soll später produktiv mit Clerk geprüft werden.
 
----
+Sensible Werte gehören nur in `.env`-Dateien und nicht ins Repository.
 
-## 🧩 Produktprinzipien
+## ♿ Accessibility und UX
 
-Adventure Bible basiert auf einigen bewusst einfachen Prinzipien:
+Adventure Bible soll ruhig, verständlich und mobile-first bleiben.
 
-1. **Die App passt sich dem Nutzer an.**
-2. **Energie ist eine Ressource.**
-3. **Kleine Schritte sind echter Fortschritt.**
-4. **Fortschritt zählt, nicht Perfektion.**
-5. **Regeneration ist eine legitime Aktivität.**
-6. **Der Nutzer bestimmt seinen Weg.**
-7. **Bewusstes Nicht-Erledigen ist kein Versagen.**
-8. **Verstehen statt Verurteilen.**
-
-Diese Prinzipien beeinflussen sowohl die Produktlogik als auch die UX-Entscheidungen.
-
----
-
-## 🔐 Authentifizierung & Sicherheit
-
-Clerk übernimmt im MVP die Authentifizierungs-UI. Backend-Autorisierung, serverseitige Persistenz und eine eigene Benutzerdatenbank sind bewusst nicht Bestandteil dieses React-MVPs.
-
-Sensible Konfiguration wird ausschließlich über Umgebungsvariablen bereitgestellt und nicht in den Quellcode oder das Repository geschrieben.
-
-Weitere Sicherheitsentscheidungen sind in [`docs/SECURITY.md`](docs/SECURITY.md) dokumentiert.
-
----
-
-## 📚 Projektdokumentation
-
-Die ausführliche Projektdokumentation liegt unter `docs/`.
-
-| Dokument | Inhalt |
+| Prinzip | Bedeutung |
 |---|---|
-| [`PROJECT.md`](docs/PROJECT.md) | Produktvision und Grundprinzipien |
-| [`FEATURES.md`](docs/FEATURES.md) | MVP, Post-MVP und langfristige Vision |
-| [`DESIGN.md`](docs/DESIGN.md) | Design- und UX-Regeln |
-| [`ACCESSIBILITY.md`](docs/ACCESSIBILITY.md) | Accessibility-Anforderungen |
-| [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Technische Architektur |
-| [`SECURITY.md`](docs/SECURITY.md) | Sicherheitsregeln |
-| [`ROADMAP.md`](docs/ROADMAP.md) | Entwicklungsstand und MVP-Abnahme |
-| [`DEVELOPMENT_LOG.md`](docs/DEVELOPMENT_LOG.md) | Technische Entwicklungsdokumentation |
+| klare nächste Handlung | Die App zeigt immer, was als nächstes sinnvoll ist. |
+| sichtbare Zustände | Status wird nicht nur über Farbe vermittelt. |
+| gute Bedienbarkeit | Touch-Ziele, Fokus und Labels bleiben verständlich. |
+| mobile-first | Desktop darf mehr Platz nutzen, aber die App bleibt app-artig. |
+| kein Mockup-Umbau für Inhaltsprobleme | Das Handy-Mockup bleibt die Standardgröße. |
 
----
+## 📚 Dokumentation
 
-## 🗺️ MVP & zukünftige Entwicklung
-
-### MVP — 🟡 Kern-Loop abgeschlossen, finale Accessibility-Abnahme offen
-
-Der zentrale Adventure-Bible-Loop ist implementiert, getestet und manuell durchgespielt. Tagesjournal und Kalenderverlauf sind ebenfalls vorhanden. Offen bleibt die finale manuelle Keyboard-, Screenreader- und Kontrast-Abnahme.
-
-### Post-MVP
-
-Mögliche nächste Ausbaustufen sind unter anderem:
-
-- Habit-System
-- detailliertere Verlaufs- und Statistikfunktionen
-- langfristige Mustererkennung
-- umfangreicheres Achievement-System
-- Inventar und weitere RPG-Elemente
-- Journal / Reflexionserweiterungen
-- Kalenderintegration
-- Voice Input
-- KI-Unterstützung
-- Backend und serverseitige Persistenz
-
-Diese Funktionen sind bewusst **nicht** Bestandteil des aktuellen MVPs.
-
----
-
-## 👩‍💻 Projekt
-
-**Adventure Bible** ist ein React-Abschlussprojekt von **Josephine Mundt**.
-
-Das Projekt verbindet Webentwicklung mit dem Ziel, eine ruhige, adaptive und spielerische Alternative zu klassischen To-do- und Habit-Trackern zu entwickeln.
-
----
-
-## 📄 Lizenz
-
-Für dieses Abschlussprojekt ist aktuell keine separate Open-Source-Lizenz festgelegt.
+| Dokument | Zweck |
+|---|---|
+| [Produktvision](../docs/PROJECT.md) | Grundidee und Prinzipien |
+| [Features](../docs/FEATURES.md) | MVP und spätere Funktionen |
+| [Design](../docs/DESIGN.md) | Gestaltung und UX |
+| [Accessibility](../docs/ACCESSIBILITY.md) | Barrierefreiheit |
+| [Architektur](../docs/ARCHITECTURE.md) | Frontend-Aufbau |
+| [Security](../docs/SECURITY.md) | Sicherheitsregeln |
+| [Roadmap](../docs/ROADMAP.md) | Entwicklungsstand |
+| [Development Log](../docs/DEVELOPMENT_LOG.md) | Arbeitsnotizen |
