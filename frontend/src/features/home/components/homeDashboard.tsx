@@ -47,7 +47,7 @@ export function HomeDashboard() {
 
   return (
     <div className="space-y-3">
-      <header className="pt-4">
+      <header className="pt-2">
         <div className="min-w-0">
           <p className="app-kicker text-xs font-bold uppercase">Dein Abenteuer</p>
           <h1 className="app-heading mt-1 text-2xl font-bold tracking-tight">Hallo, {name}!</h1>
@@ -56,18 +56,18 @@ export function HomeDashboard() {
       </header>
 
       {hpState ? (
-        <section className="adventure-card rounded-2xl border p-4" aria-labelledby="status-heading">
+        <section className="adventure-card rounded-2xl border p-3" aria-labelledby="status-heading">
           <div className="flex items-center justify-between gap-3">
             <h2 id="status-heading" className="text-xs font-semibold uppercase tracking-wide text-base-content/60">Dein Status</h2>
             <span className="text-xs font-semibold text-primary">{hpState.overall}/100 gesamt</span>
           </div>
-          <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="mt-3 grid grid-cols-2 gap-2">
             {statusAreas.map((item) => {
               const value = hpState.areas.find((area) => area.area === item.id)?.score ?? 0;
               return (
-                <div key={item.id} className="adventure-soft-card rounded-xl border p-3">
-                  <div className="flex items-center gap-2 text-sm"><span aria-hidden="true">{item.icon}</span><span className="font-medium">{item.label}</span></div>
-                  <p className="mt-2 text-lg font-bold tabular-nums">{value}/100</p>
+                <div key={item.id} className="adventure-soft-card rounded-xl border p-2.5">
+                  <div className="flex items-center gap-1.5 text-[0.8125rem] leading-5"><span aria-hidden="true">{item.icon}</span><span className="whitespace-nowrap font-medium">{item.label}</span></div>
+                  <p className="mt-2 text-base font-bold tabular-nums">{value}/100</p>
                   <progress className="progress progress-primary mt-1 h-1.5 w-full" value={value} max="100" aria-label={`${item.label}: ${value} von 100`} />
                 </div>
               );

@@ -90,11 +90,8 @@ Regeln:
 | `type` | `HpCheckType` | ja | großer oder kleiner HP-Check |
 | `body` | `Int` | ja | Körper-Wert |
 | `energy` | `Int` | ja | Energie-Wert |
-| `focus` | `Int` | ja | Konzentrations-Wert |
+| `focus` | `Int` | ja | Fokus-Wert |
 | `mood` | `Int` | ja | Stimmungs-Wert |
-| `muscle` | `Int` | ja | Muskelzustand-Wert |
-| `nutrition` | `Int` | ja | Ernährungs-Wert |
-| `recovery` | `Int` | ja | Regenerations-Wert |
 | `overallScore` | `Int` | ja | berechneter HP-Gesamtwert |
 | `createdAt` | `DateTime` | ja | Erstellzeitpunkt |
 
@@ -111,6 +108,8 @@ Regeln:
 - `overallScore` wird aus den Bereichswerten berechnet.
 - Der HP-Gesamtwert ist nicht dasselbe wie die Level-Aufstieg-Bewertung.
 - HP-Werte sind keine Diagnosewerte.
+- Die aktuelle Produktentscheidung verwendet vier HP-Bereiche: Energie, Fokus, Stimmung und Körper.
+- Falls im Prisma-Schema noch alte Felder für weitere HP-Bereiche existieren, müssen diese in einer späteren Migration bereinigt werden.
 
 ### Quest
 

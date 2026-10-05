@@ -25,9 +25,9 @@ Der Backend-Modulabschluss startet mit Planung:
 
 - Anforderungen aus der Modulaufgabe sind gelesen.
 - Tagesdokumentation für den 30.09.2026 ist vorhanden.
-- Der erste sinnvolle Backend-Scope ist noch zu konkretisieren.
-- Backend-Code, Datenbankmodell, Tests und Deployment sind noch nicht angelegt.
-- Das Repository ist in `frontend/` für die bestehende React-App und `backend/` für die geplante REST-API getrennt.
+- Der erste sinnvolle Backend-Scope wurde inzwischen konkretisiert.
+- Backend-Code, Datenbankmodell, Tests und erste Endpunkte sind inzwischen angelegt.
+- Das Repository ist in `frontend/` für die React-App und `backend/` für die REST-API getrennt.
 
 ## Kleinster sinnvoller Backend-Scope
 
@@ -105,18 +105,13 @@ Die genauen Request- und Response-Formate werden vor der Implementierung dokumen
 - README um Live-URL ergänzen.
 - Abgabeinformationen vorbereiten.
 
-## Risiko am 30.09.2026
+## Scope-Regel
 
-Das größte Risiko ist ein zu großer Scope. Adventure Bible hat viele mögliche Erweiterungen, aber der Modulabschluss braucht zuerst eine stabile und erklärbare API.
+Das größte Projektrisiko ist ein zu großer Scope. Adventure Bible hat viele mögliche Erweiterungen, aber der Modulabschluss braucht zuerst eine stabile und erklärbare API.
 
 Gegenmaßnahme:
 
-- Kern-Entitäten zuerst fertig planen.
-- Erweiterungen wie Achievements, Inventar und komplexe Statistik bewusst zurückstellen.
+- Kern-Entitäten zuerst stabil umsetzen.
+- Erweiterungen wie Inventar, Routinen und komplexe Statistik bewusst zurückstellen.
+- Bereits vorhandene Achievements bleiben Teil der App, werden aber im Backend-MVP nicht komplex ausgebaut.
 - Jede neue Idee gegen die Modulanforderungen prüfen.
-
-## Tagespriorität für den 30.09.2026
-
-1. Backend-Scope für Adventure Bible festlegen.
-2. Kern-Entitäten und Beziehungen dokumentieren.
-3. Erste Endpunktgruppen und Risiken notieren.

@@ -97,17 +97,16 @@ Die Antworten werden zu einem Wert für den jeweiligen Bereich zusammengeführt.
 
 ### Aktuelle HP-Bereiche
 
-Die bestehenden Produktdefinitionen sehen folgende Bereiche vor:
+Der MVP verwendet vier HP-Bereiche:
 
-- Körper
 - Energie
-- Konzentration
+- Fokus
 - Stimmung
-- Muskelzustand
-- Ernährung
-- Regeneration
+- Körper
 
-Die genaue Gewichtung der Bereiche wird vor der Implementierung als technische Produktentscheidung festgelegt und getestet.
+Diese vier Bereiche entsprechen der aktuellen Produktvision und der
+Benutzeroberfläche. Ältere Planungsstände mit weiteren Bereichen gelten nicht
+mehr als MVP-Scope.
 
 ---
 
@@ -321,8 +320,8 @@ Ein Kalendertag kann deshalb als Tagesjournal dargestellt werden.
 - Reflexionen bleiben persönliche Notizen und werden nicht bewertet.
 - Der Verlauf darf den Nutzer nicht mit Daten überladen.
 
-Im React-MVP erfolgt diese Persistenz lokal im Browser. Ein Backend und
-Synchronisation bleiben außerhalb dieses Schritts.
+Im gemeinsamen MVP sollen diese Daten über das Backend gespeichert werden.
+Lokale Speicherung darf nur noch Übergang oder Fallback sein.
 
 ---
 
@@ -357,9 +356,9 @@ Mögliche MVP-Inhalte:
 
 ---
 
-# 2. POST-MVP
+# 2. SPÄTER
 
-Diese Funktionen gehören zum Produkt, sind aber nicht notwendig, um den React-MVP erfolgreich zu demonstrieren.
+Diese Funktionen gehören zur langfristigen Produktidee, sind aber nicht notwendig, um den gemeinsamen Frontend-Backend-MVP erfolgreich umzusetzen.
 
 ## 2.1 Habit-System
 
@@ -381,9 +380,11 @@ Diese Funktionen gehören zum Produkt, sind aber nicht notwendig, um den React-M
 
 ---
 
-## 2.3 Achievements
+## 2.3 Erweiterte Achievements
 
-- einmalige Erfolge
+Einfache Achievements sind bereits Bestandteil der App. Später möglich sind:
+
+- mehr einmalige Erfolge
 - langfristige Meilensteine
 - besondere Quest-Erfolge
 - optionale Sammelmechanik
@@ -458,7 +459,7 @@ Langfristig kann KI bei folgenden Aufgaben unterstützen:
 - natürliche Interaktion mit der App
 - Unterstützung bei Reflexion und Planung
 
-KI ist kein Bestandteil des React-MVPs.
+KI ist kein Bestandteil des MVPs.
 
 ---
 
@@ -487,17 +488,17 @@ Mögliche Funktionen:
 
 ---
 
-## 3.5 Persistenz und Backend
+## 3.5 Kostenfreie Nutzung im kleinen Kreis
 
-Die langfristige Anwendung kann ein Backend erhalten für:
+Langfristig soll Adventure Bible zuerst als PWA nutzbar sein:
 
-- Benutzerkonten
-- Persistenz
-- Synchronisation
-- Datenhistorie
-- personalisierte Empfehlungen
+- installierbar auf dem Smartphone
+- per Link teilbar
+- geeignet für einen kleinen Freundeskreis
+- kostenfrei für die Nutzer
+- möglichst ohne laufende Kosten für die Entwicklerin
 
-Das Backend gehört nicht zum React-MVP.
+Der Betrieb bleibt abhängig von den Free-Tier-Limits der eingesetzten Dienste.
 
 ---
 
@@ -506,13 +507,11 @@ Das Backend gehört nicht zum React-MVP.
 Folgende Dinge werden nicht nur deshalb implementiert, weil sie für die langfristige Vision interessant sind:
 
 - komplexe KI
-- Backend
-- Authentifizierung
 - Multiplayer
 - vollständiger Kalender
 - Voice Input
 - komplexes Inventar
-- komplexes Achievement-System
+- komplexes Achievement-System über die vorhandenen Achievements hinaus
 - umfangreiche Statistik-Dashboards
 - automatische Mustererkennung
 - komplexe RPG-Kampfsysteme
@@ -540,7 +539,7 @@ Wenn keine dieser Fragen positiv beantwortet wird, wird das Feature nicht automa
 Der MVP gilt funktional als erfolgreich, wenn ein Nutzer:
 
 1. ein Profil erstellen kann,
-2. seinen Charakter sehen kann,
+2. sein Profil mit Anzeigename und Pronomen nutzen kann,
 3. den großen HP-Check mit 3 Fragen pro Bereich und 5 Antwortmöglichkeiten pro Frage durchführen kann,
 4. daraus einen nachvollziehbaren HP-Zustand erhält,
 5. passende Quests angezeigt bekommt,
@@ -549,7 +548,8 @@ Der MVP gilt funktional als erfolgreich, wenn ein Nutzer:
 8. anschließend einen Mini HP-Check mit Reglern durchführen kann,
 9. zwischen einer weiteren Quest und dem Lagerfeuer wählen kann,
 10. seinen Fortschritt nachvollziehen kann,
-11. zwischen Home, Quests, Plan und Ich navigieren kann.
+11. zwischen Home, Quests, Plan und Ich navigieren kann,
+12. die wichtigen MVP-Daten über das Backend speichern und wieder laden kann.
 
 Dabei muss die Anwendung:
 

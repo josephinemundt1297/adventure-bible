@@ -1,22 +1,121 @@
-# Adventure Bible Backend
+# 🧭 Adventure Bible Backend
 
-Dieser Ordner ist für die REST-API des Backend-Modulabschlusses vorbereitet.
+Das Backend ist die REST-API für den gemeinsamen Adventure-Bible-MVP. Es speichert App-Daten dauerhaft und stellt sie dem Frontend über geschützte Endpunkte bereit.
 
-## Ziel
+## ✨ Auf Einen Blick
 
-Das Backend soll den Adventure-Bible-Loop serverseitig speichern und über klare REST-Endpunkte verfügbar machen:
+| Bereich | Stand |
+|---|---|
+| API-Typ | REST-API |
+| Laufzeit | Node.js mit Express |
+| Datenbank | PostgreSQL über Prisma |
+| Validierung | Zod |
+| Authentifizierung | aktuell Entwicklungsheader, später produktive Clerk-Prüfung |
+| Tests | Vitest und Supertest |
+| Deployment | noch offen |
 
-- Profil eines angemeldeten Nutzers
-- HP-Checks
-- Quests
-- Quest-Verlauf
-- Tagesjournal
+## 🌿 Ziel
 
-## Geplanter Aufbau
+Das Backend unterstützt den zentralen Produktflow:
+
+```text
+Profil
+-> großer HP-Check
+-> Quest-Auswahl
+-> Quest starten
+-> Quest abschließen
+-> Mini HP-Check
+-> Lagerfeuer oder neue Quest
+-> Tagesjournal
+```
+
+Die API ist keine medizinische Anwendung. HP-Werte dienen nur der Selbstwahrnehmung und der Auswahl passender nächster Schritte.
+
+## 🎯 MVP-Scope
+
+Das Backend-MVP soll mindestens diese Daten speichern:
+
+| Entität | Zweck |
+|---|---|
+| `UserProfile` | persönliches Adventure-Bible-Profil |
+| `HpCheck` | großer oder kleiner Zustandscheck |
+| `Quest` | Aufgabe im Adventure-Bible-Kontext |
+| `QuestLog` | gestartete, abgeschlossene, verschobene oder übersprungene Quest |
+| `JournalEntry` | Tagesereignis oder Reflexion |
+
+Nicht Teil des Backend-MVP:
+
+- eigene Passwortverwaltung
+- medizinische Bewertung
+- KI-Empfehlungen
+- Inventar
+- Routinen
+- erweiterte Statistiken
+- App-Store-Infrastruktur
+
+## 🧩 Projektstatus
+
+| Bereich | Umgesetzt | Offen |
+|---|---|---|
+| Basis | Express-App, Konfiguration, zentrale Fehlerantwort | Produktionskonfiguration final prüfen |
+| Datenbank | Prisma-Schema und Migrationen | Deployment-Datenbank |
+| Auth | Entwicklungsheader `x-test-auth-user-id` | produktive Clerk-Backend-Prüfung |
+| Profil | Lesen und Aktualisieren | Profil-Löschung erst später |
+| HP-Checks | Erstellen, Liste, Einzelansicht | produktive Frontend-Anbindung ausbauen |
+| Quests | Erstellen, Liste, Einzelansicht, Update | Archivieren/Löschen, Filter |
+| QuestLogs | Liste, Starten und Aktualisieren/Abschließen | Einzelansicht und Filter |
+| JournalEntries | Lesen, Erstellen, Aktualisieren, Löschen und einfache Filter | automatische Journal-Events aus App-Aktionen |
+| Deployment | noch nicht vorhanden | Live-URL und sichere Env-Konfiguration |
+
+Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
+
+## 🔌 Aktuelle Endpunkte
+
+| Methode | Pfad | Status |
+|---|---|---|
+| `GET` | `/health` | implementiert |
+| `GET` | `/api/auth-check` | implementiert |
+| `GET` | `/api/profile` | implementiert |
+| `PUT` | `/api/profile` | implementiert |
+| `GET` | `/api/hp-checks` | implementiert |
+| `GET` | `/api/hp-checks/:id` | implementiert |
+| `POST` | `/api/hp-checks` | implementiert |
+| `GET` | `/api/quests` | implementiert |
+| `POST` | `/api/quests` | implementiert |
+| `GET` | `/api/quests/:id` | implementiert |
+| `PATCH` | `/api/quests/:id` | implementiert |
+| `GET` | `/api/quest-logs` | implementiert |
+| `POST` | `/api/quest-logs` | implementiert |
+| `PATCH` | `/api/quest-logs/:id` | implementiert |
+| `GET` | `/api/journal-entries` | implementiert |
+| `POST` | `/api/journal-entries` | implementiert |
+| `GET` | `/api/journal-entries/:id` | implementiert |
+| `PATCH` | `/api/journal-entries/:id` | implementiert |
+| `DELETE` | `/api/journal-entries/:id` | implementiert |
+
+## 🛠️ Tech Stack
+
+| Technologie | Verwendung |
+|---|---|
+| Node.js | Laufzeit |
+| Express | HTTP-Server und Routing |
+| TypeScript | Typisierung |
+| PostgreSQL | Datenbank |
+| Prisma | ORM und Migrationen |
+| Zod | Request-Validierung |
+| Helmet | Security Header |
+| CORS | erlaubte Frontend-Origin |
+| Express Rate Limit | Schutz vor Missbrauch |
+| dotenv | Umgebungsvariablen |
+| Vitest | Test Runner |
+| Supertest | API-Tests |
+
+## 📁 Projektstruktur
 
 ```text
 backend/
 ├── prisma/
+│   ├── migrations/
 │   └── schema.prisma
 ├── src/
 │   ├── app.ts
@@ -32,35 +131,44 @@ backend/
 │   ├── health.test.ts
 │   ├── hpChecks.test.ts
 │   ├── hpScore.test.ts
-│   └── profile.test.ts
+│   ├── journalEntries.test.ts
+│   ├── profile.test.ts
+│   ├── quests.test.ts
+│   └── questLogs.test.ts
 ├── .env.example
 ├── package.json
 ├── tsconfig.json
 └── README.md
 ```
 
-## Status
-
-Die Backend-Grundstruktur ist vorbereitet. Implementiert sind bisher der öffentliche Healthcheck `GET /health`, der geschützte Auth-Test-Endpunkt `GET /api/auth-check`, die geschützten Profil-Endpunkte `GET /api/profile` und `PUT /api/profile`, die geschützten HP-Check-Endpunkte `GET /api/hp-checks`, `GET /api/hp-checks/:id` und `POST /api/hp-checks` sowie eine zentrale Fehlerantwort ohne interne Details.
-
-Der HP-Check-Endpunkt nimmt Bereichswerte von `1` bis `5` entgegen und speichert daraus berechnete HP-Werte auf der bestehenden Skala `0` bis `100`.
-
-Während der Entwicklung und in Tests liest die Auth-Middleware den Header `x-test-auth-user-id`. Dieser Übergang ist außerhalb von `production` erlaubt und wird später durch die echte Authentifizierungsprüfung ersetzt.
-
-Der erste API-Plan steht in [api-plan.md](api-plan.md).
-
-Das erste Datenmodell steht in [data-model.md](data-model.md).
-
-Der erste Prisma-Plan steht in [prisma-plan.md](prisma-plan.md).
-
-Die Auth-Übergangsstrategie steht in [auth-strategy.md](auth-strategy.md).
-
-## Lokale Entwicklung
+## 💻 Lokale Entwicklung
 
 Dependencies installieren:
 
 ```bash
 npm install
+```
+
+Private `.env` aus Beispiel anlegen:
+
+```bash
+cp .env.example .env
+```
+
+Benötigte Variablen:
+
+```env
+PORT=3000
+DATABASE_URL=postgresql://...
+CLERK_SECRET_KEY=sk_test_dein_clerk_secret_key
+CORS_ORIGIN=http://localhost:5173
+```
+
+Prisma vorbereiten:
+
+```bash
+npm run prisma:generate
+npm run prisma:migrate
 ```
 
 Entwicklungsserver starten:
@@ -69,14 +177,38 @@ Entwicklungsserver starten:
 npm run dev
 ```
 
-Tests ausführen:
+## 🔐 Authentifizierung
+
+Während der Entwicklung und in Tests liest die Auth-Middleware den Header `x-test-auth-user-id`. Dieser Übergang ist nur außerhalb von `production` erlaubt.
+
+Produktiv soll die API echte Clerk-Backend-Prüfung verwenden. Die Übergangsstrategie steht in [auth-strategy.md](auth-strategy.md).
+
+## 🧪 Tests und Qualität
 
 ```bash
 npm test
-```
-
-Build prüfen:
-
-```bash
 npm run build
 ```
+
+## 📚 API-Dokumentation
+
+| Dokument | Zweck |
+|---|---|
+| [API-Plan](api-plan.md) | Endpunkte, Antwortformate und Fehlerfälle |
+| [Datenmodell](data-model.md) | Entitäten und Beziehungen |
+| [Prisma-Plan](prisma-plan.md) | Prisma-Struktur und Migrationen |
+| [Auth-Strategie](auth-strategy.md) | Entwicklungs-Auth und später Clerk |
+
+## 🚀 Deployment
+
+Das Backend ist lokal lauffähig, aber noch nicht deployed.
+
+Für die Modulanforderungen fehlt noch:
+
+- Deployment-Ziel festlegen
+- sichere Produktionsvariablen setzen
+- CORS auf produktive Frontend-URL begrenzen
+- Live-URL testen
+- Live-URL in README und Abgabe ergänzen
+
+Langfristig soll der Betrieb für einen kleinen Freundeskreis kostenfrei oder kostenkontrolliert bleiben. Das ist abhängig von den Free-Tier-Limits des gewählten Hostings und der Datenbank.

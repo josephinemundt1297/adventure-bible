@@ -40,7 +40,7 @@ Technisch wird die API vom Adventure-Bible-Frontend genutzt. Lehrkräfte und Rev
 - keine externe Kalenderintegration
 - kein Inventar-System
 - keine komplexe Statistik-Auswertung
-- keine umfangreichen Achievements
+- keine erweiterten Achievements über die bereits vorhandenen App-Achievements hinaus
 
 ## Geplanter Stack
 
@@ -49,10 +49,10 @@ Technisch wird die API vom Adventure-Bible-Frontend genutzt. Lehrkräfte und Rev
 - PostgreSQL
 - Prisma
 - Zod
-- Clerk-Backend-Integration oder JWT-Prüfung für geschützte Routen
+- Clerk-Backend-Integration für geschützte Routen
 - Supertest mit einem passenden Test-Runner
 
-Die genaue Auth-Variante und der Test-Runner werden vor der Implementierung endgültig festgelegt.
+Clerk bleibt die geplante Authentifizierungsbasis. Der Test-Runner ist inzwischen Vitest.
 
 ## Datenmodell
 
@@ -92,9 +92,6 @@ Wichtige Felder:
 - `energy`
 - `focus`
 - `mood`
-- `muscle`
-- `nutrition`
-- `recovery`
 - `overallScore`
 - `createdAt`
 
@@ -289,10 +286,7 @@ Beispiel `POST /api/hp-checks`:
   "body": 3,
   "energy": 2,
   "focus": 4,
-  "mood": 3,
-  "muscle": 2,
-  "nutrition": 4,
-  "recovery": 3
+  "mood": 3
 }
 ```
 
@@ -328,11 +322,13 @@ Beispiel `POST /api/quests`:
 
 ### QuestLogs
 
+Aktueller Implementierungsstand: Liste, Starten und Aktualisieren/Abschließen sind umgesetzt. Einzelansicht und Filter bleiben spätere Ausbaustufen.
+
 | Methode | Pfad | Schutz | Zweck |
 |---|---|---|---|
 | `GET` | `/api/quest-logs` | geschützt | Eigenen Quest-Verlauf lesen |
 | `POST` | `/api/quest-logs` | geschützt | Quest starten oder Ereignis speichern |
-| `GET` | `/api/quest-logs/:id` | geschützt | Einzelnen eigenen QuestLog lesen |
+| `GET` | `/api/quest-logs/:id` | geschützt | Einzelnen eigenen QuestLog lesen, später |
 | `PATCH` | `/api/quest-logs/:id` | geschützt | QuestLog aktualisieren, z. B. abschließen |
 
 Filter:
@@ -361,6 +357,8 @@ Beispiel `PATCH /api/quest-logs/:id`:
 
 ### JournalEntries
 
+Aktueller Implementierungsstand: Lesen, Erstellen, Aktualisieren, Löschen und Filter nach `entryDate`, `from`, `to` und `type` sind umgesetzt.
+
 | Methode | Pfad | Schutz | Zweck |
 |---|---|---|---|
 | `GET` | `/api/journal-entries` | geschützt | Eigene Journal-Einträge lesen |
@@ -378,18 +376,58 @@ Filter:
 
 Beispiel `POST /api/journal-entries`:
 
+Request:
+
+```text
+POST /api/journal-entries
+Header: x-test-auth-user-id: user_test_123
+Header: Content-Type: application/json
+```
+
 ```json
 {
-  "entryDate": "2026-09-30",
+  "entryDate": "2026-10-05",
+  "entryTime": "13:20",
   "type": "REFLECTION",
-  "title": "Abendreflexion",
-  "content": "Heute habe ich meinen Backend-Scope geklärt."
+  "title": "Mittagsstand",
+  "content": "Heute habe ich die Journal-Endpunkte getestet."
 }
 ```
 
+Beispiel `GET /api/journal-entries/:id`:
+
+```text
+GET /api/journal-entries/1d2853d1-f1b9-41b1-98b6-da2a43f85b92
+Header: x-test-auth-user-id: user_test_123
+```
+
+Beispiel `PATCH /api/journal-entries/:id`:
+
+```text
+PATCH /api/journal-entries/1d2853d1-f1b9-41b1-98b6-da2a43f85b92
+Header: x-test-auth-user-id: user_test_123
+Header: Content-Type: application/json
+```
+
+```json
+{
+  "title": "Aktualisierte Reflexion",
+  "content": "Ich habe den Journal-Eintrag erfolgreich geändert."
+}
+```
+
+Beispiel `DELETE /api/journal-entries/:id`:
+
+```text
+DELETE /api/journal-entries/1d2853d1-f1b9-41b1-98b6-da2a43f85b92
+Header: x-test-auth-user-id: user_test_123
+```
+
+Erwartete Antwort: `204 No Content`.
+
 ## Authentifizierung und Autorisierung
 
-Langfristig geplant ist eine Authentifizierung über Clerk-Backend-Integration oder eine nachvollziehbare JWT-Prüfung.
+Langfristig geplant ist eine produktive Authentifizierung über Clerk-Backend-Integration.
 
 Für die erste testbare Backend-Version gibt es eine Übergangs-Middleware mit dem Header `x-test-auth-user-id`. Dieser Header ist nur außerhalb von `NODE_ENV=production` gültig und ersetzt keine echte Produktions-Authentifizierung.
 
@@ -450,8 +488,7 @@ Mindestens zu testen:
 
 ## Offene Entscheidungen
 
-- Wird die Backend-Integration direkt mit Clerk umgesetzt oder zunächst mit testbarer JWT-Middleware vorbereitet?
-- Welcher Test-Runner wird genutzt: Vitest, Jest oder Node-Test?
+- Wie wird die produktive Clerk-Prüfung konkret in Middleware und Tests eingebunden?
 - Werden Quests komplett nutzereigen gespeichert oder gibt es zusätzlich globale Quest-Vorlagen?
 - Soll `DELETE /api/quests/:id` wirklich löschen oder nur `isArchived` setzen?
 - Sollen Journal-Ereignisse automatisch aus HP-Checks und QuestLogs entstehen oder explizit über eigene Requests?

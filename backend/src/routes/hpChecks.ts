@@ -16,9 +16,6 @@ function serializeHpCheck(hpCheck: HpCheckRecord) {
     energy: hpCheck.energy,
     focus: hpCheck.focus,
     mood: hpCheck.mood,
-    muscle: hpCheck.muscle,
-    nutrition: hpCheck.nutrition,
-    recovery: hpCheck.recovery,
     overallScore: hpCheck.overallScore,
     createdAt: hpCheck.createdAt.toISOString(),
   };
