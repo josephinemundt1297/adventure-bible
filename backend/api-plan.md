@@ -357,6 +357,8 @@ Beispiel `PATCH /api/quest-logs/:id`:
 
 ### JournalEntries
 
+Aktueller Implementierungsstand: Lesen, Erstellen, Aktualisieren, Löschen und Filter nach `entryDate`, `from`, `to` und `type` sind umgesetzt.
+
 | Methode | Pfad | Schutz | Zweck |
 |---|---|---|---|
 | `GET` | `/api/journal-entries` | geschützt | Eigene Journal-Einträge lesen |

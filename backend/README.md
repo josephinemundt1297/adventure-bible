@@ -64,7 +64,7 @@ Nicht Teil des Backend-MVP:
 | HP-Checks | Erstellen, Liste, Einzelansicht | produktive Frontend-Anbindung ausbauen |
 | Quests | Erstellen, Liste, Einzelansicht, Update | Archivieren/Löschen, Filter |
 | QuestLogs | Liste, Starten und Aktualisieren/Abschließen | Einzelansicht und Filter |
-| JournalEntries | Datenmodell geplant | Endpunkte fehlen |
+| JournalEntries | Lesen, Erstellen, Aktualisieren, Löschen und einfache Filter | automatische Journal-Events aus App-Aktionen |
 | Deployment | noch nicht vorhanden | Live-URL und sichere Env-Konfiguration |
 
 Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
@@ -87,8 +87,11 @@ Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
 | `GET` | `/api/quest-logs` | implementiert |
 | `POST` | `/api/quest-logs` | implementiert |
 | `PATCH` | `/api/quest-logs/:id` | implementiert |
-| `GET` | `/api/journal-entries` | geplant |
-| `POST` | `/api/journal-entries` | geplant |
+| `GET` | `/api/journal-entries` | implementiert |
+| `POST` | `/api/journal-entries` | implementiert |
+| `GET` | `/api/journal-entries/:id` | implementiert |
+| `PATCH` | `/api/journal-entries/:id` | implementiert |
+| `DELETE` | `/api/journal-entries/:id` | implementiert |
 
 ## 🛠️ Tech Stack
 
@@ -128,6 +131,7 @@ backend/
 │   ├── health.test.ts
 │   ├── hpChecks.test.ts
 │   ├── hpScore.test.ts
+│   ├── journalEntries.test.ts
 │   ├── profile.test.ts
 │   ├── quests.test.ts
 │   └── questLogs.test.ts
