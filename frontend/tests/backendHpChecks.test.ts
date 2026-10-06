@@ -19,9 +19,6 @@ describe("backend hp-check input", () => {
       energy: 2,
       focus: 4,
       mood: 3,
-      muscle: 10 / 3,
-      nutrition: 2,
-      recovery: 10 / 3,
     });
   });
 });

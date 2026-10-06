@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useUser } from "@clerk/react";
+import { useAuth, useUser } from "@clerk/react";
 import { Link } from "@tanstack/react-router";
 import { hpAreaLabels, hpQuestions } from "../../../data/hpQuestions";
 import { saveBackendHpCheck } from "../../../lib/backendHpChecks";
@@ -15,6 +15,7 @@ const QUEST_PROGRESS_KEY = "adventure-bible:quest-progress";
 const MINI_SELECTED_QUEST_KEY = "adventure-bible:mini-selected-quest";
 
 export function HpCheck() {
+  const { getToken } = useAuth();
   const { user } = useUser();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<HpAnswer[]>([]);
@@ -55,8 +56,8 @@ export function HpCheck() {
       if (user) {
         try {
           await saveBackendHpCheck({
-            authUserId: user.id,
             answers: allAnswers,
+            getToken,
           });
         } catch {
           setSaveError(true);

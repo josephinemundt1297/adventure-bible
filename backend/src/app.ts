@@ -1,3 +1,4 @@
+import { clerkMiddleware } from "@clerk/express";
 import cors from "cors";
 import express, { type Request, type Response } from "express";
 import rateLimit from "express-rate-limit";
@@ -28,6 +29,9 @@ export function createApp(options: AppOptions = {}) {
   const app = express();
 
   app.use(helmet());
+  if (config.clerkAuthEnabled) {
+    app.use(clerkMiddleware());
+  }
   app.use(
     cors({
       origin: config.frontendOrigin,

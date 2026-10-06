@@ -13,12 +13,14 @@ export interface BackendProfile {
 }
 
 export async function saveBackendProfile(input: {
-  authUserId: string;
+  authUserId?: string;
   characterName: string;
   displayName: string;
+  getToken?: () => Promise<string | null>;
 }) {
   return apiRequest<{ data: BackendProfile }>("/api/profile", {
     authUserId: input.authUserId,
+    getToken: input.getToken,
     method: "PUT",
     body: {
       displayName: input.displayName,

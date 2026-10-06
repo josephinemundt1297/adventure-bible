@@ -12,6 +12,7 @@
     "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
+    "@clerk/express": "^2.1.76",
     "@prisma/client": "6.12.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

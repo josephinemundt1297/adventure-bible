@@ -4,21 +4,30 @@ export const apiBaseUrl =
   import.meta.env.VITE_API_BASE_URL ?? DEFAULT_API_BASE_URL;
 
 interface ApiRequestOptions {
-  authUserId: string;
+  authUserId?: string;
   body?: unknown;
-  method?: "GET" | "POST" | "PUT";
+  getToken?: () => Promise<string | null>;
+  method?: "DELETE" | "GET" | "PATCH" | "POST" | "PUT";
 }
 
 export async function apiRequest<TResponse>(
   path: string,
-  { authUserId, body, method = "GET" }: ApiRequestOptions,
+  { authUserId, body, getToken, method = "GET" }: ApiRequestOptions,
 ): Promise<TResponse> {
+  const token = getToken ? await getToken() : null;
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  } else if (authUserId) {
+    headers["x-test-auth-user-id"] = authUserId;
+  }
+
   const response = await fetch(`${apiBaseUrl}${path}`, {
     method,
-    headers: {
-      "Content-Type": "application/json",
-      "x-test-auth-user-id": authUserId,
-    },
+    headers,
     body: body === undefined ? undefined : JSON.stringify(body),
   });
 

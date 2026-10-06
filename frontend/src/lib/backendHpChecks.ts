@@ -10,9 +10,6 @@ interface BackendHpCheckInput {
   energy: number;
   focus: number;
   mood: number;
-  muscle: number;
-  nutrition: number;
-  recovery: number;
 }
 
 export interface BackendHpCheck {
@@ -23,9 +20,6 @@ export interface BackendHpCheck {
   energy: number;
   focus: number;
   mood: number;
-  muscle: number;
-  nutrition: number;
-  recovery: number;
   overallScore: number;
   createdAt: string;
 }
@@ -57,19 +51,18 @@ export function buildBackendHpCheckInput(
     energy: averageAreaAnswer(answers, "energy"),
     focus: averageAreaAnswer(answers, "focus"),
     mood: averageAreaAnswer(answers, "mood"),
-    muscle: averageAreaAnswer(answers, "muscles", "body"),
-    nutrition: averageAreaAnswer(answers, "nutrition", "energy"),
-    recovery: averageAreaAnswer(answers, "recovery", "body"),
   };
 }
 
 export async function saveBackendHpCheck(input: {
   answers: HpAnswer[];
-  authUserId: string;
+  authUserId?: string;
+  getToken?: () => Promise<string | null>;
   type?: BackendHpCheckType;
 }) {
   return apiRequest<{ data: BackendHpCheck }>("/api/hp-checks", {
     authUserId: input.authUserId,
+    getToken: input.getToken,
     method: "POST",
     body: buildBackendHpCheckInput(input.answers, input.type),
   });

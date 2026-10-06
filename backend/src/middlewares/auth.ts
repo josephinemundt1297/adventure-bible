@@ -1,3 +1,4 @@
+import { getAuth } from "@clerk/express";
 import type { NextFunction, Request, Response } from "express";
 import { config } from "../config.js";
 
@@ -10,6 +11,15 @@ export interface AuthenticatedRequest extends Request {
 }
 
 const TEST_AUTH_HEADER = "x-test-auth-user-id";
+
+function readClerkAuthUserId(request: Request): string | null {
+  if (!config.clerkAuthEnabled) {
+    return null;
+  }
+
+  const auth = getAuth(request);
+  return auth.isAuthenticated && auth.userId ? auth.userId : null;
+}
 
 function readDevelopmentAuthUserId(request: Request): string | null {
   if (config.nodeEnv === "production") {
@@ -26,7 +36,8 @@ function readDevelopmentAuthUserId(request: Request): string | null {
 }
 
 export function requireAuth(request: Request, response: Response, next: NextFunction) {
-  const authUserId = readDevelopmentAuthUserId(request);
+  const authUserId =
+    readClerkAuthUserId(request) ?? readDevelopmentAuthUserId(request);
 
   if (!authUserId) {
     response.status(401).json({

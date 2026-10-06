@@ -12,7 +12,7 @@ Der MVP soll alle nötigen Backend-Endpunkte haben, damit die wichtigen Frontend
 |---|---|---|---|
 | Hoch | QuestLog-Endpunkte planen und umsetzen | Backend | erledigt |
 | Hoch | JournalEntry-Endpunkte planen und umsetzen | Backend | erledigt |
-| Hoch | produktive Clerk-Backend-Prüfung vorbereiten | Backend/Auth | offen |
+| Hoch | produktive Clerk-Backend-Prüfung vorbereiten | Backend/Auth | teilweise erledigt |
 | Hoch | Prisma-HP-Modell auf vier finale HP-Bereiche bereinigen | Backend/Datenmodell | erledigt |
 | Hoch | Frontend an Quest-/QuestLog-Daten aus dem Backend anbinden | Frontend/Backend | offen |
 | Mittel | Frontend an JournalEntry-Daten aus dem Backend anbinden | Frontend/Backend | offen |

@@ -59,7 +59,7 @@ Nicht Teil des Backend-MVP:
 |---|---|---|
 | Basis | Express-App, Konfiguration, zentrale Fehlerantwort | Produktionskonfiguration final prüfen |
 | Datenbank | Prisma-Schema und Migrationen | Deployment-Datenbank |
-| Auth | Entwicklungsheader `x-test-auth-user-id` | produktive Clerk-Backend-Prüfung |
+| Auth | Entwicklungsheader `x-test-auth-user-id`, Clerk-Backend-Prüfung vorbereitet | Frontend muss Clerk-Token mitsenden |
 | Profil | Lesen und Aktualisieren | Profil-Löschung erst später |
 | HP-Checks | Erstellen, Liste, Einzelansicht | produktive Frontend-Anbindung ausbauen |
 | Quests | Erstellen, Liste, Einzelansicht, Update | Archivieren/Löschen, Filter |
@@ -181,7 +181,7 @@ npm run dev
 
 Während der Entwicklung und in Tests liest die Auth-Middleware den Header `x-test-auth-user-id`. Dieser Übergang ist nur außerhalb von `production` erlaubt.
 
-Produktiv soll die API echte Clerk-Backend-Prüfung verwenden. Die Übergangsstrategie steht in [auth-strategy.md](auth-strategy.md).
+Wenn echte Clerk-Keys gesetzt sind, nutzt die API `@clerk/express` für die Backend-Prüfung. Das Frontend muss dann einen Clerk-Session-Token mitsenden. Die genaue Strategie steht in [auth-strategy.md](auth-strategy.md).
 
 ## 🧪 Tests und Qualität
 
