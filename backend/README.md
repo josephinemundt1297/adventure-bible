@@ -67,7 +67,7 @@ Nicht Teil des Backend-MVP:
 | JournalEntries | Lesen, Erstellen, Aktualisieren, Löschen und einfache Filter | automatische Journal-Events aus App-Aktionen |
 | Deployment | noch nicht vorhanden | Live-URL und sichere Env-Konfiguration |
 
-Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
+Zieltermin für die vollständige Frontend-Backend-Version und Abgabe: 19.10.2026.
 
 ## 🔌 Aktuelle Endpunkte
 

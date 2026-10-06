@@ -58,7 +58,7 @@ Der MVP ist ab jetzt ein gemeinsamer Frontend-Backend-MVP. Das Frontend soll die
 | Clerk UI |  |
 | erste Backend-Anbindung für Profil und HP-Checks |  |
 
-Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
+Zieltermin für die vollständige Frontend-Backend-Version und Abgabe: 19.10.2026.
 
 ## 🚀 Langfristige App-Vision
 

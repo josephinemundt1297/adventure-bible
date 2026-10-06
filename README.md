@@ -16,7 +16,7 @@ Adventure Bible ist eine mobile-first App für Alltag, Selbstfürsorge und Aufga
 | HP-Bereiche | Energie, Fokus, Stimmung, Körper |
 | Datenhaltung | MVP-Daten sollen über das Backend gespeichert werden |
 | Langfristiges Ziel | PWA für einen kleinen Freundeskreis |
-| Interner Zieltermin | 16.11.2026 |
+| Abgabetermin | 19.10.2026 |
 
 ## 🌿 Produktidee
 
