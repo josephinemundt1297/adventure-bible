@@ -3,6 +3,7 @@ import { useAuth, useUser } from "@clerk/react";
 import { Link } from "@tanstack/react-router";
 import { hpAreaLabels, hpQuestions } from "../../../data/hpQuestions";
 import { saveBackendHpCheck } from "../../../lib/backendHpChecks";
+import { saveBackendProfile } from "../../../lib/backendProfile";
 import { calculateHpState } from "../../../lib/hpScore";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { recordHpCheck } from "../../../lib/achievements";
@@ -17,6 +18,7 @@ const MINI_SELECTED_QUEST_KEY = "adventure-bible:mini-selected-quest";
 export function HpCheck() {
   const { getToken } = useAuth();
   const { user } = useUser();
+  const name = user?.fullName ?? user?.firstName ?? user?.username ?? "Abenteurer";
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<HpAnswer[]>([]);
   const [completed, setCompleted] = useState(false);
@@ -55,6 +57,11 @@ export function HpCheck() {
 
       if (user) {
         try {
+          await saveBackendProfile({
+            displayName: name,
+            characterName: name,
+            getToken,
+          });
           await saveBackendHpCheck({
             answers: allAnswers,
             getToken,
