@@ -16,6 +16,7 @@ Das Datenmodell speichert den kleinsten sinnvollen Adventure-Bible-Kern:
 - Quests als Aufgaben oder Quest-Vorlagen
 - QuestLogs als tatsächlicher Quest-Verlauf
 - JournalEntries als Tagesereignisse und Reflexionen
+- PlanActivities als Tagesplan- und Kalendereinträge
 - HP-Gesamtwerte als berechnete Zustandswerte
 - Fortschrittswerte für Level-Aufstieg als berechenbare Werte aus abgeschlossenen Quests
 
@@ -44,9 +45,13 @@ Alle persönlichen Daten hängen an `UserProfile`. Dadurch kann die API später 
         │                   │
         │                   └───────────────< QuestLog
         │                                         │
-        └───────────────< JournalEntry >──────────┘
-                              │
-                              └──────── optional HpCheck
+        ├───────────────< JournalEntry >──────────┘
+        │                     │
+        │                     └──────── optional HpCheck
+        │
+        └───────────────< PlanActivity
+                            │
+                            └──────── optional Quest
 ```
 
 Lesart:
@@ -55,7 +60,9 @@ Lesart:
 - `UserProfile` hat viele `Quest`.
 - `UserProfile` hat viele `QuestLog`.
 - `UserProfile` hat viele `JournalEntry`.
+- `UserProfile` hat viele `PlanActivity`.
 - `Quest` hat viele `QuestLog`.
+- `Quest` kann optional in `PlanActivity` verknüpft werden.
 - `JournalEntry` kann optional auf einen `QuestLog` oder `HpCheck` zeigen.
 
 ## Tabellen und Felder
@@ -201,6 +208,37 @@ Regeln:
 - Ein Eintrag darf ohne `questLogId` und ohne `hpCheckId` existieren.
 - Wenn `questLogId` oder `hpCheckId` gesetzt ist, muss die verknüpfte Ressource zum selben `UserProfile` gehören.
 
+### PlanActivity
+
+| Feld | Geplanter Typ | Pflicht | Zweck |
+|---|---|---:|---|
+| `id` | `String` / UUID | ja | interne PlanActivity-ID |
+| `userProfileId` | `String` / UUID | ja | Besitzer des Tagespunkts |
+| `questId` | `String` / UUID | nein | optionaler Bezug zu einer Quest |
+| `title` | `String` | ja | sichtbarer Titel im Tagesplan |
+| `activityDate` | normalisierte `DateTime` | ja | Kalendertag, z. B. `2026-10-06` |
+| `activityTime` | `String` | ja | Uhrzeit im Format `HH:mm` |
+| `type` | `PlanActivityType` | ja | Quest oder eigene Aktivität |
+| `completed` | `Boolean` | ja | erledigt oder offen |
+| `sortOrder` | `Int` | ja | Reihenfolge im Tagesplan |
+| `createdAt` | `DateTime` | ja | Erstellzeitpunkt |
+| `updatedAt` | `DateTime` | ja | letzter Änderungszeitpunkt |
+
+Enum:
+
+```text
+PlanActivityType = QUEST | PERSONAL
+```
+
+Regeln:
+
+- `title` unterstützt Unicode.
+- `activityDate` wird als Tagesfilter genutzt.
+- `activityTime` nutzt das Format `HH:mm`.
+- `questId` ist optional.
+- Wenn `questId` gesetzt ist, muss die Quest zum selben `UserProfile` gehören.
+- `sortOrder` speichert die sichtbare Reihenfolge aus dem Plan.
+
 ## Beziehungsregeln
 
 ### UserProfile zu HpCheck
@@ -226,6 +264,18 @@ Regeln:
 - Ein Profil kann viele JournalEntries haben.
 - Ein JournalEntry gehört genau einem Profil.
 - JournalEntries sind private Nutzerdaten.
+
+### UserProfile zu PlanActivity
+
+- Ein Profil kann viele PlanActivities haben.
+- Eine PlanActivity gehört genau einem Profil.
+- PlanActivities sind private Nutzerdaten und werden nach `activityDate` gefiltert.
+
+### Quest zu PlanActivity
+
+- Eine PlanActivity kann optional auf eine Quest zeigen.
+- Eine persönliche PlanActivity kann ohne Quest existieren.
+- Wenn eine Quest verknüpft ist, muss sie zum gleichen Profil gehören.
 
 ### JournalEntry zu QuestLog und HpCheck
 
@@ -315,6 +365,10 @@ Geplante Indizes:
 - `JournalEntry.userProfileId`
 - `JournalEntry.entryDate`
 - `JournalEntry.type`
+- `PlanActivity.userProfileId`
+- `PlanActivity.activityDate`
+- `PlanActivity.sortOrder`
+- `PlanActivity.completed`
 
 ## Lösch- und Archivierungsstrategie
 

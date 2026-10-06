@@ -87,13 +87,13 @@ function ReflectionPage() {
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="reflection-heading">
       {saved && (
-        <div className="rounded-2xl border border-success/30 bg-success/10 px-4 py-3 text-sm font-semibold text-success" role="status" aria-live="polite">
+        <div className="rounded-2xl border border-success/30 bg-success/10 px-4 py-3 text-sm font-semibold text-base-content" role="status" aria-live="polite">
           ✓ Reflexion lokal gespeichert und in dein Tagesjournal übertragen.
         </div>
       )}
 
       {saveError && (
-        <div className="rounded-2xl border border-warning/30 bg-warning/15 px-4 py-3 text-sm font-semibold text-warning-content" role="status" aria-live="polite">
+        <div className="rounded-2xl border border-warning/30 bg-warning/15 px-4 py-3 text-sm font-semibold text-base-content" role="status" aria-live="polite">
           Deine Reflexion konnte gerade nicht in der Datenbank gespeichert werden.
         </div>
       )}

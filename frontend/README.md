@@ -47,16 +47,16 @@ Der MVP ist ab jetzt ein gemeinsamer Frontend-Backend-MVP. Das Frontend soll die
 
 | Umgesetzt | Offen |
 |---|---|
-| App-Shell und Navigation | Plan/Kalender langfristig backendseitig speichern |
-| Dashboard/Home | Plan/Kalender langfristig backendseitig speichern |
+| App-Shell und Navigation | PWA-Check für Installierbarkeit |
+| Dashboard/Home | finale manuelle Accessibility-Abnahme |
 | großer HP-Check mit Backend-Persistenz | JournalEntries aus dem Backend wieder in den Kalender laden |
 | Mini HP-Check mit Backend-Persistenz | finale manuelle Accessibility-Abnahme |
 | Quest-Flow mit Backend-QuestLogs | vollständige Persistenz aller MVP-Daten prüfen |
-| Plan, Kalender und Reflexion | PWA-Check für Installierbarkeit |
+| Plan und Kalender mit Backend-PlanActivities, Reflexion mit Backend-JournalEntry | PWA-Check für Installierbarkeit |
 | Profilbereich | Profil-Löschung erst später |
 | Achievements |  |
 | Clerk UI |  |
-| Backend-Anbindung für Profil, HP-Checks, Quests/QuestLogs und Reflexion |  |
+| Backend-Anbindung für Profil, HP-Checks, Quests/QuestLogs, Reflexion und Plan/Kalender |  |
 
 Zieltermin für die vollständige Frontend-Backend-Version und Abgabe: 19.10.2026.
 

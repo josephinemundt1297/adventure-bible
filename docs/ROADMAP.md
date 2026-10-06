@@ -207,11 +207,11 @@ Priorität:
 - [x] keine kritischen Fehler im Demo-Flow
 - [x] unnötige Debug-/Testartefakte geprüft
 - [x] finale Roadmap-Dokumentation nach Tagesjournal-Erweiterung erneut prüfen
-- [x] Backend-Persistenz für Profil, großen HP-Check, Mini-HP-Check, QuestLogs und Reflexion geprüft
-- [x] Frontend-Backend-Anbindung für Profil, großen HP-Check, Mini-HP-Check, QuestLogs und Reflexion geprüft
-- [ ] Plan/Kalender-Daten langfristig backendseitig speichern oder bewusst lokal dokumentieren
+- [x] Backend-Persistenz für Profil, großen HP-Check, Mini-HP-Check, QuestLogs, Reflexion und PlanActivities geprüft
+- [x] Frontend-Backend-Anbindung für Profil, großen HP-Check, Mini-HP-Check, QuestLogs, Reflexion und Plan/Kalender geprüft
+- [x] Plan/Kalender-Daten backendseitig speichern
 
-**Status:** 🟡 gemeinsamer Frontend-Backend-Kernflow funktioniert; einzelne MVP-Randbereiche und Deployment bleiben offen
+**Status:** 🟡 gemeinsamer Frontend-Backend-Kernflow funktioniert; Deployment und finale Abnahme bleiben offen
 
 ---
 
@@ -240,9 +240,9 @@ Der MVP ist fertig, wenn:
 - [x] finaler Production Build erfolgreich verifiziert ist
 - [x] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
 - [ ] manuelle Keyboard-/Screenreader-/Kontrast-Abnahme vollständig durchgeführt
-- [ ] zentrale Daten werden vollständig über das Backend gespeichert und wieder geladen
+- [ ] zentrale MVP-Daten werden vollständig über das Backend gespeichert und wieder geladen
 
-**MVP-Status:** 🟡 Kern-Loop und wichtige Backend-Persistenz funktionieren; Plan/Kalender-Strategie, Deployment und finale manuelle Accessibility-Abnahme bleiben offen
+**MVP-Status:** 🟡 Kern-Loop und wichtige Backend-Persistenz funktionieren; Deployment, vollständige JournalEntry-Rückladung und finale manuelle Accessibility-Abnahme bleiben offen
 
 ---
 

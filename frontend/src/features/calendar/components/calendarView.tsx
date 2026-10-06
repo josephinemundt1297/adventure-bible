@@ -1,19 +1,65 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "@clerk/react";
 import { Link } from "@tanstack/react-router";
+import {
+  listBackendPlanActivities,
+  mapBackendPlanActivity,
+} from "../../../lib/backendPlanActivities";
 import { getJournalDate, readAllDayJournals, readDayJournal } from "../../../lib/dayJournal";
+import type { PlannedActivity } from "../../../types/plan";
 import { formatCalendarMonth, getCalendarWeekDays, hasJournalContent } from "../calendar.helpers";
 import { DayJournalDetails } from "./dayJournalDetails";
 import { DaySummary } from "./daySummary";
 import { WeekSelector } from "./weekSelector";
 
 export function CalendarView() {
+  const { getToken, isLoaded, isSignedIn } = useAuth();
   const today = getJournalDate();
   const [selectedDate, setSelectedDate] = useState(today);
+  const [planActivities, setPlanActivities] = useState<PlannedActivity[]>([]);
+  const [planLoadWarning, setPlanLoadWarning] = useState("");
   const allJournals = useMemo(() => readAllDayJournals(), []);
   const journalDates = new Set(allJournals.map((day) => day.date));
   const selectedDay = readDayJournal(selectedDate);
   const weekDays = getCalendarWeekDays(selectedDate);
   const hasSelectedContent = hasJournalContent(selectedDay);
+
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn) return;
+
+    let didCancel = false;
+
+    async function loadPlanActivities() {
+      try {
+        const response = await listBackendPlanActivities({
+          activityDate: selectedDate,
+          getToken,
+        });
+
+        if (didCancel) return;
+
+        setPlanActivities(
+          response.data
+            .map(mapBackendPlanActivity)
+            .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)),
+        );
+        setPlanLoadWarning("");
+      } catch {
+        if (!didCancel) {
+          setPlanActivities([]);
+          setPlanLoadWarning(
+            "Planpunkte konnten gerade nicht aus dem Backend geladen werden.",
+          );
+        }
+      }
+    }
+
+    void loadPlanActivities();
+
+    return () => {
+      didCancel = true;
+    };
+  }, [getToken, isLoaded, isSignedIn, selectedDate]);
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="calendar-heading">
@@ -36,8 +82,8 @@ export function CalendarView() {
             <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-base-content/55">Tage</p>
           </div>
           <div className="rounded-xl bg-base-100/70 p-2">
-            <p className="text-lg font-bold text-primary">{selectedDay.events.length}</p>
-            <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-base-content/55">Einträge</p>
+            <p className="text-lg font-bold text-primary">{planActivities.length}</p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-base-content/55">Plan</p>
           </div>
           <div className="rounded-xl bg-base-100/70 p-2">
             <p className="text-lg font-bold text-primary">{selectedDay.reflection ? "Ja" : "Nein"}</p>
@@ -59,6 +105,12 @@ export function CalendarView() {
         </Link>
       ) : null}
 
+      {planLoadWarning ? (
+        <p className="rounded-2xl bg-warning/20 px-4 py-3 text-sm font-semibold leading-5 text-base-content">
+          {planLoadWarning}
+        </p>
+      ) : null}
+
       <div className="px-1">
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-base-content/55">Woche auswählen</p>
@@ -72,10 +124,15 @@ export function CalendarView() {
         onSelectDate={setSelectedDate}
       />
 
-      <DaySummary day={selectedDay} hasContent={hasSelectedContent} selectedDate={selectedDate} />
+      <DaySummary
+        day={selectedDay}
+        hasContent={hasSelectedContent}
+        planActivities={planActivities}
+        selectedDate={selectedDate}
+      />
 
-      {hasSelectedContent ? (
-        <DayJournalDetails day={selectedDay} />
+      {hasSelectedContent || planActivities.length > 0 ? (
+        <DayJournalDetails day={selectedDay} planActivities={planActivities} />
       ) : (
         <div className="rounded-2xl border border-dashed border-base-300 bg-base-100/60 p-4 text-center text-sm leading-5 text-base-content/65">
           Sobald du HP-Checks, Quests oder eine Reflexion machst, taucht dein Tagesverlauf hier auf.

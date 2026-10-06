@@ -86,7 +86,7 @@ export function HomeDashboard() {
           <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xl" aria-hidden="true">{action.icon}</div>
           <div className="min-w-0 flex-1"><p className="text-xs font-semibold uppercase tracking-wide text-primary">{action.eyebrow}</p><h2 id="next-action-heading" className="app-heading mt-1 text-base font-bold">{action.title}</h2><p className="mt-1 text-sm leading-5 text-base-content/65">{action.description}</p></div>
         </div>
-        <Link to={action.to} className="btn btn-primary mt-4 min-h-10 w-full">{action.label}</Link>
+        <Link to={action.to} className="btn btn-primary mt-4 min-h-11 w-full">{action.label}</Link>
       </section>
 
       <section className="grid grid-cols-3 gap-2" aria-label="Fortschritt">

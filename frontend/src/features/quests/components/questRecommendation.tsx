@@ -191,7 +191,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
               <span>+{quest.rewardXp} XP</span>
             </div>
             {syncError ? <div className="alert alert-warning text-sm" role="status">Deine Quest konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
-            <button type="button" className="btn btn-primary min-h-10 w-full" disabled={syncing} onClick={() => void completeQuest()}>{syncing ? "Speichern..." : "Quest abschließen"}</button>
+            <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing} onClick={() => void completeQuest()}>{syncing ? "Speichern..." : "Quest abschließen"}</button>
           </div>
         </article>
       </section>
@@ -221,7 +221,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
             <span>Empfohlen für dich</span>
           </div>
           {syncError ? <div className="alert alert-warning text-sm" role="status">Deine Quest konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
-          <button type="button" className="btn btn-primary min-h-10 w-full" disabled={syncing} onClick={() => void startQuest()}>{syncing ? "Speichern..." : "Quest starten"}</button>
+          <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing} onClick={() => void startQuest()}>{syncing ? "Speichern..." : "Quest starten"}</button>
         </div>
       </article>
     </section>

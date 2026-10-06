@@ -42,6 +42,7 @@ Das Backend-MVP soll mindestens diese Daten speichern:
 | `Quest` | Aufgabe im Adventure-Bible-Kontext |
 | `QuestLog` | gestartete, abgeschlossene, verschobene oder übersprungene Quest |
 | `JournalEntry` | Tagesereignis oder Reflexion |
+| `PlanActivity` | geplanter Tagespunkt im Kalender oder Tagesplan |
 
 Nicht Teil des Backend-MVP:
 
@@ -65,6 +66,7 @@ Nicht Teil des Backend-MVP:
 | Quests | Erstellen, Liste, Einzelansicht, Update | Archivieren/Löschen, Filter |
 | QuestLogs | Liste, Starten und Aktualisieren/Abschließen, Frontend-Quest-Flow angebunden | Einzelansicht und Filter |
 | JournalEntries | Lesen, Erstellen, Aktualisieren, Löschen, einfache Filter, Reflexion im Frontend angebunden | automatische Journal-Events aus weiteren App-Aktionen |
+| PlanActivities | Lesen, Erstellen, Aktualisieren und Löschen, Frontend-Plan/Kalender angebunden | weitere Filter/Statistik später |
 | Deployment | noch nicht vorhanden | Live-URL und sichere Env-Konfiguration |
 
 Zieltermin für die vollständige Frontend-Backend-Version und Abgabe: 19.10.2026.
@@ -92,6 +94,10 @@ Zieltermin für die vollständige Frontend-Backend-Version und Abgabe: 19.10.202
 | `GET` | `/api/journal-entries/:id` | implementiert |
 | `PATCH` | `/api/journal-entries/:id` | implementiert |
 | `DELETE` | `/api/journal-entries/:id` | implementiert |
+| `GET` | `/api/plan-activities` | implementiert |
+| `POST` | `/api/plan-activities` | implementiert |
+| `PATCH` | `/api/plan-activities/:id` | implementiert |
+| `DELETE` | `/api/plan-activities/:id` | implementiert |
 
 ## 🛠️ Tech Stack
 
@@ -132,6 +138,7 @@ backend/
 │   ├── hpChecks.test.ts
 │   ├── hpScore.test.ts
 │   ├── journalEntries.test.ts
+│   ├── planActivities.test.ts
 │   ├── profile.test.ts
 │   ├── quests.test.ts
 │   └── questLogs.test.ts

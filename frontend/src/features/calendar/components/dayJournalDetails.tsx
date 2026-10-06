@@ -1,13 +1,15 @@
 import { formatJournalTime, getEventSummary } from "../calendar.helpers";
 import type { DayJournalEntry } from "../../../types/dayJournal";
+import type { PlannedActivity } from "../../../types/plan";
 
 interface DayJournalDetailsProps {
   day: DayJournalEntry;
+  planActivities: PlannedActivity[];
 }
 
 const reflectionTextClass = "mt-1 break-words text-base-content/70";
 
-export function DayJournalDetails({ day }: DayJournalDetailsProps) {
+export function DayJournalDetails({ day, planActivities }: DayJournalDetailsProps) {
   return (
     <section className="flex flex-col gap-3" aria-labelledby="day-journal-heading">
       <div className="flex items-center justify-between px-1">
@@ -45,6 +47,31 @@ export function DayJournalDetails({ day }: DayJournalDetailsProps) {
           Für diesen Tag gibt es noch keine HP- oder Quest-Einträge.
         </p>
       )}
+
+      {planActivities.length > 0 ? (
+        <section className="rounded-2xl border border-primary/20 bg-base-100/80 p-4 shadow-sm" aria-labelledby="planned-activities-heading">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">📅 Tagesplan</p>
+          <h3 id="planned-activities-heading" className="mt-1 font-bold">
+            Geplante Punkte
+          </h3>
+          <ol className="mt-3 flex flex-col gap-2">
+            {planActivities.map((activity) => (
+              <li key={activity.id} className="flex items-center gap-3 rounded-xl bg-primary/8 px-3 py-2">
+                <span aria-hidden="true" className="text-lg">{activity.type === "quest" ? "🎯" : "🧳"}</span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-semibold text-base-content/55">{activity.time}</p>
+                  <p className={`text-sm font-bold ${activity.completed ? "text-base-content/50 line-through" : ""}`}>
+                    {activity.title}
+                  </p>
+                </div>
+                <span className={`rounded-full px-2 py-1 text-[0.7rem] font-bold ${activity.completed ? "bg-success/15 text-base-content" : "bg-base-200 text-base-content/60"}`}>
+                  {activity.completed ? "fertig" : "offen"}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
 
       {day.reflection && (
         <section className="rounded-2xl border border-primary/25 bg-primary/8 p-4 shadow-sm" aria-labelledby="reflection-summary-heading">

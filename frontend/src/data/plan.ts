@@ -7,6 +7,7 @@ export const initialPlan: PlannedActivity[] = [
     time: "10:00",
     type: "quest",
     completed: false,
+    sortOrder: 0,
   },
   {
     id: "sport",
@@ -14,6 +15,7 @@ export const initialPlan: PlannedActivity[] = [
     time: "14:00",
     type: "personal",
     completed: false,
+    sortOrder: 1,
   },
   {
     id: "project",
@@ -21,6 +23,7 @@ export const initialPlan: PlannedActivity[] = [
     time: "16:30",
     type: "personal",
     completed: false,
+    sortOrder: 2,
   },
   {
     id: "reading",
@@ -28,5 +31,6 @@ export const initialPlan: PlannedActivity[] = [
     time: "21:30",
     type: "personal",
     completed: false,
+    sortOrder: 3,
   },
 ];

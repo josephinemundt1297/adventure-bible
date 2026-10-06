@@ -215,7 +215,7 @@ export function MiniHpCheck() {
           </div>
         )}
 
-        <button type="button" className="btn btn-outline min-h-10 w-full" onClick={chooseCampfire}>🔥 Lagerfeuer wählen</button>
+        <button type="button" className="btn btn-outline min-h-11 w-full" onClick={chooseCampfire}>🔥 Lagerfeuer wählen</button>
         <button type="button" className="btn btn-ghost min-h-11 w-full" onClick={() => setSavedState(null)}>Werte anpassen</button>
       </section>
     );
@@ -241,7 +241,7 @@ export function MiniHpCheck() {
         ))}
       </div>
 
-      <button type="button" className="btn btn-primary min-h-10 w-full" disabled={saving} onClick={() => void saveCheck()}>{saving ? "Speichern..." : "Aufgabe vorschlagen"}</button>
+      <button type="button" className="btn btn-primary min-h-11 w-full" disabled={saving} onClick={() => void saveCheck()}>{saving ? "Speichern..." : "Aufgabe vorschlagen"}</button>
       <p className="text-center text-xs leading-4 text-base-content/45">Dein Check ist eine persönliche Einschätzung und keine medizinische Diagnose.</p>
     </section>
   );

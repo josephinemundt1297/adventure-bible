@@ -121,7 +121,7 @@ export function ProfileAvatar({
       {uploadMessage && (
         <p
           className={`max-w-xs text-center text-xs font-semibold leading-4 ${
-            uploadMessage.type === "success" ? "text-success" : "text-error"
+            uploadMessage.type === "success" ? "text-base-content" : "text-error"
           }`}
           role={uploadMessage.type === "success" ? "status" : "alert"}
         >
