@@ -30,8 +30,10 @@ Der MVP soll alle nötigen Backend-Endpunkte haben, damit die wichtigen Frontend
 - Backend-Tests für PlanActivities schreiben ✅
 - Auth-Fehler und fremde Ressourcen testen
 - Frontend-Build nach Backend-Anbindung prüfen ✅
-- finale manuelle Accessibility-Prüfung durchführen
+- manuelle Tastatur- und Kontrastprüfung durchführen ✅
+- finale manuelle Screenreader-Prüfung durchführen
 - PWA-Installierbarkeit prüfen
+- Lighthouse im Production-Build erneut prüfen
 
 ## 🚀 Später
 

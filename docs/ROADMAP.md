@@ -210,6 +210,9 @@ Priorität:
 - [x] Backend-Persistenz für Profil, großen HP-Check, Mini-HP-Check, QuestLogs, Reflexion und PlanActivities geprüft
 - [x] Frontend-Backend-Anbindung für Profil, großen HP-Check, Mini-HP-Check, QuestLogs, Reflexion und Plan/Kalender geprüft
 - [x] Plan/Kalender-Daten backendseitig speichern
+- [x] manuelle Tastaturprüfung durchgeführt
+- [x] manuelle Farb- und Kontrastprüfung durchgeführt
+- [x] Lighthouse-Barrierefreiheit geprüft: Desktop 100, Mobil 96
 
 **Status:** 🟡 gemeinsamer Frontend-Backend-Kernflow funktioniert; Deployment und finale Abnahme bleiben offen
 
@@ -239,7 +242,7 @@ Der MVP ist fertig, wenn:
 - [x] finaler Lint-Lauf erfolgreich verifiziert ist
 - [x] finaler Production Build erfolgreich verifiziert ist
 - [x] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
-- [ ] manuelle Keyboard-/Screenreader-/Kontrast-Abnahme vollständig durchgeführt
+- [ ] manuelle Screenreader-Abnahme vollständig durchgeführt
 - [ ] zentrale MVP-Daten werden vollständig über das Backend gespeichert und wieder geladen
 
 **MVP-Status:** 🟡 Kern-Loop und wichtige Backend-Persistenz funktionieren; Deployment, vollständige JournalEntry-Rückladung und finale manuelle Accessibility-Abnahme bleiben offen
