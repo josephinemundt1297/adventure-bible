@@ -213,6 +213,9 @@ Priorität:
 - [x] manuelle Tastaturprüfung durchgeführt
 - [x] manuelle Farb- und Kontrastprüfung durchgeführt
 - [x] Lighthouse-Barrierefreiheit geprüft: Desktop 100, Mobil 96
+- [x] Deployment-Zielarchitektur festgelegt: Netlify, Render, Neon und Clerk
+- [ ] echtes Deployment durchführen
+- [ ] Live-URL mit produktiven Env-Variablen testen
 
 **Status:** 🟡 gemeinsamer Frontend-Backend-Kernflow funktioniert; Deployment und finale Abnahme bleiben offen
 
@@ -244,8 +247,31 @@ Der MVP ist fertig, wenn:
 - [x] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
 - [ ] manuelle Screenreader-Abnahme vollständig durchgeführt
 - [ ] zentrale MVP-Daten werden vollständig über das Backend gespeichert und wieder geladen
+- [ ] App ist über Frontend- und Backend-Live-URLs erreichbar
 
 **MVP-Status:** 🟡 Kern-Loop und wichtige Backend-Persistenz funktionieren; Deployment, vollständige JournalEntry-Rückladung und finale manuelle Accessibility-Abnahme bleiben offen
+
+---
+
+# 12.1 Deployment-Entscheidung
+
+Für den gemeinsamen MVP ist folgende Zielarchitektur festgelegt:
+
+| Bereich | Lösung |
+|---|---|
+| Frontend | Netlify |
+| Backend | Render Free Web Service |
+| Datenbank | Neon Free Postgres |
+| Authentifizierung | Clerk |
+
+Die Entscheidung ist bewusst pragmatisch:
+
+- Das Frontend bleibt als Vite/React-App gut auf Netlify deploybar.
+- Das Backend bleibt eine normale Express-API und kann auf Render laufen.
+- Die Datenbank bleibt PostgreSQL, damit Prisma und das bestehende Datenmodell weiter passen.
+- Clerk bleibt bestehen, damit Authentifizierung im MVP nicht neu gebaut werden muss.
+
+Details stehen in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ---
 

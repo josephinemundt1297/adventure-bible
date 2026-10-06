@@ -70,6 +70,8 @@ Ziel:
 - Nutzung durch kleinen Freundeskreis
 - kostenfrei für Nutzer
 - möglichst keine laufenden Kosten für die Entwicklerin
+- Frontend-Hosting über Netlify
+- API-Anbindung an ein separat deployed Backend
 - später mehr RPG-Elemente wie Charakter-Erstellung, Inventar und Routinen
 
 ## 🛠️ Tech Stack
@@ -131,6 +133,8 @@ VITE_CLERK_PUBLISHABLE_KEY=pk_test_dein_clerk_publishable_key
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
+Im Deployment zeigt `VITE_API_BASE_URL` nicht mehr auf `localhost`, sondern auf die produktive Backend-URL. Der Wert gehört in die Netlify Environment Variables und nicht direkt in den Code.
+
 Entwicklungsserver starten:
 
 ```bash
@@ -177,4 +181,5 @@ Adventure Bible soll ruhig, verständlich und mobile-first bleiben.
 | [Architektur](../docs/ARCHITECTURE.md) | Frontend-Aufbau |
 | [Security](../docs/SECURITY.md) | Sicherheitsregeln |
 | [Roadmap](../docs/ROADMAP.md) | Entwicklungsstand |
+| [Deployment](../docs/DEPLOYMENT.md) | geplante Hosting- und Env-Strategie |
 | [Development Log](../docs/DEVELOPMENT_LOG.md) | Arbeitsnotizen |

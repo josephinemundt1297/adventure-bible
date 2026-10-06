@@ -17,8 +17,8 @@ Der MVP soll alle nötigen Backend-Endpunkte haben, damit die wichtigen Frontend
 | Hoch | Frontend an Quest-/QuestLog-Daten aus dem Backend anbinden | Frontend/Backend | erledigt |
 | Mittel | Frontend an JournalEntry-Daten aus dem Backend anbinden | Frontend/Backend | erledigt für Reflexion |
 | Mittel | API-Dokumentation mit Beispielrequests ergänzen | Doku | teilweise erledigt |
-| Mittel | Deployment-Ziel für Backend entscheiden | Deployment | offen |
-| Mittel | kostenlose oder kostenkontrollierte Datenbank-/Hosting-Lösung prüfen | Deployment | offen |
+| Mittel | Deployment-Ziel für Backend entscheiden | Deployment | erledigt: Netlify + Render + Neon + Clerk |
+| Mittel | kostenlose oder kostenkontrollierte Datenbank-/Hosting-Lösung prüfen | Deployment | erledigt: Free-Tier-Strategie dokumentiert |
 | Mittel | Mini-HP-Check an Backend-Persistenz anbinden | Frontend/Backend | erledigt |
 | Mittel | PlanActivity-Endpunkte für Tagesplan im Backend anlegen | Backend | erledigt |
 | Mittel | Plan/Kalender-Frontend an PlanActivity-Backend anbinden | Frontend/Backend | erledigt |
@@ -34,6 +34,7 @@ Der MVP soll alle nötigen Backend-Endpunkte haben, damit die wichtigen Frontend
 - finale manuelle Screenreader-Prüfung durchführen
 - PWA-Installierbarkeit prüfen
 - Lighthouse im Production-Build erneut prüfen
+- Live-Deployment vorbereiten und danach mit echter URL testen
 
 ## 🚀 Später
 

@@ -12,7 +12,7 @@ Das Backend ist die REST-API für den gemeinsamen Adventure-Bible-MVP. Es speich
 | Validierung | Zod |
 | Authentifizierung | Clerk-Backend-Prüfung mit lokalem Entwicklungsheader als Fallback |
 | Tests | Vitest und Supertest |
-| Deployment | noch offen |
+| Deployment | geplant über Render mit Neon Postgres |
 
 ## 🌿 Ziel
 
@@ -67,7 +67,7 @@ Nicht Teil des Backend-MVP:
 | QuestLogs | Liste, Starten und Aktualisieren/Abschließen, Frontend-Quest-Flow angebunden | Einzelansicht und Filter |
 | JournalEntries | Lesen, Erstellen, Aktualisieren, Löschen, einfache Filter, Reflexion im Frontend angebunden | automatische Journal-Events aus weiteren App-Aktionen |
 | PlanActivities | Lesen, Erstellen, Aktualisieren und Löschen, Frontend-Plan/Kalender angebunden | weitere Filter/Statistik später |
-| Deployment | noch nicht vorhanden | Live-URL und sichere Env-Konfiguration |
+| Deployment | Zielarchitektur dokumentiert | Live-URL und sichere Env-Konfiguration |
 
 Zieltermin für die vollständige Frontend-Backend-Version und Abgabe: 19.10.2026.
 
@@ -179,6 +179,14 @@ npm run prisma:generate
 npm run prisma:migrate
 ```
 
+Für eine Deployment-Datenbank wird später nicht `prisma migrate dev`, sondern `prisma migrate deploy` genutzt:
+
+```bash
+npm run prisma:migrate:deploy
+```
+
+`migrate deploy` wendet vorhandene Migrationen an, ohne im Produktionssystem neue Entwicklungs-Migrationen zu erzeugen.
+
 Entwicklungsserver starten:
 
 ```bash
@@ -209,14 +217,24 @@ npm run build
 
 ## 🚀 Deployment
 
-Das Backend ist lokal lauffähig, aber noch nicht deployed.
+Das Backend ist lokal lauffähig und soll für den MVP über Render als Node.js-Web-Service bereitgestellt werden. Die Produktionsdatenbank soll über Neon Postgres laufen.
+
+Warum diese Entscheidung:
+
+- Express braucht einen echten Node.js-Server.
+- PostgreSQL und Prisma bleiben erhalten.
+- Clerk bleibt als bestehende Authentifizierung erhalten.
+- Die Lösung ist für den MVP kostenfrei oder zumindest kostenkontrolliert planbar.
 
 Für die Modulanforderungen fehlt noch:
 
-- Deployment-Ziel festlegen
+- Render-Service anlegen
+- Neon-Datenbank anlegen
 - sichere Produktionsvariablen setzen
 - CORS auf produktive Frontend-URL begrenzen
 - Live-URL testen
 - Live-URL in README und Abgabe ergänzen
+
+Weitere Details stehen in [../docs/DEPLOYMENT.md](../docs/DEPLOYMENT.md).
 
 Langfristig soll der Betrieb für einen kleinen Freundeskreis kostenfrei oder kostenkontrolliert bleiben. Das ist abhängig von den Free-Tier-Limits des gewählten Hostings und der Datenbank.
