@@ -61,8 +61,8 @@ Der MVP ist ein gemeinsamer Frontend-Backend-MVP. Die App soll nicht nur lokal i
 
 | Bereich | Umgesetzt | Offen |
 |---|---|---|
-| Frontend | App-Shell, HP-Checks, Quests, Plan, Kalender, Reflexion, Profil, Achievements | vollständige Backend-Anbindung aller MVP-Daten |
-| Backend | Express-Grundstruktur, Prisma/PostgreSQL, Profil, HP-Checks, Quests, QuestLogs, JournalEntries, Tests | produktive Clerk-Prüfung |
+| Frontend | App-Shell, HP-Checks, Quests, Plan, Kalender, Reflexion, Profil, Achievements, Backend-Anbindung für Profil, große und kleine HP-Checks, QuestLogs und Reflexion | Plan und Kalender vollständig backendseitig speichern oder bewusst lokal dokumentieren |
+| Backend | Express-Grundstruktur, Prisma/PostgreSQL, Profil, HP-Checks, Quests, QuestLogs, JournalEntries, Tests, Clerk-Token-Prüfung im lokalen Flow | Produktionskonfiguration final prüfen |
 | Deployment | Frontend ist lokal und als Web-App gedacht | Backend-Deployment, Live-URL, produktive Umgebungsvariablen |
 | Dokumentation | README-Struktur, Backend-Pläne, Datenmodell, Auth-Strategie | finale API-Beispiele und Deployment-Notizen |
 

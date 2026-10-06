@@ -90,7 +90,7 @@ Priorität:
 
 **Status:** 🟡 Grundfunktionen vorhanden; Onboarding im MVP noch zu schärfen
 
-> Hinweis: Clerk bleibt die Authentifizierungsbasis. Die produktive Backend-Prüfung ist noch offen.
+> Hinweis: Clerk bleibt die Authentifizierungsbasis. Die lokale Frontend-Backend-Kette sendet Clerk-Session-Tokens an das Backend; die Produktionskonfiguration muss vor Deployment final geprüft werden.
 
 ---
 
@@ -207,10 +207,11 @@ Priorität:
 - [x] keine kritischen Fehler im Demo-Flow
 - [x] unnötige Debug-/Testartefakte geprüft
 - [x] finale Roadmap-Dokumentation nach Tagesjournal-Erweiterung erneut prüfen
-- [ ] Backend-Persistenz für alle MVP-Daten prüfen
-- [ ] Frontend-Backend-Anbindung für alle MVP-Daten prüfen
+- [x] Backend-Persistenz für Profil, großen HP-Check, Mini-HP-Check, QuestLogs und Reflexion geprüft
+- [x] Frontend-Backend-Anbindung für Profil, großen HP-Check, Mini-HP-Check, QuestLogs und Reflexion geprüft
+- [ ] Plan/Kalender-Daten langfristig backendseitig speichern oder bewusst lokal dokumentieren
 
-**Status:** 🟡 Frontend-Kernflow funktioniert; vollständiger gemeinsamer MVP braucht noch Backend-Anbindung
+**Status:** 🟡 gemeinsamer Frontend-Backend-Kernflow funktioniert; einzelne MVP-Randbereiche und Deployment bleiben offen
 
 ---
 
@@ -239,9 +240,9 @@ Der MVP ist fertig, wenn:
 - [x] finaler Production Build erfolgreich verifiziert ist
 - [x] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
 - [ ] manuelle Keyboard-/Screenreader-/Kontrast-Abnahme vollständig durchgeführt
-- [ ] zentrale Daten werden über das Backend gespeichert und wieder geladen
+- [ ] zentrale Daten werden vollständig über das Backend gespeichert und wieder geladen
 
-**MVP-Status:** 🟡 Kern-Loop funktioniert; vollständige Backend-Persistenz und finale manuelle Accessibility-Abnahme offen
+**MVP-Status:** 🟡 Kern-Loop und wichtige Backend-Persistenz funktionieren; Plan/Kalender-Strategie, Deployment und finale manuelle Accessibility-Abnahme bleiben offen
 
 ---
 

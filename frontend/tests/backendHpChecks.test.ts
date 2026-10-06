@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildBackendHpCheckInput } from "../src/lib/backendHpChecks";
+import { buildBackendHpCheckInput, buildBackendMiniHpCheckInput } from "../src/lib/backendHpChecks";
 import type { HpAnswer } from "../src/types/hp";
 
 describe("backend hp-check input", () => {
@@ -19,6 +19,26 @@ describe("backend hp-check input", () => {
       energy: 2,
       focus: 4,
       mood: 3,
+    });
+  });
+
+  it("maps mini hp slider values to backend answers", () => {
+    expect(
+      buildBackendMiniHpCheckInput({
+        completedAt: "2026-10-06T09:30:00.000Z",
+        values: [
+          { area: "energy", value: 0 },
+          { area: "focus", value: 50 },
+          { area: "mood", value: 100 },
+          { area: "body", value: 75 },
+        ],
+      }),
+    ).toEqual({
+      type: "MINI",
+      body: 4,
+      energy: 1,
+      focus: 3,
+      mood: 5,
     });
   });
 });

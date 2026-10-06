@@ -36,6 +36,7 @@ describe("calendar helpers", () => {
 
   it("summarizes journal events for the timeline", () => {
     expect(getEventSummary({ id: "1", type: "hp-check", createdAt: "2026-07-28T08:00:00.000Z", state: hpState })).toEqual({
+      icon: "♥",
       title: "Großer HP-Check",
       detail: "Gesamtzustand: 65/100",
     });
@@ -50,6 +51,7 @@ describe("calendar helpers", () => {
         rewardQuestPoints: 1,
       }),
     ).toEqual({
+      icon: "✨",
       title: "Quest abgeschlossen",
       detail: "Wasser trinken · +5 XP · +1 Quest Point",
     });

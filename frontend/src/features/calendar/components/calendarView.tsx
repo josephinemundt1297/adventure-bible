@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { getJournalDate, readAllDayJournals, readDayJournal } from "../../../lib/dayJournal";
 import { formatCalendarMonth, getCalendarWeekDays, hasJournalContent } from "../calendar.helpers";
 import { DayJournalDetails } from "./dayJournalDetails";
@@ -16,18 +17,53 @@ export function CalendarView() {
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="calendar-heading">
-      <header className="flex items-start justify-between gap-4 px-2 pt-1">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-primary">Dein Überblick</p>
-          <h1 id="calendar-heading" className="mt-1 text-2xl font-bold leading-tight tracking-tight text-primary">
-            {formatCalendarMonth(selectedDate)}
-          </h1>
-          <p className="mt-1 text-sm text-base-content/65">
-            Wähle einen Tag und schau dir an, was dort passiert ist.
-          </p>
+      <header className="adventure-card rounded-2xl border border-primary/15 p-4 shadow-sm">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="app-kicker text-xs font-bold uppercase">Tagesjournal</p>
+            <h1 id="calendar-heading" className="app-heading mt-1 text-2xl font-bold leading-tight tracking-tight text-primary">
+              {formatCalendarMonth(selectedDate)}
+            </h1>
+            <p className="mt-1 text-sm leading-5 text-base-content/65">
+              HP-Checks, Quests und Reflexionen werden hier als Tagesverlauf sichtbar.
+            </p>
+          </div>
+          <span aria-hidden="true" className="rounded-2xl bg-primary/10 px-3 py-2 text-2xl">📅</span>
         </div>
-        <span aria-hidden="true" className="text-2xl">📅</span>
+        <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+          <div className="rounded-xl bg-base-100/70 p-2">
+            <p className="text-lg font-bold text-primary">{allJournals.length}</p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-base-content/55">Tage</p>
+          </div>
+          <div className="rounded-xl bg-base-100/70 p-2">
+            <p className="text-lg font-bold text-primary">{selectedDay.events.length}</p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-base-content/55">Einträge</p>
+          </div>
+          <div className="rounded-xl bg-base-100/70 p-2">
+            <p className="text-lg font-bold text-primary">{selectedDay.reflection ? "Ja" : "Nein"}</p>
+            <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-base-content/55">Reflexion</p>
+          </div>
+        </div>
       </header>
+
+      {!selectedDay.reflection ? (
+        <Link
+          to="/reflection"
+          className="flex min-h-14 items-center justify-between gap-3 rounded-2xl border border-primary/25 bg-primary/10 px-4 py-3 text-left text-primary shadow-sm transition-colors hover:bg-primary/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        >
+          <span>
+            <span className="block text-sm font-bold">🌙 Abendliche Reflexion fehlt noch</span>
+            <span className="mt-0.5 block text-xs text-base-content/65">Ein kurzer Rückblick macht den Tag später leichter lesbar.</span>
+          </span>
+          <span aria-hidden="true" className="text-xl">→</span>
+        </Link>
+      ) : null}
+
+      <div className="px-1">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wide text-base-content/55">Woche auswählen</p>
+        </div>
+      </div>
 
       <WeekSelector
         journalDates={journalDates}

@@ -12,20 +12,22 @@ Der MVP soll alle nötigen Backend-Endpunkte haben, damit die wichtigen Frontend
 |---|---|---|---|
 | Hoch | QuestLog-Endpunkte planen und umsetzen | Backend | erledigt |
 | Hoch | JournalEntry-Endpunkte planen und umsetzen | Backend | erledigt |
-| Hoch | produktive Clerk-Backend-Prüfung vorbereiten | Backend/Auth | teilweise erledigt |
+| Hoch | produktive Clerk-Backend-Prüfung vorbereiten | Backend/Auth | erledigt |
 | Hoch | Prisma-HP-Modell auf vier finale HP-Bereiche bereinigen | Backend/Datenmodell | erledigt |
-| Hoch | Frontend an Quest-/QuestLog-Daten aus dem Backend anbinden | Frontend/Backend | offen |
-| Mittel | Frontend an JournalEntry-Daten aus dem Backend anbinden | Frontend/Backend | offen |
+| Hoch | Frontend an Quest-/QuestLog-Daten aus dem Backend anbinden | Frontend/Backend | erledigt |
+| Mittel | Frontend an JournalEntry-Daten aus dem Backend anbinden | Frontend/Backend | erledigt für Reflexion |
 | Mittel | API-Dokumentation mit Beispielrequests ergänzen | Doku | teilweise erledigt |
 | Mittel | Deployment-Ziel für Backend entscheiden | Deployment | offen |
 | Mittel | kostenlose oder kostenkontrollierte Datenbank-/Hosting-Lösung prüfen | Deployment | offen |
+| Mittel | Mini-HP-Check an Backend-Persistenz anbinden | Frontend/Backend | erledigt |
+| Mittel | Plan/Kalender-Daten langfristig backendseitig speichern | Frontend/Backend | offen |
 
 ## 🧪 Qualität
 
 - Backend-Tests für QuestLogs schreiben ✅
 - Backend-Tests für JournalEntries schreiben ✅
 - Auth-Fehler und fremde Ressourcen testen
-- Frontend-Build nach Backend-Anbindung prüfen
+- Frontend-Build nach Backend-Anbindung prüfen ✅
 - finale manuelle Accessibility-Prüfung durchführen
 - PWA-Installierbarkeit prüfen
 

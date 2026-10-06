@@ -10,7 +10,7 @@ Das Backend ist die REST-API für den gemeinsamen Adventure-Bible-MVP. Es speich
 | Laufzeit | Node.js mit Express |
 | Datenbank | PostgreSQL über Prisma |
 | Validierung | Zod |
-| Authentifizierung | aktuell Entwicklungsheader, später produktive Clerk-Prüfung |
+| Authentifizierung | Clerk-Backend-Prüfung mit lokalem Entwicklungsheader als Fallback |
 | Tests | Vitest und Supertest |
 | Deployment | noch offen |
 
@@ -59,12 +59,12 @@ Nicht Teil des Backend-MVP:
 |---|---|---|
 | Basis | Express-App, Konfiguration, zentrale Fehlerantwort | Produktionskonfiguration final prüfen |
 | Datenbank | Prisma-Schema und Migrationen | Deployment-Datenbank |
-| Auth | Entwicklungsheader `x-test-auth-user-id`, Clerk-Backend-Prüfung vorbereitet | Frontend muss Clerk-Token mitsenden |
+| Auth | Entwicklungsheader `x-test-auth-user-id`, Clerk-Backend-Prüfung, Frontend sendet Clerk-Token | Produktionskonfiguration final prüfen |
 | Profil | Lesen und Aktualisieren | Profil-Löschung erst später |
-| HP-Checks | Erstellen, Liste, Einzelansicht | produktive Frontend-Anbindung ausbauen |
+| HP-Checks | Erstellen, Liste, Einzelansicht, großer HP-Check und Mini-HP-Check im Frontend angebunden | weitere Filter/Statistik später |
 | Quests | Erstellen, Liste, Einzelansicht, Update | Archivieren/Löschen, Filter |
-| QuestLogs | Liste, Starten und Aktualisieren/Abschließen | Einzelansicht und Filter |
-| JournalEntries | Lesen, Erstellen, Aktualisieren, Löschen und einfache Filter | automatische Journal-Events aus App-Aktionen |
+| QuestLogs | Liste, Starten und Aktualisieren/Abschließen, Frontend-Quest-Flow angebunden | Einzelansicht und Filter |
+| JournalEntries | Lesen, Erstellen, Aktualisieren, Löschen, einfache Filter, Reflexion im Frontend angebunden | automatische Journal-Events aus weiteren App-Aktionen |
 | Deployment | noch nicht vorhanden | Live-URL und sichere Env-Konfiguration |
 
 Zieltermin für die vollständige Frontend-Backend-Version und Abgabe: 19.10.2026.
@@ -160,8 +160,9 @@ Benötigte Variablen:
 ```env
 PORT=3000
 DATABASE_URL=postgresql://...
+CLERK_PUBLISHABLE_KEY=pk_test_dein_clerk_publishable_key
 CLERK_SECRET_KEY=sk_test_dein_clerk_secret_key
-CORS_ORIGIN=http://localhost:5173
+FRONTEND_ORIGIN=http://localhost:5173
 ```
 
 Prisma vorbereiten:
@@ -179,9 +180,9 @@ npm run dev
 
 ## 🔐 Authentifizierung
 
-Während der Entwicklung und in Tests liest die Auth-Middleware den Header `x-test-auth-user-id`. Dieser Übergang ist nur außerhalb von `production` erlaubt.
+Während der Entwicklung und in Tests kann die Auth-Middleware den Header `x-test-auth-user-id` lesen. Dieser Übergang ist nur außerhalb von `production` erlaubt.
 
-Wenn echte Clerk-Keys gesetzt sind, nutzt die API `@clerk/express` für die Backend-Prüfung. Das Frontend muss dann einen Clerk-Session-Token mitsenden. Die genaue Strategie steht in [auth-strategy.md](auth-strategy.md).
+Wenn echte Clerk-Keys gesetzt sind, nutzt die API `@clerk/express` für die Backend-Prüfung. Das Frontend sendet dafür bei angebundenen Requests einen Clerk-Session-Token mit. Die genaue Strategie steht in [auth-strategy.md](auth-strategy.md).
 
 ## 🧪 Tests und Qualität
 

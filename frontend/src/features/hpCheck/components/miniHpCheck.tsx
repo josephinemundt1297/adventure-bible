@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useAuth, useUser } from "@clerk/react";
 import { Link } from "@tanstack/react-router";
 import { quests } from "../../../data/quests";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { recordCampfire, recordMiniHpCheck } from "../../../lib/achievements";
+import { saveBackendMiniHpCheck } from "../../../lib/backendHpChecks";
+import { saveBackendProfile } from "../../../lib/backendProfile";
 import { readCompletedQuestIds } from "../../../lib/questHistory";
 import { selectMiniQuest } from "../../../lib/miniQuestSelection";
 import { leaveCampfire, startCampfire } from "../../../lib/campfire";
@@ -34,19 +37,25 @@ function readPreviousHpState(): HpState | null {
 }
 
 export function MiniHpCheck() {
+  const { getToken } = useAuth();
+  const { user } = useUser();
+  const name = user?.fullName ?? user?.firstName ?? user?.username ?? "Abenteurer";
   const [values, setValues] = useState(initialValues);
   const [savedState, setSavedState] = useState<MiniHpState | null>(null);
   const [selectedQuestId, setSelectedQuestId] = useState<string | null>(null);
   const [campfireStarted, setCampfireStarted] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   function updateValue(area: MiniHpArea, value: number) {
     setSavedState(null);
     setSelectedQuestId(null);
     setCampfireStarted(false);
+    setSaveError(false);
     setValues((current) => ({ ...current, [area]: value }));
   }
 
-  function saveCheck() {
+  async function saveCheck() {
     const state: MiniHpState = {
       values: areas.map(({ id }) => ({ area: id, value: values[id] })),
       completedAt: new Date().toISOString(),
@@ -58,7 +67,28 @@ export function MiniHpCheck() {
     notifyAchievements(recordMiniHpCheck());
     setSelectedQuestId(null);
     setCampfireStarted(false);
+    setSaveError(false);
     setSavedState(state);
+
+    if (!user) return;
+
+    setSaving(true);
+
+    try {
+      await saveBackendProfile({
+        displayName: name,
+        characterName: name,
+        getToken,
+      });
+      await saveBackendMiniHpCheck({
+        state,
+        getToken,
+      });
+    } catch {
+      setSaveError(true);
+    } finally {
+      setSaving(false);
+    }
   }
 
   function chooseQuest(quest: Quest) {
@@ -128,6 +158,12 @@ export function MiniHpCheck() {
           <h1 id="mini-hp-recommendation-heading" className="text-xl font-bold tracking-tight">Was passt gerade zu dir?</h1>
           <p className="text-xs leading-4 text-base-content/65">Dein Check ist gespeichert. Wähle eine Aufgabe – oder gönn dir das Lagerfeuer.</p>
         </header>
+
+        {saveError ? (
+          <div className="alert alert-warning text-sm" role="status">
+            Dein Mini-HP-Check konnte gerade nicht in der Datenbank gespeichert werden.
+          </div>
+        ) : null}
 
         <div className="grid grid-cols-4 gap-1.5" aria-label="Deine aktuellen Werte">
           {areas.map(({ id, label, icon }) => {
@@ -205,7 +241,7 @@ export function MiniHpCheck() {
         ))}
       </div>
 
-      <button type="button" className="btn btn-primary min-h-10 w-full" onClick={saveCheck}>Aufgabe vorschlagen</button>
+      <button type="button" className="btn btn-primary min-h-10 w-full" disabled={saving} onClick={() => void saveCheck()}>{saving ? "Speichern..." : "Aufgabe vorschlagen"}</button>
       <p className="text-center text-xs leading-4 text-base-content/45">Dein Check ist eine persönliche Einschätzung und keine medizinische Diagnose.</p>
     </section>
   );

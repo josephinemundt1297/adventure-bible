@@ -109,7 +109,14 @@ export function DayPlan() {
             <h1 id="plan-heading" className="text-xl font-bold tracking-tight">Mein Plan für heute</h1>
             <p className="mt-1 text-xs text-base-content/60">{todayLabel}</p>
           </div>
-          <Link to="/calendar" aria-label="Kalender öffnen" className="flex size-11 shrink-0 items-center justify-center rounded-xl text-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">📅</Link>
+          <Link
+            to="/calendar"
+            aria-label="Tagesjournal und Kalender öffnen"
+            className="flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-primary/25 bg-primary/10 px-3 text-xs font-bold text-primary shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <span aria-hidden="true">📅</span>
+            Journal
+          </Link>
         </div>
         <p className="mt-2 text-xs font-semibold text-base-content/50">{completedCount} von {activities.length} erledigt</p>
       </header>
@@ -117,19 +124,19 @@ export function DayPlan() {
       <div className="mt-3 min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-2xl border border-base-300/50 bg-base-100/60" aria-label="Geplante Aktivitäten">
         {activities.length > 0 ? (
           activities.map((activity, index) => (
-            <article key={activity.id} className={`px-3 py-2.5 ${index !== activities.length - 1 ? "border-b border-base-300/50" : ""}`}>
-              <div className="flex min-h-16 items-center gap-2">
+            <article key={activity.id} className={`px-3 py-3 ${index !== activities.length - 1 ? "border-b border-base-300/50" : ""}`}>
+              <div className="flex min-h-16 items-start gap-2">
                 <span className="flex size-10 shrink-0 items-center justify-center text-xl leading-none" aria-hidden="true">{activity.type === "quest" ? "🎯" : "🧳"}</span>
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-semibold leading-4 text-base-content/60">{activity.time}</p>
                   <h2 className={`text-sm font-semibold leading-5 ${activity.completed ? "text-base-content/50 line-through" : ""}`}>{activity.title}</h2>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    <button type="button" onClick={() => moveActivity(activity.id, "up")} disabled={index === 0} aria-label={`${activity.title} nach oben verschieben`} className="min-h-8 rounded-lg border border-base-300/70 bg-base-100/60 px-2 text-xs font-semibold text-base-content/70 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-35">↑ Hoch</button>
+                    <button type="button" onClick={() => moveActivity(activity.id, "down")} disabled={index === activities.length - 1} aria-label={`${activity.title} nach unten verschieben`} className="min-h-8 rounded-lg border border-base-300/70 bg-base-100/60 px-2 text-xs font-semibold text-base-content/70 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-35">↓ Runter</button>
+                    <button type="button" onClick={() => removeActivity(activity.id)} aria-label={`${activity.title} aus dem Plan entfernen`} className="min-h-8 rounded-lg border border-error/20 bg-error/5 px-2 text-xs font-semibold text-error/80 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary">✕ Löschen</button>
+                  </div>
                 </div>
-                <div className="flex shrink-0 items-center gap-0.5">
-                  <button type="button" onClick={() => moveActivity(activity.id, "up")} disabled={index === 0} aria-label={`${activity.title} nach oben verschieben`} className="flex size-11 items-center justify-center rounded-lg text-base font-bold text-base-content/65 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15">↑</button>
-                  <button type="button" onClick={() => moveActivity(activity.id, "down")} disabled={index === activities.length - 1} aria-label={`${activity.title} nach unten verschieben`} className="flex size-11 items-center justify-center rounded-lg text-base font-bold text-base-content/65 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary disabled:opacity-15">↓</button>
-                  <button type="button" onClick={() => toggleActivity(activity.id)} aria-pressed={activity.completed} aria-label={`${activity.completed ? "Als offen markieren" : "Als erledigt markieren"}: ${activity.title}`} className="flex size-11 items-center justify-center rounded-lg text-lg focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary">{activity.completed ? "✓" : "○"}</button>
-                  <button type="button" onClick={() => removeActivity(activity.id)} aria-label={`${activity.title} aus dem Plan entfernen`} className="flex size-11 items-center justify-center rounded-lg text-sm font-bold text-base-content/45 hover:text-error focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary">✕</button>
-                </div>
+                <button type="button" onClick={() => toggleActivity(activity.id)} aria-pressed={activity.completed} aria-label={`${activity.completed ? "Als offen markieren" : "Als erledigt markieren"}: ${activity.title}`} className={`min-h-9 shrink-0 rounded-xl px-3 text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary ${activity.completed ? "bg-success/15 text-success" : "bg-primary/10 text-primary"}`}>{activity.completed ? "✓ Fertig" : "Erledigt"}</button>
               </div>
             </article>
           ))
