@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 const navigationItems = [
   { label: "Home", path: "/", icon: "⌂" },
   { label: "Quests", path: "/quests", icon: "♡" },
-  { label: "Plan", path: "/plan", icon: "▣" },
+  { label: "Plan", path: "/plan", icon: "▦" },
   { label: "Ich", path: "/profile", icon: "♙" },
 ] as const;
 

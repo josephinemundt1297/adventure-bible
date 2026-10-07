@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/react";
 import { Link } from "@tanstack/react-router";
 import { readCampfire } from "../../../lib/campfire";
+import { getCriticalHpSupport } from "../../../lib/hpSupport";
 import { readProgress } from "../../../lib/progress";
 import type { HpState } from "../../../types/hp";
 import type { QuestProgress } from "../../../types/questProgress";
@@ -34,6 +35,7 @@ export function HomeDashboard() {
   const questProgress = readQuestProgress();
   const campfire = readCampfire();
   const progress = readProgress();
+  const criticalSupport = hpState ? getCriticalHpSupport(hpState, [], []) : null;
 
   const action = campfire
     ? { eyebrow: "Lagerfeuer", title: "Zeit für Regeneration.", description: "Du hast dich bewusst für eine Pause entschieden. Wenn du bereit bist, beginnt ein neuer Abenteuerzyklus.", label: "Neuen Zyklus starten", to: "/hp-check" as const, icon: "🔥" }
@@ -64,11 +66,13 @@ export function HomeDashboard() {
           <div className="mt-3 grid grid-cols-2 gap-2">
             {statusAreas.map((item) => {
               const value = hpState.areas.find((area) => area.area === item.id)?.score ?? 0;
+              const isCritical = criticalSupport?.area === item.id;
               return (
-                <div key={item.id} className="adventure-soft-card rounded-xl border p-2.5">
-                  <div className="flex items-center gap-1.5 text-[0.8125rem] leading-5"><span aria-hidden="true">{item.icon}</span><span className="whitespace-nowrap font-medium">{item.label}</span></div>
-                  <p className="mt-2 text-base font-bold tabular-nums">{value}/100</p>
-                  <progress className="progress progress-primary mt-1 h-1.5 w-full" value={value} max="100" aria-label={`${item.label}: ${value} von 100`} />
+                <div key={item.id} className={`rounded-xl border p-2.5 ${isCritical ? "border-warning/40 bg-warning/10" : "adventure-soft-card"}`}>
+                  <div className={`flex items-center gap-1.5 text-[0.8125rem] leading-5 ${isCritical ? "font-bold text-warning" : ""}`}><span aria-hidden="true">{item.icon}</span><span className="whitespace-nowrap font-medium">{item.label}</span></div>
+                  <p className={`mt-2 text-base font-bold tabular-nums ${isCritical ? "text-warning" : ""}`}>{value}/100</p>
+                  <progress className={`progress mt-1 h-1.5 w-full ${isCritical ? "progress-warning" : "progress-primary"}`} value={value} max="100" aria-label={`${item.label}: ${value} von 100${isCritical ? ", kritischer Bereich" : ""}`} />
+                  {isCritical ? <p className="mt-1 text-[0.68rem] font-semibold leading-3 text-warning">Achtsam anschauen</p> : null}
                 </div>
               );
             })}

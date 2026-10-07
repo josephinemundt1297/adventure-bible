@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as HpCheckRouteImport } from './routes/hp-check'
 import { Route as MiniHpCheckRouteImport } from './routes/mini-hp-check'
@@ -22,6 +23,11 @@ import { Route as StatsRouteImport } from './routes/stats'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AchievementsRoute = AchievementsRouteImport.update({
+  id: '/achievements',
+  path: '/achievements',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalendarRoute = CalendarRouteImport.update({
@@ -67,6 +73,7 @@ const StatsRoute = StatsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/achievements': typeof AchievementsRoute
   '/calendar': typeof CalendarRoute
   '/hp-check': typeof HpCheckRoute
   '/mini-hp-check': typeof MiniHpCheckRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/achievements': typeof AchievementsRoute
   '/calendar': typeof CalendarRoute
   '/hp-check': typeof HpCheckRoute
   '/mini-hp-check': typeof MiniHpCheckRoute
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/achievements': typeof AchievementsRoute
   '/calendar': typeof CalendarRoute
   '/hp-check': typeof HpCheckRoute
   '/mini-hp-check': typeof MiniHpCheckRoute
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/achievements'
     | '/calendar'
     | '/hp-check'
     | '/mini-hp-check'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/achievements'
     | '/calendar'
     | '/hp-check'
     | '/mini-hp-check'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/achievements'
     | '/calendar'
     | '/hp-check'
     | '/mini-hp-check'
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AchievementsRoute: typeof AchievementsRoute
   CalendarRoute: typeof CalendarRoute
   HpCheckRoute: typeof HpCheckRoute
   MiniHpCheckRoute: typeof MiniHpCheckRoute
@@ -154,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/achievements': {
+      id: '/achievements'
+      path: '/achievements'
+      fullPath: '/achievements'
+      preLoaderRoute: typeof AchievementsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calendar': {
@@ -217,6 +237,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AchievementsRoute: AchievementsRoute,
   CalendarRoute: CalendarRoute,
   HpCheckRoute: HpCheckRoute,
   MiniHpCheckRoute: MiniHpCheckRoute,

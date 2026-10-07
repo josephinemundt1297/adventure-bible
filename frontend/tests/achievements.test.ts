@@ -3,7 +3,10 @@ import {
   ACHIEVEMENTS_KEY,
   CAMPFIRE_COUNT_KEY,
   recordCampfire,
+  recordMiniHpCheck,
   recordQuestCompletion,
+  recordReflection,
+  getUnlockedAchievementDetails,
   getUnlockedAchievements,
 } from "../src/lib/achievements";
 import { PROGRESS_STATE_KEY } from "../src/lib/progress";
@@ -44,6 +47,7 @@ describe("achievements", () => {
 
     expect(unlocked.map((achievement) => achievement.id)).toEqual(["first-quest", "five-quests"]);
     expect(getUnlockedAchievements().map((achievement) => achievement.id)).toContain("five-quests");
+    expect(getUnlockedAchievementDetails().find((achievement) => achievement.id === "five-quests")?.unlockedAt).toEqual(expect.any(String));
   });
 
   it("unlocks campfire milestones at one and three uses", () => {
@@ -54,6 +58,48 @@ describe("achievements", () => {
     const third = recordCampfire();
 
     expect(third.map((achievement) => achievement.id)).toEqual(["three-campfires"]);
-    expect(localStorage.getItem(ACHIEVEMENTS_KEY)).toContain("three-campfires");
+    expect(JSON.parse(localStorage.getItem(ACHIEVEMENTS_KEY) ?? "[]")).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: "three-campfires", unlockedAt: expect.any(String) }),
+      ]),
+    );
+  });
+
+  it("unlocks higher quest milestones without duplicating older rewards", () => {
+    sessionStorage.setItem(PROGRESS_STATE_KEY, JSON.stringify({ xp: 0, questPoints: 50, completedQuests: 50 }));
+
+    expect(recordQuestCompletion().map((achievement) => achievement.id)).toEqual([
+      "first-quest",
+      "five-quests",
+      "ten-quests",
+      "twenty-five-quests",
+      "fifty-quests",
+    ]);
+    expect(recordQuestCompletion()).toEqual([]);
+  });
+
+  it("unlocks mini-check and reflection milestone tiers", () => {
+    for (let index = 0; index < 4; index += 1) {
+      recordMiniHpCheck();
+    }
+
+    expect(recordMiniHpCheck().map((achievement) => achievement.id)).toEqual(["five-mini-hp-checks"]);
+
+    for (let index = 0; index < 6; index += 1) {
+      recordReflection();
+    }
+
+    expect(recordReflection().map((achievement) => achievement.id)).toEqual(["seven-reflections"]);
+  });
+
+  it("keeps legacy achievement unlocks readable", () => {
+    localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(["first-campfire"]));
+
+    expect(getUnlockedAchievementDetails()).toEqual([
+      expect.objectContaining({
+        id: "first-campfire",
+        unlockedAt: "Bereits freigeschaltet",
+      }),
+    ]);
   });
 });

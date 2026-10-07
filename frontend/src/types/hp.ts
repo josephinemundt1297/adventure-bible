@@ -10,9 +10,13 @@ export const HP_AREAS = [
 
 export type HpArea = (typeof HP_AREAS)[number];
 
+export const HP_CHECK_AREAS = ["body", "energy", "focus", "mood"] as const;
+
+export type HpCheckArea = (typeof HP_CHECK_AREAS)[number];
+
 export interface HpQuestion {
   id: string;
-  area: HpArea;
+  area: HpCheckArea;
   question: string;
   answerLabels: readonly [string, string, string, string, string];
 }
@@ -23,7 +27,7 @@ export interface HpAnswer {
 }
 
 export interface HpAreaScore {
-  area: HpArea;
+  area: HpCheckArea;
   score: number;
 }
 
