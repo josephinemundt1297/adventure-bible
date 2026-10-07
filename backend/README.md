@@ -10,9 +10,9 @@ Das Backend ist die REST-API für den gemeinsamen Adventure-Bible-MVP. Es speich
 | Laufzeit | Node.js mit Express |
 | Datenbank | PostgreSQL über Prisma |
 | Validierung | Zod |
-| Authentifizierung | aktuell Entwicklungsheader, später produktive Clerk-Prüfung |
+| Authentifizierung | Clerk-Backend-Prüfung mit lokalem Entwicklungsheader als Fallback |
 | Tests | Vitest und Supertest |
-| Deployment | noch offen |
+| Deployment | geplant über Render mit Neon Postgres |
 
 ## 🌿 Ziel
 
@@ -42,6 +42,7 @@ Das Backend-MVP soll mindestens diese Daten speichern:
 | `Quest` | Aufgabe im Adventure-Bible-Kontext |
 | `QuestLog` | gestartete, abgeschlossene, verschobene oder übersprungene Quest |
 | `JournalEntry` | Tagesereignis oder Reflexion |
+| `PlanActivity` | geplanter Tagespunkt im Kalender oder Tagesplan |
 
 Nicht Teil des Backend-MVP:
 
@@ -59,15 +60,16 @@ Nicht Teil des Backend-MVP:
 |---|---|---|
 | Basis | Express-App, Konfiguration, zentrale Fehlerantwort | Produktionskonfiguration final prüfen |
 | Datenbank | Prisma-Schema und Migrationen | Deployment-Datenbank |
-| Auth | Entwicklungsheader `x-test-auth-user-id` | produktive Clerk-Backend-Prüfung |
+| Auth | Entwicklungsheader `x-test-auth-user-id`, Clerk-Backend-Prüfung, Frontend sendet Clerk-Token | Produktionskonfiguration final prüfen |
 | Profil | Lesen und Aktualisieren | Profil-Löschung erst später |
-| HP-Checks | Erstellen, Liste, Einzelansicht | produktive Frontend-Anbindung ausbauen |
+| HP-Checks | Erstellen, Liste, Einzelansicht, großer HP-Check und Mini-HP-Check im Frontend angebunden | weitere Filter/Statistik später |
 | Quests | Erstellen, Liste, Einzelansicht, Update | Archivieren/Löschen, Filter |
-| QuestLogs | Liste, Starten und Aktualisieren/Abschließen | Einzelansicht und Filter |
-| JournalEntries | Lesen, Erstellen, Aktualisieren, Löschen und einfache Filter | automatische Journal-Events aus App-Aktionen |
-| Deployment | noch nicht vorhanden | Live-URL und sichere Env-Konfiguration |
+| QuestLogs | Liste, Starten und Aktualisieren/Abschließen, Frontend-Quest-Flow angebunden | Einzelansicht und Filter |
+| JournalEntries | Lesen, Erstellen, Aktualisieren, Löschen, einfache Filter, Reflexion im Frontend angebunden | automatische Journal-Events aus weiteren App-Aktionen |
+| PlanActivities | Lesen, Erstellen, Aktualisieren und Löschen, Frontend-Plan/Kalender angebunden | weitere Filter/Statistik später |
+| Deployment | Zielarchitektur dokumentiert | Live-URL und sichere Env-Konfiguration |
 
-Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
+Zieltermin für die vollständige Frontend-Backend-Version und Abgabe: 19.10.2026.
 
 ## 🔌 Aktuelle Endpunkte
 
@@ -92,6 +94,10 @@ Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
 | `GET` | `/api/journal-entries/:id` | implementiert |
 | `PATCH` | `/api/journal-entries/:id` | implementiert |
 | `DELETE` | `/api/journal-entries/:id` | implementiert |
+| `GET` | `/api/plan-activities` | implementiert |
+| `POST` | `/api/plan-activities` | implementiert |
+| `PATCH` | `/api/plan-activities/:id` | implementiert |
+| `DELETE` | `/api/plan-activities/:id` | implementiert |
 
 ## 🛠️ Tech Stack
 
@@ -132,6 +138,7 @@ backend/
 │   ├── hpChecks.test.ts
 │   ├── hpScore.test.ts
 │   ├── journalEntries.test.ts
+│   ├── planActivities.test.ts
 │   ├── profile.test.ts
 │   ├── quests.test.ts
 │   └── questLogs.test.ts
@@ -160,8 +167,9 @@ Benötigte Variablen:
 ```env
 PORT=3000
 DATABASE_URL=postgresql://...
+CLERK_PUBLISHABLE_KEY=pk_test_dein_clerk_publishable_key
 CLERK_SECRET_KEY=sk_test_dein_clerk_secret_key
-CORS_ORIGIN=http://localhost:5173
+FRONTEND_ORIGIN=http://localhost:5173
 ```
 
 Prisma vorbereiten:
@@ -171,6 +179,14 @@ npm run prisma:generate
 npm run prisma:migrate
 ```
 
+Für eine Deployment-Datenbank wird später nicht `prisma migrate dev`, sondern `prisma migrate deploy` genutzt:
+
+```bash
+npm run prisma:migrate:deploy
+```
+
+`migrate deploy` wendet vorhandene Migrationen an, ohne im Produktionssystem neue Entwicklungs-Migrationen zu erzeugen.
+
 Entwicklungsserver starten:
 
 ```bash
@@ -179,9 +195,9 @@ npm run dev
 
 ## 🔐 Authentifizierung
 
-Während der Entwicklung und in Tests liest die Auth-Middleware den Header `x-test-auth-user-id`. Dieser Übergang ist nur außerhalb von `production` erlaubt.
+Während der Entwicklung und in Tests kann die Auth-Middleware den Header `x-test-auth-user-id` lesen. Dieser Übergang ist nur außerhalb von `production` erlaubt.
 
-Produktiv soll die API echte Clerk-Backend-Prüfung verwenden. Die Übergangsstrategie steht in [auth-strategy.md](auth-strategy.md).
+Wenn echte Clerk-Keys gesetzt sind, nutzt die API `@clerk/express` für die Backend-Prüfung. Das Frontend sendet dafür bei angebundenen Requests einen Clerk-Session-Token mit. Die genaue Strategie steht in [auth-strategy.md](auth-strategy.md).
 
 ## 🧪 Tests und Qualität
 
@@ -201,14 +217,24 @@ npm run build
 
 ## 🚀 Deployment
 
-Das Backend ist lokal lauffähig, aber noch nicht deployed.
+Das Backend ist lokal lauffähig und soll für den MVP über Render als Node.js-Web-Service bereitgestellt werden. Die Produktionsdatenbank soll über Neon Postgres laufen.
+
+Warum diese Entscheidung:
+
+- Express braucht einen echten Node.js-Server.
+- PostgreSQL und Prisma bleiben erhalten.
+- Clerk bleibt als bestehende Authentifizierung erhalten.
+- Die Lösung ist für den MVP kostenfrei oder zumindest kostenkontrolliert planbar.
 
 Für die Modulanforderungen fehlt noch:
 
-- Deployment-Ziel festlegen
+- Render-Service anlegen
+- Neon-Datenbank anlegen
 - sichere Produktionsvariablen setzen
 - CORS auf produktive Frontend-URL begrenzen
 - Live-URL testen
 - Live-URL in README und Abgabe ergänzen
+
+Weitere Details stehen in [../docs/DEPLOYMENT.md](../docs/DEPLOYMENT.md).
 
 Langfristig soll der Betrieb für einen kleinen Freundeskreis kostenfrei oder kostenkontrolliert bleiben. Das ist abhängig von den Free-Tier-Limits des gewählten Hostings und der Datenbank.

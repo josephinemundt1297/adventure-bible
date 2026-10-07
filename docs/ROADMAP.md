@@ -90,7 +90,7 @@ Priorität:
 
 **Status:** 🟡 Grundfunktionen vorhanden; Onboarding im MVP noch zu schärfen
 
-> Hinweis: Clerk bleibt die Authentifizierungsbasis. Die produktive Backend-Prüfung ist noch offen.
+> Hinweis: Clerk bleibt die Authentifizierungsbasis. Die lokale Frontend-Backend-Kette sendet Clerk-Session-Tokens an das Backend; die Produktionskonfiguration muss vor Deployment final geprüft werden.
 
 ---
 
@@ -207,10 +207,17 @@ Priorität:
 - [x] keine kritischen Fehler im Demo-Flow
 - [x] unnötige Debug-/Testartefakte geprüft
 - [x] finale Roadmap-Dokumentation nach Tagesjournal-Erweiterung erneut prüfen
-- [ ] Backend-Persistenz für alle MVP-Daten prüfen
-- [ ] Frontend-Backend-Anbindung für alle MVP-Daten prüfen
+- [x] Backend-Persistenz für Profil, großen HP-Check, Mini-HP-Check, QuestLogs, Reflexion und PlanActivities geprüft
+- [x] Frontend-Backend-Anbindung für Profil, großen HP-Check, Mini-HP-Check, QuestLogs, Reflexion und Plan/Kalender geprüft
+- [x] Plan/Kalender-Daten backendseitig speichern
+- [x] manuelle Tastaturprüfung durchgeführt
+- [x] manuelle Farb- und Kontrastprüfung durchgeführt
+- [x] Lighthouse-Barrierefreiheit geprüft: Desktop 100, Mobil 96
+- [x] Deployment-Zielarchitektur festgelegt: Netlify, Render, Neon und Clerk
+- [ ] echtes Deployment durchführen
+- [ ] Live-URL mit produktiven Env-Variablen testen
 
-**Status:** 🟡 Frontend-Kernflow funktioniert; vollständiger gemeinsamer MVP braucht noch Backend-Anbindung
+**Status:** 🟡 gemeinsamer Frontend-Backend-Kernflow funktioniert; Deployment und finale Abnahme bleiben offen
 
 ---
 
@@ -238,10 +245,33 @@ Der MVP ist fertig, wenn:
 - [x] finaler Lint-Lauf erfolgreich verifiziert ist
 - [x] finaler Production Build erfolgreich verifiziert ist
 - [x] vollständiger Demo-Flow ohne kritischen Fehler funktioniert
-- [ ] manuelle Keyboard-/Screenreader-/Kontrast-Abnahme vollständig durchgeführt
-- [ ] zentrale Daten werden über das Backend gespeichert und wieder geladen
+- [ ] manuelle Screenreader-Abnahme vollständig durchgeführt
+- [ ] zentrale MVP-Daten werden vollständig über das Backend gespeichert und wieder geladen
+- [ ] App ist über Frontend- und Backend-Live-URLs erreichbar
 
-**MVP-Status:** 🟡 Kern-Loop funktioniert; vollständige Backend-Persistenz und finale manuelle Accessibility-Abnahme offen
+**MVP-Status:** 🟡 Kern-Loop und wichtige Backend-Persistenz funktionieren; Deployment, vollständige JournalEntry-Rückladung und finale manuelle Accessibility-Abnahme bleiben offen
+
+---
+
+# 12.1 Deployment-Entscheidung
+
+Für den gemeinsamen MVP ist folgende Zielarchitektur festgelegt:
+
+| Bereich | Lösung |
+|---|---|
+| Frontend | Netlify |
+| Backend | Render Free Web Service |
+| Datenbank | Neon Free Postgres |
+| Authentifizierung | Clerk |
+
+Die Entscheidung ist bewusst pragmatisch:
+
+- Das Frontend bleibt als Vite/React-App gut auf Netlify deploybar.
+- Das Backend bleibt eine normale Express-API und kann auf Render laufen.
+- Die Datenbank bleibt PostgreSQL, damit Prisma und das bestehende Datenmodell weiter passen.
+- Clerk bleibt bestehen, damit Authentifizierung im MVP nicht neu gebaut werden muss.
+
+Details stehen in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ---
 

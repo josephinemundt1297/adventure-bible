@@ -14,7 +14,7 @@ Das Frontend ist die mobile-first React-App von Adventure Bible. Es zeigt den Pr
 | MVP | Gemeinsamer Frontend-Backend-MVP |
 | Authentifizierung | Clerk UI für Anmeldung und Nutzerkonto |
 | HP-Bereiche | Energie, Fokus, Stimmung, Körper |
-| Persistenz | teilweise lokal, teilweise Backend-Anbindung |
+| Persistenz | Profil, große und kleine HP-Checks, Quests/QuestLogs und Reflexion mit Backend-Anbindung; einzelne Bereiche noch lokal |
 | Langfristig | PWA für kleinen Freundeskreis |
 
 ## 🌿 Produktidee
@@ -47,18 +47,18 @@ Der MVP ist ab jetzt ein gemeinsamer Frontend-Backend-MVP. Das Frontend soll die
 
 | Umgesetzt | Offen |
 |---|---|
-| App-Shell und Navigation | Frontend-Anbindung für Quests |
-| Dashboard/Home | Frontend-Anbindung für QuestLogs |
-| großer HP-Check | Frontend-Anbindung für JournalEntries |
-| Mini HP-Check | produktive Auth-Weitergabe an das Backend |
-| Quest-Flow | vollständige Persistenz aller MVP-Daten |
-| Plan, Kalender und Reflexion | finale manuelle Accessibility-Abnahme |
-| Profilbereich | PWA-Check für Installierbarkeit |
+| App-Shell und Navigation | PWA-Check für Installierbarkeit |
+| Dashboard/Home | finale manuelle Accessibility-Abnahme |
+| großer HP-Check mit Backend-Persistenz | JournalEntries aus dem Backend wieder in den Kalender laden |
+| Mini HP-Check mit Backend-Persistenz | finale manuelle Accessibility-Abnahme |
+| Quest-Flow mit Backend-QuestLogs | vollständige Persistenz aller MVP-Daten prüfen |
+| Plan und Kalender mit Backend-PlanActivities, Reflexion mit Backend-JournalEntry | PWA-Check für Installierbarkeit |
+| Profilbereich | Profil-Löschung erst später |
 | Achievements |  |
 | Clerk UI |  |
-| erste Backend-Anbindung für Profil und HP-Checks |  |
+| Backend-Anbindung für Profil, HP-Checks, Quests/QuestLogs, Reflexion und Plan/Kalender |  |
 
-Interner Zieltermin für die vollständige Frontend-Backend-Version: 16.11.2026.
+Zieltermin für die vollständige Frontend-Backend-Version und Abgabe: 19.10.2026.
 
 ## 🚀 Langfristige App-Vision
 
@@ -70,6 +70,8 @@ Ziel:
 - Nutzung durch kleinen Freundeskreis
 - kostenfrei für Nutzer
 - möglichst keine laufenden Kosten für die Entwicklerin
+- Frontend-Hosting über Netlify
+- API-Anbindung an ein separat deployed Backend
 - später mehr RPG-Elemente wie Charakter-Erstellung, Inventar und Routinen
 
 ## 🛠️ Tech Stack
@@ -131,6 +133,8 @@ VITE_CLERK_PUBLISHABLE_KEY=pk_test_dein_clerk_publishable_key
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
+Im Deployment zeigt `VITE_API_BASE_URL` nicht mehr auf `localhost`, sondern auf die produktive Backend-URL. Der Wert gehört in die Netlify Environment Variables und nicht direkt in den Code.
+
 Entwicklungsserver starten:
 
 ```bash
@@ -150,7 +154,7 @@ npm run preview
 
 ## 🔐 Authentifizierung und Daten
 
-Clerk übernimmt im Frontend die Authentifizierungs-UI. Das Backend nutzt lokal vorübergehend einen Entwicklungsheader und soll später produktiv mit Clerk geprüft werden.
+Clerk übernimmt im Frontend die Authentifizierungs-UI. Das Frontend sendet für angebundene API-Aufrufe einen Clerk-Session-Token an das Backend. Der Entwicklungsheader `x-test-auth-user-id` bleibt nur als lokaler Testweg außerhalb von Production erhalten.
 
 Sensible Werte gehören nur in `.env`-Dateien und nicht ins Repository.
 
@@ -177,4 +181,5 @@ Adventure Bible soll ruhig, verständlich und mobile-first bleiben.
 | [Architektur](../docs/ARCHITECTURE.md) | Frontend-Aufbau |
 | [Security](../docs/SECURITY.md) | Sicherheitsregeln |
 | [Roadmap](../docs/ROADMAP.md) | Entwicklungsstand |
+| [Deployment](../docs/DEPLOYMENT.md) | geplante Hosting- und Env-Strategie |
 | [Development Log](../docs/DEVELOPMENT_LOG.md) | Arbeitsnotizen |

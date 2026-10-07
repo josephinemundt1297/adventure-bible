@@ -12,22 +12,29 @@ Der MVP soll alle nötigen Backend-Endpunkte haben, damit die wichtigen Frontend
 |---|---|---|---|
 | Hoch | QuestLog-Endpunkte planen und umsetzen | Backend | erledigt |
 | Hoch | JournalEntry-Endpunkte planen und umsetzen | Backend | erledigt |
-| Hoch | produktive Clerk-Backend-Prüfung vorbereiten | Backend/Auth | offen |
+| Hoch | produktive Clerk-Backend-Prüfung vorbereiten | Backend/Auth | erledigt |
 | Hoch | Prisma-HP-Modell auf vier finale HP-Bereiche bereinigen | Backend/Datenmodell | erledigt |
-| Hoch | Frontend an Quest-/QuestLog-Daten aus dem Backend anbinden | Frontend/Backend | offen |
-| Mittel | Frontend an JournalEntry-Daten aus dem Backend anbinden | Frontend/Backend | offen |
+| Hoch | Frontend an Quest-/QuestLog-Daten aus dem Backend anbinden | Frontend/Backend | erledigt |
+| Mittel | Frontend an JournalEntry-Daten aus dem Backend anbinden | Frontend/Backend | erledigt für Reflexion |
 | Mittel | API-Dokumentation mit Beispielrequests ergänzen | Doku | teilweise erledigt |
-| Mittel | Deployment-Ziel für Backend entscheiden | Deployment | offen |
-| Mittel | kostenlose oder kostenkontrollierte Datenbank-/Hosting-Lösung prüfen | Deployment | offen |
+| Mittel | Deployment-Ziel für Backend entscheiden | Deployment | erledigt: Netlify + Render + Neon + Clerk |
+| Mittel | kostenlose oder kostenkontrollierte Datenbank-/Hosting-Lösung prüfen | Deployment | erledigt: Free-Tier-Strategie dokumentiert |
+| Mittel | Mini-HP-Check an Backend-Persistenz anbinden | Frontend/Backend | erledigt |
+| Mittel | PlanActivity-Endpunkte für Tagesplan im Backend anlegen | Backend | erledigt |
+| Mittel | Plan/Kalender-Frontend an PlanActivity-Backend anbinden | Frontend/Backend | erledigt |
 
 ## 🧪 Qualität
 
 - Backend-Tests für QuestLogs schreiben ✅
 - Backend-Tests für JournalEntries schreiben ✅
+- Backend-Tests für PlanActivities schreiben ✅
 - Auth-Fehler und fremde Ressourcen testen
-- Frontend-Build nach Backend-Anbindung prüfen
-- finale manuelle Accessibility-Prüfung durchführen
+- Frontend-Build nach Backend-Anbindung prüfen ✅
+- manuelle Tastatur- und Kontrastprüfung durchführen ✅
+- finale manuelle Screenreader-Prüfung durchführen
 - PWA-Installierbarkeit prüfen
+- Lighthouse im Production-Build erneut prüfen
+- Live-Deployment vorbereiten und danach mit echter URL testen
 
 ## 🚀 Später
 

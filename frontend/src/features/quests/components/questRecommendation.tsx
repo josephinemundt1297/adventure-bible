@@ -1,9 +1,12 @@
+import { useAuth, useUser } from "@clerk/react";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { quests } from "../../../data/quests";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { addProgress } from "../../../lib/progress";
 import { recordQuestCompletion } from "../../../lib/achievements";
+import { completeBackendQuestLog, startBackendQuestLog } from "../../../lib/backendQuestLogs";
+import { saveBackendProfile } from "../../../lib/backendProfile";
 import { leaveCampfire } from "../../../lib/campfire";
 import { appendDayJournalEvent } from "../../../lib/dayJournal";
 import { readCompletedQuestIds, recordQuestCompletion as recordQuestHistory } from "../../../lib/questHistory";
@@ -38,7 +41,12 @@ function readQuestProgress(): QuestProgress | null {
 }
 
 export function QuestRecommendation({ state }: QuestRecommendationProps) {
+  const { getToken } = useAuth();
+  const { user } = useUser();
+  const name = user?.fullName ?? user?.firstName ?? user?.username ?? "Abenteurer";
   const [progress, setProgress] = useState<QuestProgress | null>(readQuestProgress);
+  const [syncError, setSyncError] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   const selectedQuest =
     progress?.status === "active" || progress?.status === "completed"
@@ -51,19 +59,53 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
 
   const quest = selectedQuest;
 
-  function startQuest() {
+  async function ensureProfile() {
+    if (!user) return;
+
+    await saveBackendProfile({
+      displayName: name,
+      characterName: name,
+      getToken,
+    });
+  }
+
+  async function startQuest() {
     leaveCampfire();
     const nextProgress: QuestProgress = { quest, status: "active" };
     sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(nextProgress));
     sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
     appendDayJournalEvent({ type: "quest-started", quest });
     setProgress(nextProgress);
+
+    if (!user) return;
+
+    setSyncing(true);
+    setSyncError(false);
+
+    try {
+      await ensureProfile();
+      const backendProgress = await startBackendQuestLog({ quest, getToken });
+      const syncedProgress: QuestProgress = {
+        ...nextProgress,
+        backendQuestId: backendProgress.quest.id,
+        backendQuestLogId: backendProgress.questLog.id,
+      };
+
+      sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(syncedProgress));
+      setProgress(syncedProgress);
+    } catch {
+      setSyncError(true);
+    } finally {
+      setSyncing(false);
+    }
   }
 
-  function completeQuest() {
+  async function completeQuest() {
     const completedProgress: QuestProgress = {
       quest,
       status: "completed",
+      backendQuestId: progress?.backendQuestId,
+      backendQuestLogId: progress?.backendQuestLogId,
       completedAt: new Date().toISOString(),
       rewardXp: quest.rewardXp,
       rewardQuestPoints: 1,
@@ -80,6 +122,32 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
     });
     notifyAchievements(recordQuestCompletion());
     setProgress(completedProgress);
+
+    if (!user) return;
+
+    setSyncing(true);
+    setSyncError(false);
+
+    try {
+      await ensureProfile();
+      const questLog = await completeBackendQuestLog({
+        backendQuestLogId: progress?.backendQuestLogId,
+        quest,
+        getToken,
+      });
+      const syncedProgress: QuestProgress = {
+        ...completedProgress,
+        backendQuestLogId: questLog.id,
+        backendQuestId: questLog.questId,
+      };
+
+      sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(syncedProgress));
+      setProgress(syncedProgress);
+    } catch {
+      setSyncError(true);
+    } finally {
+      setSyncing(false);
+    }
   }
 
   if (progress?.status === "completed") {
@@ -99,6 +167,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
           </div>
         </article>
 
+        {syncError ? <div className="alert alert-warning text-sm" role="status">Dein Quest-Abschluss konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
         <Link to="/mini-hp-check" className="btn btn-primary w-full">Neuen HP-Check starten</Link>
       </section>
     );
@@ -121,7 +190,8 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
               <span>Aufwand: {quest.effort === "short" ? "kurz" : "mittel"}</span>
               <span>+{quest.rewardXp} XP</span>
             </div>
-            <button type="button" className="btn btn-primary min-h-10 w-full" onClick={completeQuest}>Quest abschließen</button>
+            {syncError ? <div className="alert alert-warning text-sm" role="status">Deine Quest konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
+            <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing} onClick={() => void completeQuest()}>{syncing ? "Speichern..." : "Quest abschließen"}</button>
           </div>
         </article>
       </section>
@@ -150,7 +220,8 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
             <span>Aufwand: {quest.effort === "short" ? "kurz" : "mittel"}</span>
             <span>Empfohlen für dich</span>
           </div>
-          <button type="button" className="btn btn-primary min-h-10 w-full" onClick={startQuest}>Quest starten</button>
+          {syncError ? <div className="alert alert-warning text-sm" role="status">Deine Quest konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
+          <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing} onClick={() => void startQuest()}>{syncing ? "Speichern..." : "Quest starten"}</button>
         </div>
       </article>
     </section>

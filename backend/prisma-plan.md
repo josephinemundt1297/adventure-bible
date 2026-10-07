@@ -67,6 +67,11 @@ enum JournalEntryType {
   EVENT
   REFLECTION
 }
+
+enum PlanActivityType {
+  QUEST
+  PERSONAL
+}
 ```
 
 ## Modelle
@@ -89,6 +94,7 @@ model UserProfile {
   quests         Quest[]
   questLogs      QuestLog[]
   journalEntries JournalEntry[]
+  planActivities PlanActivity[]
 }
 ```
 
@@ -144,6 +150,7 @@ model Quest {
 
   userProfile      UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
   questLogs        QuestLog[]
+  planActivities   PlanActivity[]
 
   @@index([userProfileId])
   @@index([type])
@@ -222,12 +229,48 @@ Prüfpunkte:
 - `createdAt` bleibt der technische Erstellzeitpunkt.
 - Wenn `questLogId` oder `hpCheckId` gesetzt ist, muss die verknüpfte Ressource zum gleichen `userProfileId` gehören.
 
+### PlanActivity
+
+```prisma
+model PlanActivity {
+  id            String           @id @default(uuid())
+  userProfileId String
+  questId       String?
+  title         String
+  activityDate  DateTime
+  activityTime  String
+  type          PlanActivityType
+  completed     Boolean          @default(false)
+  sortOrder     Int              @default(0)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  userProfile UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  quest       Quest?      @relation(fields: [questId], references: [id])
+
+  @@index([userProfileId])
+  @@index([activityDate])
+  @@index([sortOrder])
+  @@index([completed])
+}
+```
+
+Prüfpunkte:
+
+- `activityDate` steht für den Kalendertag und wird als Tagesfilter genutzt.
+- `activityTime` nutzt das Format `HH:mm`.
+- `title` bleibt Unicode-fähig.
+- Wenn `questId` gesetzt ist, muss die verknüpfte Quest zum gleichen `userProfileId` gehören.
+- `sortOrder` speichert die manuell angepasste Reihenfolge im Tagesplan.
+
 ## Bewusste Prisma-Entscheidungen für Version 1
 
 - IDs werden als `String @id @default(uuid())` geplant.
 - PostgreSQL ist die geplante Datenbank.
 - `entryDate` wird zunächst als optionales `DateTime?` geplant, kann später mit PostgreSQL-spezifischem Date-Typ präzisiert werden.
 - `entryTime` wird zunächst als optionaler `String?` im Format `HH:mm` geplant.
+- `activityDate` wird zunächst als normalisierte `DateTime` gespeichert.
+- `activityTime` wird als `String` im Format `HH:mm` gespeichert.
 - Quests werden archiviert, nicht hart gelöscht.
 - Profil-Löschung ist nicht Teil der ersten stabilen Abgabe.
 - Globale Quest-Vorlagen werden nicht in Version 1 umgesetzt.
@@ -242,6 +285,9 @@ Diese Regeln gehören zusätzlich in Zod-Schemas und Servicelogik:
 - `estimatedMinutes`: positive Zahl, falls gesetzt.
 - `xpReward`, `questPointReward`, `scorePoints`: `0` oder größer.
 - `entryTime`: Format `HH:mm`, falls gesetzt.
+- `activityDate`: gültiges Datum im Format `YYYY-MM-DD`.
+- `activityTime`: Format `HH:mm`.
+- `sortOrder`: `0` oder größer.
 - IDs: gültiges ID-Format.
 - Zugriff auf fremde Ressourcen verhindern.
 

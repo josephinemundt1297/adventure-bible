@@ -16,7 +16,7 @@ Adventure Bible ist eine mobile-first App für Alltag, Selbstfürsorge und Aufga
 | HP-Bereiche | Energie, Fokus, Stimmung, Körper |
 | Datenhaltung | MVP-Daten sollen über das Backend gespeichert werden |
 | Langfristiges Ziel | PWA für einen kleinen Freundeskreis |
-| Interner Zieltermin | 16.11.2026 |
+| Abgabetermin | 19.10.2026 |
 
 ## 🌿 Produktidee
 
@@ -55,16 +55,16 @@ Der MVP ist ein gemeinsamer Frontend-Backend-MVP. Die App soll nicht nur lokal i
 | Quests starten und abschließen | App-Store-Veröffentlichung |
 | Achievements | große öffentliche Nutzerbasis |
 | Tagesplan, Journal, Reflexion und Kalender |  |
-| Backend-Persistenz für Profil, HP-Checks, Quests, QuestLogs und JournalEntries |  |
+| Backend-Persistenz für Profil, HP-Checks, Quests, QuestLogs, JournalEntries und PlanActivities |  |
 
 ## 🧩 Projektstatus
 
 | Bereich | Umgesetzt | Offen |
 |---|---|---|
-| Frontend | App-Shell, HP-Checks, Quests, Plan, Kalender, Reflexion, Profil, Achievements | vollständige Backend-Anbindung aller MVP-Daten |
-| Backend | Express-Grundstruktur, Prisma/PostgreSQL, Profil, HP-Checks, Quests, QuestLogs, JournalEntries, Tests | produktive Clerk-Prüfung |
-| Deployment | Frontend ist lokal und als Web-App gedacht | Backend-Deployment, Live-URL, produktive Umgebungsvariablen |
-| Dokumentation | README-Struktur, Backend-Pläne, Datenmodell, Auth-Strategie | finale API-Beispiele und Deployment-Notizen |
+| Frontend | App-Shell, HP-Checks, Quests, Plan, Kalender, Reflexion, Profil, Achievements, Backend-Anbindung für Profil, große und kleine HP-Checks, QuestLogs, Reflexion und Plan/Kalender | finale manuelle Accessibility-Abnahme |
+| Backend | Express-Grundstruktur, Prisma/PostgreSQL, Profil, HP-Checks, Quests, QuestLogs, JournalEntries, PlanActivities, Tests, Clerk-Token-Prüfung im lokalen Flow | Produktionskonfiguration final prüfen |
+| Deployment | Zielarchitektur festgelegt: Netlify, Render, Neon und Clerk | echte Live-URLs, produktive Umgebungsvariablen und Live-Test |
+| Dokumentation | README-Struktur, Backend-Pläne, Datenmodell, Auth-Strategie, Deployment-Plan | finale API-Beispiele |
 
 ## 🚀 Langfristige App-Vision
 
@@ -74,6 +74,9 @@ Geplante Richtung:
 
 - PWA statt App Store / Play Store
 - kostenloser oder kostenkontrollierter Betrieb über Free-Tier-Angebote
+- Frontend über Netlify
+- Backend über Render Free Web Service
+- PostgreSQL über Neon Free Plan
 - Clerk bleibt vorerst für Authentifizierung
 - PostgreSQL bleibt Datenbasis
 - Supabase wird später in einem separaten kleinen Projekt getestet
@@ -160,6 +163,7 @@ npm run build
 | [Backend API-Plan](backend/api-plan.md) | Endpunkte, Antwortformate, Fehlerfälle |
 | [Backend Datenmodell](backend/data-model.md) | Entitäten und Beziehungen |
 | [Backend Auth-Strategie](backend/auth-strategy.md) | Übergang von Test-Auth zu Clerk |
+| [Deployment](docs/DEPLOYMENT.md) | geplante kostenlose/kostenkontrollierte Hosting-Strategie |
 | [Produktdokumentation](docs/PROJECT.md) | Produktvision und Prinzipien |
 | [Features](docs/FEATURES.md) | MVP und spätere Funktionen |
 | [Roadmap](docs/ROADMAP.md) | Entwicklungsstand und nächste Schritte |

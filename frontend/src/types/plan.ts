@@ -4,4 +4,5 @@ export interface PlannedActivity {
   time: string;
   type: "quest" | "personal";
   completed: boolean;
+  sortOrder?: number;
 }

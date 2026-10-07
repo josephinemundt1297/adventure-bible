@@ -258,6 +258,24 @@ Die App soll nicht nur technisch zugänglich sein, sondern auch dabei helfen, En
 - unklare Fehlermeldungen
 - überraschende Navigation
 - unnötige Fachbegriffe
+
+---
+
+# 14. Manueller Stand 06.10.2026
+
+Manuelle Prüfung:
+
+- Tastatursteuerung wurde manuell getestet und funktioniert einwandfrei.
+- Design, Farben und Kontraste wurden manuell geprüft und wirken gut lesbar.
+- Lighthouse Desktop: Barrierefreiheit `100`, SEO `92`, Best Practices `77`, Leistung `57`.
+- Lighthouse Mobil: Barrierefreiheit `96`, SEO `92`, Best Practices `77`, Leistung wegen Messfehler/Dev-Umgebung nicht aussagekräftig.
+
+Einordnung:
+
+- Die Barrierefreiheitswerte sind sehr gut.
+- Die Performance-Werte wurden gegen den lokalen Entwicklungsserver gemessen und sind deshalb nicht final bewertbar.
+- Für eine finale Performance-Aussage soll später der Production-Build per Preview oder Deployment geprüft werden.
+- Eine grobe Screenreader-Prüfung bleibt als separater letzter A11Y-Schritt offen.
 - Informationsüberflutung
 - zeitlichen Druck ohne zwingenden Grund
 

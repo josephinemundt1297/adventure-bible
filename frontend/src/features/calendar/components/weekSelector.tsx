@@ -15,7 +15,7 @@ interface WeekSelectorProps {
 
 export function WeekSelector({ journalDates, selectedDate, weekDays, onSelectDate }: WeekSelectorProps) {
   return (
-    <div className="rounded-3xl border border-primary/15 bg-base-100/70 p-4 shadow-sm">
+    <div className="rounded-3xl border border-primary/15 bg-base-100/80 p-4 shadow-sm">
       <div className="mb-3 flex items-center justify-between">
         <button type="button" aria-label="Vorherige Woche" disabled className="flex size-11 items-center justify-center rounded-xl text-lg disabled:opacity-30">
           ←
@@ -42,12 +42,16 @@ export function WeekSelector({ journalDates, selectedDate, weekDays, onSelectDat
               aria-pressed={selected}
               aria-label={`${weekday}, ${day}. ${hasEntry ? "Tagebuch vorhanden" : "kein Tagebuch vorhanden"}`}
               onClick={() => onSelectDate(date)}
-              className={`flex min-h-12 flex-col items-center justify-center rounded-xl text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-primary ${
-                selected ? "bg-primary text-primary-content shadow-sm" : "text-base-content/75 hover:bg-base-200"
+              className={`relative flex min-h-12 flex-col items-center justify-center rounded-xl border text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-primary ${
+                selected
+                  ? "border-primary bg-primary text-primary-content shadow-sm"
+                  : hasEntry
+                    ? "border-primary/25 bg-primary/8 text-primary hover:bg-primary/12"
+                    : "border-transparent text-base-content/75 hover:bg-base-200"
               }`}
             >
               <span>{day}</span>
-              {hasEntry && <span aria-hidden="true" className="mt-0.5 size-1.5 rounded-full bg-current" />}
+              {hasEntry && <span aria-hidden="true" className="mt-0.5 size-2 rounded-full bg-current" />}
             </button>
           );
         })}

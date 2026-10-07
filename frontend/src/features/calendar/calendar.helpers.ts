@@ -39,26 +39,31 @@ export function getEventSummary(event: DayJournalEvent) {
   switch (event.type) {
     case "hp-check":
       return {
+        icon: "♥",
         title: "Großer HP-Check",
         detail: `Gesamtzustand: ${event.state.overall}/100`,
       };
     case "quest-started":
       return {
+        icon: "⚔️",
         title: "Quest gestartet",
         detail: event.quest.title,
       };
     case "quest-completed":
       return {
+        icon: "✨",
         title: "Quest abgeschlossen",
         detail: `${event.quest.title} · +${event.rewardXp} XP · +${event.rewardQuestPoints} Quest Point`,
       };
     case "mini-hp-check":
       return {
+        icon: "🌿",
         title: "Mini HP-Check",
         detail: event.state.values.map(({ area, value }) => `${area}: ${value}`).join(" · "),
       };
     case "campfire-started":
       return {
+        icon: "🔥",
         title: "Lagerfeuer",
         detail: "Regeneration bewusst gewählt.",
       };

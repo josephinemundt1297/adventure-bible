@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { useAuth, useUser } from "@clerk/react";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { notifyAchievements } from "../lib/rewardNotifications";
 import { recordReflection } from "../lib/achievements";
+import { saveBackendReflection } from "../lib/backendJournalEntries";
+import { saveBackendProfile } from "../lib/backendProfile";
 import { saveDayReflection } from "../lib/dayJournal";
 import { formatLongGermanDate } from "../lib/dateFormat";
 
@@ -36,43 +39,79 @@ function loadReflection(): ReflectionData {
 export const Route = createFileRoute("/reflection")({ component: ReflectionPage });
 
 function ReflectionPage() {
+  const { getToken } = useAuth();
+  const { user } = useUser();
+  const name = user?.fullName ?? user?.firstName ?? user?.username ?? "Abenteurer";
   const [reflection, setReflection] = useState<ReflectionData>(loadReflection);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const [saving, setSaving] = useState(false);
   const todayLabel = formatLongGermanDate();
 
   function updateField(field: keyof ReflectionData, value: string) {
     setSaved(false);
+    setSaveError(false);
     setReflection((current) => ({ ...current, [field]: value }));
   }
 
-  function saveReflection() {
+  async function saveReflection() {
     sessionStorage.setItem(REFLECTION_KEY, JSON.stringify(reflection));
     saveDayReflection(reflection);
     sessionStorage.removeItem(REFLECTION_KEY);
     setReflection(emptyReflection);
     notifyAchievements(recordReflection());
     setSaved(true);
+    setSaveError(false);
+
+    if (!user) return;
+
+    setSaving(true);
+
+    try {
+      await saveBackendProfile({
+        displayName: name,
+        characterName: name,
+        getToken,
+      });
+      await saveBackendReflection({
+        reflection,
+        getToken,
+      });
+    } catch {
+      setSaveError(true);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="reflection-heading">
       {saved && (
-        <div className="rounded-2xl border border-success/30 bg-success/10 px-4 py-3 text-sm font-semibold text-success" role="status" aria-live="polite">
-          ✓ Reflexion gespeichert und in dein Tagesjournal übertragen.
+        <div className="rounded-2xl border border-success/30 bg-success/10 px-4 py-3 text-sm font-semibold text-base-content" role="status" aria-live="polite">
+          ✓ Reflexion lokal gespeichert und in dein Tagesjournal übertragen.
         </div>
       )}
 
-      <header className="px-2 pt-1 text-center">
-        <p className="text-xs font-bold uppercase tracking-widest text-primary">
+      {saveError && (
+        <div className="rounded-2xl border border-warning/30 bg-warning/15 px-4 py-3 text-sm font-semibold text-base-content" role="status" aria-live="polite">
+          Deine Reflexion konnte gerade nicht in der Datenbank gespeichert werden.
+        </div>
+      )}
+
+      <header className="adventure-card rounded-3xl border border-primary/15 p-4 text-center shadow-sm">
+        <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-3xl" aria-hidden="true">
+          🌙
+        </div>
+        <p className="app-kicker mt-3 text-xs font-bold uppercase">
           Abenteuerabschluss
         </p>
-        <h1 id="reflection-heading" className="mt-2 text-2xl font-bold tracking-tight">
+        <h1 id="reflection-heading" className="app-heading mt-2 text-2xl font-bold tracking-tight">
           Abendliche Reflexion
         </h1>
         <p className="mt-2 text-sm leading-5 text-base-content/65">
-          Kein Test. Kein Urteil. Nur ein kurzer Blick zurück auf deinen Tag.
+          Ein kurzer Rückblick macht sichtbar, was dein Tag getragen hat.
         </p>
-        <p className="mt-2 text-xs text-base-content/50">{todayLabel}</p>
+        <p className="mt-3 rounded-full bg-base-100/70 px-3 py-1 text-xs font-semibold text-base-content/60">{todayLabel}</p>
       </header>
 
       <div className="flex flex-col gap-3">
@@ -108,15 +147,23 @@ function ReflectionPage() {
 
       <button
         type="button"
-        onClick={saveReflection}
+        onClick={() => void saveReflection()}
+        disabled={saving}
         className="min-h-12 w-full rounded-xl bg-primary px-4 text-sm font-bold text-primary-content shadow-sm transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none motion-reduce:hover:scale-100"
       >
-        Reflexion speichern
+        {saving ? "Speichern..." : "Reflexion speichern"}
       </button>
 
       <p className="min-h-5 text-center text-xs font-medium text-primary" aria-live="polite">
         {saved ? "Deine Felder sind wieder frei für einen neuen Eintrag." : ""}
       </p>
+
+      <Link
+        to="/calendar"
+        className="flex min-h-12 items-center justify-center rounded-xl border border-primary/25 bg-base-100/70 px-4 text-sm font-bold text-primary shadow-sm transition-colors hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
+        📅 Tagesjournal ansehen
+      </Link>
     </section>
   );
 }

@@ -78,6 +78,7 @@ Beziehungen:
 - besitzt viele `Quest`
 - besitzt viele `QuestLog`
 - besitzt viele `JournalEntry`
+- besitzt viele `PlanActivity`
 
 ### HpCheck
 
@@ -123,6 +124,7 @@ Beziehungen:
 
 - gehört zu genau einem `UserProfile`
 - kann in vielen `QuestLog`-Einträgen verwendet werden
+- kann optional in geplanten Tagespunkten verwendet werden
 
 ### QuestLog
 
@@ -171,16 +173,41 @@ Beziehungen:
 - kann optional zu einem `QuestLog` gehören
 - kann optional zu einem `HpCheck` gehören
 
+### PlanActivity
+
+Speichert Tagesplan-Einträge für den Kalender oder Plan-Bereich.
+
+Wichtige Felder:
+
+- `id`
+- `userProfileId`
+- `questId`
+- `title`
+- `activityDate`
+- `activityTime`
+- `type`: `QUEST` oder `PERSONAL`
+- `completed`
+- `sortOrder`
+- `createdAt`
+- `updatedAt`
+
+Beziehungen:
+
+- gehört zu genau einem `UserProfile`
+- kann optional zu einer `Quest` gehören
+
 ## Beziehungsskizze
 
 ```text
 UserProfile
   ├─ HpCheck
   ├─ Quest
-  │   └─ QuestLog
-  └─ JournalEntry
-        ├─ optional QuestLog
-        └─ optional HpCheck
+  │   ├─ QuestLog
+  │   └─ optional PlanActivity
+  ├─ JournalEntry
+  │     ├─ optional QuestLog
+  │     └─ optional HpCheck
+  └─ PlanActivity
 ```
 
 ## API-Konventionen
@@ -425,6 +452,58 @@ Header: x-test-auth-user-id: user_test_123
 
 Erwartete Antwort: `204 No Content`.
 
+### PlanActivities
+
+Aktueller Implementierungsstand: Lesen, Erstellen, Aktualisieren und Löschen sind umgesetzt. Das Frontend nutzt diese Endpunkte für Tagesplan und Kalenderansicht.
+
+| Methode | Pfad | Schutz | Zweck |
+|---|---|---|---|
+| `GET` | `/api/plan-activities` | geschützt | Eigene geplante Tagespunkte lesen |
+| `POST` | `/api/plan-activities` | geschützt | Tagespunkt erstellen |
+| `PATCH` | `/api/plan-activities/:id` | geschützt | Eigenen Tagespunkt aktualisieren |
+| `DELETE` | `/api/plan-activities/:id` | geschützt | Eigenen Tagespunkt löschen |
+
+Filter:
+
+- `activityDate`
+
+Beispiel `POST /api/plan-activities`:
+
+```text
+POST /api/plan-activities
+Header: x-test-auth-user-id: user_test_123
+Header: Content-Type: application/json
+```
+
+```json
+{
+  "title": "20 Min. lernen",
+  "activityDate": "2026-10-06",
+  "activityTime": "10:00",
+  "type": "QUEST",
+  "sortOrder": 0,
+  "questId": "quest-id"
+}
+```
+
+Beispiel `PATCH /api/plan-activities/:id`:
+
+```json
+{
+  "completed": true,
+  "sortOrder": 1
+}
+```
+
+Beispiel `DELETE /api/plan-activities/:id`:
+
+```text
+DELETE /api/plan-activities/plan-activity-id
+Header: x-test-auth-user-id: user_test_123
+```
+
+Erwartete Antwort: `204 No Content`.
+
 ## Authentifizierung und Autorisierung
 
 Langfristig geplant ist eine produktive Authentifizierung über Clerk-Backend-Integration.
@@ -436,6 +515,7 @@ Regeln:
 - Alle `/api/*`-Routen sind geschützt.
 - `GET /health` bleibt öffentlich.
 - Ein Nutzer darf nur eigene Profile, HP-Checks, Quests, QuestLogs und JournalEntries lesen oder verändern.
+- PlanActivities sind ebenfalls geschützt und dürfen nur zum eigenen Profil gehören.
 - `authUserId` wird aus dem geprüften Auth-Kontext abgeleitet, nicht aus dem Request-Body vertraut.
 - Fremde Ressourcen geben `404` oder `403` zurück, je nach finaler Autorisierungsentscheidung.
 
@@ -455,6 +535,7 @@ Unicode bleibt für geeignete Freitextfelder erlaubt:
 - `description`
 - `note`
 - `content`
+- PlanActivity-`title`
 
 Technische IDs, Enum-Werte, Datumswerte und Zahlen werden streng validiert.
 
@@ -484,6 +565,7 @@ Mindestens zu testen:
 - Quest mit Unicode-Titel wird akzeptiert
 - QuestLog kann eine Quest starten und abschließen
 - JournalEntry kann erstellt und nach Datum gefiltert werden
+- PlanActivity kann erstellt, nach Datum gefiltert, aktualisiert und gelöscht werden
 - nicht vorhandene IDs erzeugen `404`
 
 ## Offene Entscheidungen
