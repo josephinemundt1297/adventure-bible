@@ -1,28 +1,41 @@
 import { useAuth, useUser } from "@clerk/react";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { initialPlan } from "../../../data/plan";
 import { quests } from "../../../data/quests";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { addProgress } from "../../../lib/progress";
-import { recordQuestCompletion } from "../../../lib/achievements";
+import { recordCampfire, recordQuestCompletion } from "../../../lib/achievements";
 import { completeBackendQuestLog, startBackendQuestLog } from "../../../lib/backendQuestLogs";
 import { saveBackendProfile } from "../../../lib/backendProfile";
-import { leaveCampfire } from "../../../lib/campfire";
+import { leaveCampfire, startCampfire } from "../../../lib/campfire";
 import { appendDayJournalEvent } from "../../../lib/dayJournal";
 import { readCompletedQuestIds, recordQuestCompletion as recordQuestHistory } from "../../../lib/questHistory";
 import { selectQuest } from "../../../lib/questSelection";
 import type { HpState } from "../../../types/hp";
+import type { PlannedActivity } from "../../../types/plan";
 import type { Quest } from "../../../types/quest";
 import type { QuestProgress } from "../../../types/questProgress";
 
 const QUEST_PROGRESS_KEY = "adventure-bible:quest-progress";
 const MINI_SELECTED_QUEST_KEY = "adventure-bible:mini-selected-quest";
+const MINI_SELECTED_QUEST_DETAILS_KEY = "adventure-bible:mini-selected-quest-details";
+const PLAN_KEY = "adventure-bible:plan";
 
 interface QuestRecommendationProps {
   state: HpState;
 }
 
 function readMiniSelectedQuest(): Quest | null {
+  const selectedDetails = sessionStorage.getItem(MINI_SELECTED_QUEST_DETAILS_KEY);
+  if (selectedDetails) {
+    try {
+      return JSON.parse(selectedDetails) as Quest;
+    } catch {
+      sessionStorage.removeItem(MINI_SELECTED_QUEST_DETAILS_KEY);
+    }
+  }
+
   const selectedId = sessionStorage.getItem(MINI_SELECTED_QUEST_KEY);
   if (!selectedId) return null;
   return quests.find((quest) => quest.id === selectedId) ?? null;
@@ -40,24 +53,71 @@ function readQuestProgress(): QuestProgress | null {
   }
 }
 
+function lowestHpTargetArea(state: HpState): Quest["targetArea"] {
+  return [...state.areas].sort((a, b) => a.score - b.score)[0]?.area ?? "focus";
+}
+
+function readPlanQuest(state: HpState): Quest | null {
+  const stored = sessionStorage.getItem(PLAN_KEY);
+  if (!stored) {
+    const fallbackActivity = initialPlan.find((item) => !item.completed);
+    if (!fallbackActivity) return null;
+
+    return {
+      id: `plan-${fallbackActivity.id}`,
+      title: fallbackActivity.title,
+      description: `Aus deinem heutigen Plan um ${fallbackActivity.time}.`,
+      effort: "short",
+      rewardXp: fallbackActivity.type === "quest" ? 20 : 15,
+      targetArea: lowestHpTargetArea(state),
+      type: fallbackActivity.type === "quest" ? "side" : "daily",
+    };
+  }
+
+  try {
+    const activities = JSON.parse(stored) as PlannedActivity[];
+    const activity = activities.find((item) => !item.completed);
+    if (!activity) return null;
+
+    return {
+      id: `plan-${activity.id}`,
+      title: activity.title,
+      description: `Aus deinem heutigen Plan um ${activity.time}.`,
+      effort: "short",
+      rewardXp: activity.type === "quest" ? 20 : 15,
+      targetArea: lowestHpTargetArea(state),
+      type: activity.type === "quest" ? "side" : "daily",
+    };
+  } catch {
+    return null;
+  }
+}
+
+function selectSideQuest(state: HpState): Quest | null {
+  const completedIds = readCompletedQuestIds();
+  const sideQuests = quests.filter((quest) => quest.type === "side");
+  return selectQuest(state, sideQuests.length > 0 ? sideQuests : quests, completedIds);
+}
+
 export function QuestRecommendation({ state }: QuestRecommendationProps) {
   const { getToken } = useAuth();
   const { user } = useUser();
   const name = user?.fullName ?? user?.firstName ?? user?.username ?? "Abenteurer";
   const [progress, setProgress] = useState<QuestProgress | null>(readQuestProgress);
+  const [campfireStarted, setCampfireStarted] = useState(false);
   const [syncError, setSyncError] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
-  const selectedQuest =
-    progress?.status === "active" || progress?.status === "completed"
-      ? progress.quest
-      : readMiniSelectedQuest() ?? selectQuest(state, quests, readCompletedQuestIds());
+  const miniSelectedQuest = readMiniSelectedQuest();
+  const sideQuest = miniSelectedQuest ?? selectSideQuest(state);
+  const planQuest = readPlanQuest(state);
+  const selectedQuest = progress?.status === "active" || progress?.status === "completed" ? progress.quest : sideQuest;
 
-  if (!selectedQuest) {
+  if (!selectedQuest && !planQuest) {
     return <p>Aktuell ist keine Quest verfügbar.</p>;
   }
 
-  const quest = selectedQuest;
+  const quest = selectedQuest ?? planQuest!;
 
   async function ensureProfile() {
     if (!user) return;
@@ -69,12 +129,13 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
     });
   }
 
-  async function startQuest() {
+  async function startQuest(nextQuest: Quest) {
     leaveCampfire();
-    const nextProgress: QuestProgress = { quest, status: "active" };
+    const nextProgress: QuestProgress = { quest: nextQuest, status: "active" };
     sessionStorage.setItem(QUEST_PROGRESS_KEY, JSON.stringify(nextProgress));
     sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
-    appendDayJournalEvent({ type: "quest-started", quest });
+    sessionStorage.removeItem(MINI_SELECTED_QUEST_DETAILS_KEY);
+    appendDayJournalEvent({ type: "quest-started", quest: nextQuest });
     setProgress(nextProgress);
 
     if (!user) return;
@@ -84,7 +145,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
 
     try {
       await ensureProfile();
-      const backendProgress = await startBackendQuestLog({ quest, getToken });
+      const backendProgress = await startBackendQuestLog({ quest: nextQuest, getToken });
       const syncedProgress: QuestProgress = {
         ...nextProgress,
         backendQuestId: backendProgress.quest.id,
@@ -98,6 +159,14 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
     } finally {
       setSyncing(false);
     }
+  }
+
+  function chooseCampfire() {
+    startCampfire();
+    sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
+    appendDayJournalEvent({ type: "campfire-started" });
+    notifyAchievements(recordCampfire());
+    setCampfireStarted(true);
   }
 
   async function completeQuest() {
@@ -173,6 +242,19 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
     );
   }
 
+  if (campfireStarted) {
+    return (
+      <section className="space-y-5 text-center" aria-labelledby="quest-campfire-heading">
+        <header className="flex flex-col gap-2">
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary">Lagerfeuer</p>
+          <h1 id="quest-campfire-heading" className="app-heading text-2xl font-bold leading-7 tracking-tight">Du darfst regenerieren.</h1>
+          <p className="text-sm leading-6 text-base-content/70">Du hast bewusst eine Pause gewählt. Das ist ein gültiger Teil deines Abenteuerzyklus.</p>
+        </header>
+        <Link to="/hp-check" className="btn btn-primary min-h-11 w-full">Neuen Abenteuerzyklus starten</Link>
+      </section>
+    );
+  }
+
   if (progress?.status === "active") {
     return (
       <section className="space-y-5" aria-labelledby="active-quest-heading">
@@ -186,10 +268,10 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
           <div className="card-body gap-3">
             <span className="badge badge-primary w-fit">In Arbeit</span>
             <p className="text-sm leading-6">{quest.description}</p>
-            <div className="flex items-center justify-between text-sm text-base-content/60">
-              <span>Aufwand: {quest.effort === "short" ? "kurz" : "mittel"}</span>
-              <span>+{quest.rewardXp} XP</span>
-            </div>
+          <div className="flex items-center justify-between text-sm text-base-content/60">
+            <span>Aufwand: {quest.effort === "short" ? "kurz" : "mittel"}</span>
+            <span>+{quest.rewardXp} XP</span>
+          </div>
             {syncError ? <div className="alert alert-warning text-sm" role="status">Deine Quest konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
             <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing} onClick={() => void completeQuest()}>{syncing ? "Speichern..." : "Quest abschließen"}</button>
           </div>
@@ -206,24 +288,40 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
         <p className="text-sm leading-6 text-base-content/70">Deine Empfehlung orientiert sich an dem Bereich, der gerade am meisten Unterstützung gebrauchen kann.</p>
       </header>
 
-      <article className="adventure-card card border border-primary/20">
-        <div className="card-body gap-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="badge badge-primary h-auto min-h-7 whitespace-nowrap px-3 py-1 text-xs leading-none">
-              {quest.type === "recovery" ? "Recovery Quest" : "Side Quest"}
-            </span>
-            <span className="shrink-0 text-sm font-semibold text-primary">+{quest.rewardXp} XP</span>
-          </div>
-          <h2 className="app-heading text-xl font-bold leading-7">{quest.title}</h2>
-          <p className="text-sm leading-6 text-base-content/70">{quest.description}</p>
-          <div className="flex items-center justify-between text-sm text-base-content/60">
-            <span>Aufwand: {quest.effort === "short" ? "kurz" : "mittel"}</span>
-            <span>Empfohlen für dich</span>
-          </div>
-          {syncError ? <div className="alert alert-warning text-sm" role="status">Deine Quest konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
-          <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing} onClick={() => void startQuest()}>{syncing ? "Speichern..." : "Quest starten"}</button>
-        </div>
-      </article>
+      <div className="grid gap-3">
+        {sideQuest ? (
+          <article className="adventure-card card border border-primary/20">
+            <div className="card-body gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="badge badge-primary h-auto min-h-7 whitespace-nowrap px-3 py-1 text-xs leading-none">Side Quest</span>
+                <span className="shrink-0 text-sm font-semibold text-primary">+{sideQuest.rewardXp} XP</span>
+              </div>
+              <h2 className="app-heading text-xl font-bold leading-7">{sideQuest.title}</h2>
+              <p className="text-sm leading-6 text-base-content/70">{sideQuest.description}</p>
+              {syncError ? <div className="alert alert-warning text-sm" role="status">Deine Quest konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
+              <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing} onClick={() => void startQuest(sideQuest)}>{syncing ? "Speichern..." : "Sidequest starten"}</button>
+            </div>
+          </article>
+        ) : null}
+
+        {planQuest ? (
+          <article className="adventure-card card border border-base-300">
+            <div className="card-body gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="badge badge-ghost h-auto min-h-7 whitespace-nowrap px-3 py-1 text-xs leading-none">Aus deinem Plan</span>
+                <span className="shrink-0 text-sm font-semibold text-base-content/60">+{planQuest.rewardXp} XP</span>
+              </div>
+              <h2 className="app-heading text-xl font-bold leading-7">{planQuest.title}</h2>
+              <p className="text-sm leading-6 text-base-content/70">{planQuest.description}</p>
+              <button type="button" className="btn btn-outline min-h-11 w-full" disabled={syncing} onClick={() => void startQuest(planQuest)}>{syncing ? "Speichern..." : "Plan-Aufgabe starten"}</button>
+            </div>
+          </article>
+        ) : null}
+
+        <button type="button" className="btn btn-ghost min-h-11 w-full border border-primary/25 bg-primary/5 text-primary" onClick={chooseCampfire}>
+          Lagerfeuer wählen
+        </button>
+      </div>
     </section>
   );
 }

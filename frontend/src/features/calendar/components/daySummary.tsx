@@ -31,8 +31,8 @@ export function DaySummary({ day, hasContent, planActivities, selectedDate }: Da
           ) : null}
         </div>
         <div className="flex shrink-0 flex-col gap-2">
-          <Link to="/plan" className="btn btn-primary min-h-11 rounded-xl px-3 text-xs">Plan</Link>
-          <Link to="/reflection" className="btn btn-outline min-h-11 rounded-xl px-3 text-xs">Reflexion</Link>
+          <Link to="/plan" className="btn btn-primary min-h-10 rounded-xl px-3 text-xs">Plan</Link>
+          <Link to="/reflection" className="btn btn-outline min-h-10 rounded-xl px-3 text-xs font-semibold opacity-80">Reflexion</Link>
         </div>
       </div>
     </article>

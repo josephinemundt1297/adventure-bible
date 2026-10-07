@@ -7,7 +7,7 @@ import {
 } from "../../../lib/backendPlanActivities";
 import { getJournalDate, readAllDayJournals, readDayJournal } from "../../../lib/dayJournal";
 import type { PlannedActivity } from "../../../types/plan";
-import { formatCalendarMonth, getCalendarWeekDays, hasJournalContent } from "../calendar.helpers";
+import { formatCalendarDay, formatCalendarMonth, getCalendarWeekDays, hasJournalContent } from "../calendar.helpers";
 import { DayJournalDetails } from "./dayJournalDetails";
 import { DaySummary } from "./daySummary";
 import { WeekSelector } from "./weekSelector";
@@ -63,20 +63,20 @@ export function CalendarView() {
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="calendar-heading">
-      <header className="adventure-card rounded-2xl border border-primary/15 p-4 shadow-sm">
+      <header className="adventure-card rounded-2xl border border-primary/15 p-3 shadow-sm">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="app-kicker text-xs font-bold uppercase">Tagesjournal</p>
-            <h1 id="calendar-heading" className="app-heading mt-1 text-2xl font-bold leading-tight tracking-tight text-primary">
+            <h1 id="calendar-heading" className="app-heading mt-1 text-xl font-bold leading-tight tracking-tight text-primary">
               {formatCalendarMonth(selectedDate)}
             </h1>
-            <p className="mt-1 text-sm leading-5 text-base-content/65">
-              HP-Checks, Quests und Reflexionen werden hier als Tagesverlauf sichtbar.
+            <p className="mt-1 text-sm font-semibold leading-5 text-base-content/70">
+              {formatCalendarDay(selectedDate)}
             </p>
           </div>
-          <span aria-hidden="true" className="rounded-2xl bg-primary/10 px-3 py-2 text-2xl">📅</span>
+          <span aria-hidden="true" className="rounded-xl bg-primary/10 px-2.5 py-2 text-xl">▦</span>
         </div>
-        <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+        <div className="mt-3 grid grid-cols-3 gap-2 text-center">
           <div className="rounded-xl bg-base-100/70 p-2">
             <p className="text-lg font-bold text-primary">{allJournals.length}</p>
             <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-base-content/55">Tage</p>
@@ -95,13 +95,13 @@ export function CalendarView() {
       {!selectedDay.reflection ? (
         <Link
           to="/reflection"
-          className="flex min-h-14 items-center justify-between gap-3 rounded-2xl border border-primary/25 bg-primary/10 px-4 py-3 text-left text-primary shadow-sm transition-colors hover:bg-primary/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-primary/15 bg-base-100/75 px-4 py-2.5 text-left text-base-content shadow-sm transition-colors hover:bg-primary/8 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           <span>
-            <span className="block text-sm font-bold">🌙 Abendliche Reflexion fehlt noch</span>
-            <span className="mt-0.5 block text-xs text-base-content/65">Ein kurzer Rückblick macht den Tag später leichter lesbar.</span>
+            <span className="block text-sm font-bold text-primary">Abendliche Reflexion</span>
+            <span className="mt-0.5 block text-xs text-base-content/60">Optionaler kurzer Rückblick für später.</span>
           </span>
-          <span aria-hidden="true" className="text-xl">→</span>
+          <span aria-hidden="true" className="text-base text-primary">→</span>
         </Link>
       ) : null}
 

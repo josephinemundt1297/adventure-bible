@@ -6,7 +6,7 @@ import { hpAreaLabels, hpQuestions } from "../../../data/hpQuestions";
 import { saveBackendHpCheck } from "../../../lib/backendHpChecks";
 import { saveBackendProfile } from "../../../lib/backendProfile";
 import { calculateHpState } from "../../../lib/hpScore";
-import { getCriticalHpSupport } from "../../../lib/hpSupport";
+import { emotionalSupportContacts, getCriticalHpSupport, recordCriticalHpSupport } from "../../../lib/hpSupport";
 import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { recordHpCheck } from "../../../lib/achievements";
 import { leaveCampfire } from "../../../lib/campfire";
@@ -30,6 +30,7 @@ export function HpCheck() {
   const [saveError, setSaveError] = useState(false);
   const [saving, setSaving] = useState(false);
   const [supportDismissed, setSupportDismissed] = useState(false);
+  const [showEmotionalSupportContacts, setShowEmotionalSupportContacts] = useState(false);
 
   const question = hpQuestions[questionIndex];
   const currentAnswer = answers.find((answer) => answer.questionId === question.id)?.value;
@@ -51,6 +52,7 @@ export function HpCheck() {
         { questionId: question.id, value: currentAnswer },
       ];
       const finalState = calculateHpState(allAnswers);
+      const criticalSupport = getCriticalHpSupport(finalState, allAnswers, quests);
       setSaving(true);
       setSaveError(false);
       leaveCampfire();
@@ -61,6 +63,9 @@ export function HpCheck() {
       addXp(HP_CHECK_REWARD_XP);
       notifyAchievements(recordHpCheck());
       setSupportDismissed(false);
+      setShowEmotionalSupportContacts(
+        criticalSupport ? recordCriticalHpSupport(criticalSupport.area) : false,
+      );
 
       if (user) {
         try {
@@ -88,9 +93,8 @@ export function HpCheck() {
   }
 
   if (completed && completedState) {
-    const criticalSupport = supportDismissed
-      ? null
-      : getCriticalHpSupport(completedState, answers, quests);
+    const detectedCriticalSupport = getCriticalHpSupport(completedState, answers, quests);
+    const criticalSupport = supportDismissed ? null : detectedCriticalSupport;
 
     return (
       <section className="mx-auto max-w-md space-y-4" aria-labelledby="hp-result-heading">
@@ -107,18 +111,54 @@ export function HpCheck() {
             <p className="text-xs leading-4 text-base-content/60">Du hast kurz bei dir eingecheckt. Das ist ein echter Schritt.</p>
           </div>
         </div>
-        <div className="card border border-base-300 bg-base-100 shadow-sm"><div className="card-body gap-3 p-4"><h2 className="text-lg font-semibold">Deine Bereiche</h2><div className="space-y-3">{completedState.areas.map(({ area, score }) => (<div key={area}><div className="mb-1 flex items-center justify-between text-sm"><span>{hpAreaLabels[area]}</span><span className="font-semibold">{score}/100</span></div><progress className="progress progress-primary w-full" value={score} max="100" aria-label={`${hpAreaLabels[area]}: ${score} von 100`} /></div>))}</div></div></div>
+        <div className="card border border-base-300 bg-base-100 shadow-sm">
+          <div className="card-body gap-3 p-4">
+            <h2 className="text-lg font-semibold">Deine Bereiche</h2>
+            <div className="space-y-3">
+              {completedState.areas.map(({ area, score }) => {
+                const isCritical = detectedCriticalSupport?.area === area;
+                return (
+                  <div key={area} className={isCritical ? "rounded-xl border border-warning/40 bg-warning/10 p-2" : ""}>
+                    <div className="mb-1 flex items-center justify-between gap-2 text-sm">
+                      <span className={isCritical ? "font-bold text-warning" : ""}>{hpAreaLabels[area]}</span>
+                      <span className={`font-semibold ${isCritical ? "text-warning" : ""}`}>{score}/100</span>
+                    </div>
+                    <progress
+                      className={`progress w-full ${isCritical ? "progress-warning" : "progress-primary"}`}
+                      value={score}
+                      max="100"
+                      aria-label={`${hpAreaLabels[area]}: ${score} von 100${isCritical ? ", kritischer Bereich" : ""}`}
+                    />
+                    {isCritical ? (
+                      <p className="mt-1 text-xs font-semibold text-warning">Braucht gerade besondere Aufmerksamkeit.</p>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
         {criticalSupport ? (
           <article className="card border border-warning/30 bg-warning/10 shadow-sm" aria-labelledby="critical-support-heading">
             <div className="card-body gap-3 p-4">
-              <div className="space-y-1">
-                <p className="text-xs font-bold uppercase tracking-widest text-warning">Sanfter Hinweis</p>
-                <h2 id="critical-support-heading" className="text-lg font-bold">
-                  {criticalSupport.areaLabel} wirkt gerade niedrig.
-                </h2>
-                <p className="text-sm leading-5 text-base-content/70">
-                  Du musst daraus keine Aufgabe machen. Wenn du möchtest, kannst du dir diesen Bereich kurz anschauen.
-                </p>
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1">
+                  <p className="text-xs font-bold uppercase tracking-widest text-warning">Sanfter Hinweis</p>
+                  <h2 id="critical-support-heading" className="text-lg font-bold">
+                    {criticalSupport.areaLabel} wirkt gerade niedrig.
+                  </h2>
+                  <p className="text-sm leading-5 text-base-content/70">
+                    Du musst daraus keine Aufgabe machen. Wenn du möchtest, kannst du dir diesen Bereich kurz anschauen.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm btn-square shrink-0"
+                  aria-label="Hinweis schließen"
+                  onClick={() => setSupportDismissed(true)}
+                >
+                  ×
+                </button>
               </div>
 
               {criticalSupport.lowQuestions.length > 0 ? (
@@ -157,6 +197,31 @@ export function HpCheck() {
               </div>
             </div>
           </article>
+        ) : null}
+        {showEmotionalSupportContacts ? (
+          <section className="card border border-info/30 bg-info/10 shadow-sm" aria-labelledby="support-contacts-heading">
+            <div className="card-body gap-3 p-4">
+              <div className="space-y-1">
+                <p className="text-xs font-bold uppercase tracking-widest text-info">Zusätzliche Unterstützung</p>
+                <h2 id="support-contacts-heading" className="text-lg font-bold">
+                  Du musst damit nicht allein bleiben.
+                </h2>
+                <p className="text-sm leading-5 text-base-content/70">
+                  Weil in letzter Zeit wiederholt kritische Bereiche aufgetaucht sind, kann ein Gespräch mit einer
+                  externen Stelle hilfreich sein. Das ist freiwillig.
+                </p>
+              </div>
+              <div className="space-y-2">
+                {emotionalSupportContacts.map((contact) => (
+                  <article key={contact.phone} className="rounded-xl bg-base-100/70 p-3 text-sm leading-5">
+                    <p className="font-bold">{contact.name}</p>
+                    <a className="link link-primary font-semibold" href={contact.href}>{contact.phone}</a>
+                    <p><a className="link" href={contact.website} target="_blank" rel="noreferrer">{contact.website}</a></p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
         ) : null}
         {saveError ? <div className="alert alert-warning text-sm" role="status">Dein HP-Check konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
         <Link to="/quests" className="btn btn-primary w-full">Meine Quest ansehen</Link>

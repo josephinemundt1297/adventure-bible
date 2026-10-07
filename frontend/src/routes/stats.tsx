@@ -6,5 +6,5 @@ export const Route = createFileRoute("/stats")({
 });
 
 function StatsPage() {
-  return <ProgressStats />;
+  return <ProgressStats view="progress" />;
 }

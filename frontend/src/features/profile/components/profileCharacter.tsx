@@ -25,10 +25,10 @@ export function ProfileCharacter({ name }: { name: string }) {
         </div>
       </div>
 
-      <div className="adventure-card rounded-2xl border shadow-sm" aria-labelledby="progress-heading">
+      <div className="adventure-card rounded-2xl border shadow-sm" aria-labelledby="profile-level-heading">
         <div className="card-body gap-3">
           <div className="flex items-center justify-between gap-3">
-            <h2 id="progress-heading" className="app-heading font-bold">Dein Fortschritt</h2>
+            <h2 id="profile-level-heading" className="app-heading font-bold">LV-Info</h2>
             <span className="text-sm font-semibold">Level {level}</span>
           </div>
           <div className="flex items-center justify-between text-sm text-base-content/70">
@@ -36,15 +36,35 @@ export function ProfileCharacter({ name }: { name: string }) {
             <span>{levelProgress}/100 XP</span>
           </div>
           <progress className="progress progress-primary w-full" value={levelProgress} max={100} aria-label={`${levelProgress} von 100 XP bis zum nächsten Level`} />
+          <div className="grid grid-cols-2 gap-2 pt-1" aria-label="Levelwerte">
+            <div className="rounded-xl bg-primary/8 px-3 py-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-base-content/55">Quests</p>
+              <p className="text-lg font-bold">{progress.completedQuests}</p>
+            </div>
+            <div className="rounded-xl bg-primary/8 px-3 py-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-base-content/55">Quest Points</p>
+              <p className="text-lg font-bold">{progress.questPoints}</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3" aria-label="Charakterstatus">
-        <div className="adventure-card rounded-2xl border p-4 shadow-sm"><p className="text-xs font-semibold uppercase tracking-wide text-base-content/60">Quest Points</p><p className="mt-1 text-lg font-bold">{progress.questPoints}</p></div>
-        <div className="adventure-card rounded-2xl border p-4 shadow-sm"><p className="text-xs font-semibold uppercase tracking-wide text-base-content/60">Abenteuer</p><p className="mt-1 text-lg font-bold">{progress.completedQuests}</p></div>
+      <div className="grid gap-3" aria-label="Profilbereiche">
+        <Link to="/stats" hash="hp-history-heading" className="adventure-card flex min-h-14 items-center justify-between rounded-2xl border px-4 py-3 text-left shadow-sm">
+          <span>
+            <span className="block text-sm font-bold">Fortschritt anzeigen</span>
+            <span className="block text-xs text-base-content/60">HP-Verlauf und Werte</span>
+          </span>
+          <span aria-hidden="true" className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">▧</span>
+        </Link>
+        <Link to="/achievements" className="adventure-card flex min-h-14 items-center justify-between rounded-2xl border px-4 py-3 text-left shadow-sm">
+          <span>
+            <span className="block text-sm font-bold">Meilensteine</span>
+            <span className="block text-xs text-base-content/60">Achievement-Regal</span>
+          </span>
+          <span aria-hidden="true" className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">✦</span>
+        </Link>
       </div>
-
-      <Link to="/stats" className="btn btn-outline min-h-11 w-full">📊 Fortschritt ansehen</Link>
 
       <div className="alert border-base-300 bg-base-100 text-sm leading-5 shadow-sm" role="status">
         <span aria-hidden="true">🌿</span>
