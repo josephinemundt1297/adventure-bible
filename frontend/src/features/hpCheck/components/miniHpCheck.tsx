@@ -7,6 +7,7 @@ import { notifyAchievements } from "../../../lib/rewardNotifications";
 import { recordCampfire, recordMiniHpCheck } from "../../../lib/achievements";
 import { saveBackendMiniHpCheck } from "../../../lib/backendHpChecks";
 import { saveBackendProfile } from "../../../lib/backendProfile";
+import { emotionalSupportContacts, getCriticalHpSupport, recordCriticalHpSupport } from "../../../lib/hpSupport";
 import { readCompletedQuestIds } from "../../../lib/questHistory";
 import { selectMiniQuest } from "../../../lib/miniQuestSelection";
 import { leaveCampfire, startCampfire } from "../../../lib/campfire";
@@ -95,6 +96,8 @@ export function MiniHpCheck() {
   const [selectedQuestId, setSelectedQuestId] = useState<string | null>(null);
   const [campfireStarted, setCampfireStarted] = useState(false);
   const [saveError, setSaveError] = useState(false);
+  const [supportDismissed, setSupportDismissed] = useState(false);
+  const [showEmotionalSupportContacts, setShowEmotionalSupportContacts] = useState(false);
   const [saving, setSaving] = useState(false);
 
   function updateValue(area: MiniHpArea, value: number) {
@@ -103,6 +106,8 @@ export function MiniHpCheck() {
     setSelectedQuestId(null);
     setCampfireStarted(false);
     setSaveError(false);
+    setSupportDismissed(false);
+    setShowEmotionalSupportContacts(false);
     setValues((current) => ({ ...current, [area]: value }));
   }
 
@@ -112,9 +117,11 @@ export function MiniHpCheck() {
       values: areas.map(({ id }) => ({ area: id, value: values[id] })),
       completedAt: new Date().toISOString(),
     };
+    const hpState = miniStateToHpState(state);
+    const criticalSupport = getCriticalHpSupport(hpState, [], quests);
     leaveCampfire();
     sessionStorage.setItem(MINI_HP_STATE_KEY, JSON.stringify(state));
-    sessionStorage.setItem(HP_STATE_KEY, JSON.stringify(miniStateToHpState(state)));
+    sessionStorage.setItem(HP_STATE_KEY, JSON.stringify(hpState));
     sessionStorage.removeItem(MINI_SELECTED_QUEST_KEY);
     sessionStorage.removeItem(MINI_SELECTED_QUEST_DETAILS_KEY);
     appendDayJournalEvent({ type: "mini-hp-check", state });
@@ -122,6 +129,10 @@ export function MiniHpCheck() {
     setSelectedQuestId(null);
     setCampfireStarted(false);
     setSaveError(false);
+    setSupportDismissed(false);
+    setShowEmotionalSupportContacts(
+      criticalSupport ? recordCriticalHpSupport(criticalSupport.area) : false,
+    );
     setComparisonHpState(previousHpState);
     setSavedState(state);
 
@@ -174,6 +185,10 @@ export function MiniHpCheck() {
   const previousValues = new Map(
     comparisonHpState?.areas.map((area) => [area.area, area.score]) ?? [],
   );
+  const detectedCriticalSupport = savedState
+    ? getCriticalHpSupport(miniStateToHpState(savedState), [], quests)
+    : null;
+  const criticalSupport = supportDismissed ? null : detectedCriticalSupport;
 
   if (campfireStarted) {
     return (
@@ -245,6 +260,51 @@ export function MiniHpCheck() {
             );
           })}
         </div>
+
+        {criticalSupport ? (
+          <article className="rounded-2xl border border-warning/30 bg-warning/10 p-3 shadow-sm" aria-labelledby="mini-critical-support-heading">
+            <div className="flex items-start justify-between gap-3">
+              <div className="space-y-1">
+                <p className="text-xs font-bold uppercase tracking-widest text-warning">Sanfter Hinweis</p>
+                <h2 id="mini-critical-support-heading" className="text-base font-bold">
+                  {criticalSupport.areaLabel} wirkt gerade niedrig.
+                </h2>
+                <p className="text-xs leading-4 text-base-content/70">
+                  Du musst nichts davon machen. Falls du magst, kann eine kleine Hilfe gerade leichter sein als eine Quest.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm btn-square shrink-0"
+                aria-label="Hinweis schließen"
+                onClick={() => setSupportDismissed(true)}
+              >
+                ×
+              </button>
+            </div>
+            <ul className="mt-2 list-disc space-y-1 pl-4 text-xs leading-4 text-base-content/70">
+              {criticalSupport.tips.slice(0, 3).map((tip) => (
+                <li key={tip}>{tip}</li>
+              ))}
+            </ul>
+          </article>
+        ) : null}
+
+        {showEmotionalSupportContacts ? (
+          <section className="rounded-2xl border border-info/30 bg-info/10 p-3 shadow-sm" aria-labelledby="mini-support-contacts-heading">
+            <p className="text-xs font-bold uppercase tracking-widest text-info">Zusätzliche Unterstützung</p>
+            <h2 id="mini-support-contacts-heading" className="mt-1 text-base font-bold">Du musst damit nicht allein bleiben.</h2>
+            <p className="mt-1 text-xs leading-4 text-base-content/70">
+              Weil wiederholt kritische Bereiche aufgetaucht sind, kann ein freiwilliges Gespräch helfen.
+            </p>
+            {emotionalSupportContacts.map((contact) => (
+              <article key={contact.phone} className="mt-2 rounded-xl bg-base-100/70 p-2 text-xs leading-4">
+                <p className="font-bold">{contact.name}</p>
+                <a className="link link-primary font-semibold" href={contact.href}>{contact.phone}</a>
+              </article>
+            ))}
+          </section>
+        ) : null}
 
         <div className="flex flex-col gap-2">
           {primary && (

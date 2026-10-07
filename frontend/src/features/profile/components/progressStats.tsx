@@ -356,7 +356,9 @@ export function ProgressStats({ view = "all" }: ProgressStatsProps) {
         </div>
       ) : null}
 
-      <div className="alert border-base-300 bg-base-100 text-sm leading-5 shadow-sm" role="note"><span aria-hidden="true">🌿</span><span>Achievements sind Erinnerungen an deinen Weg – keine Bewertung deiner Leistung.</span></div>
+      {showAchievements ? (
+        <div className="alert border-base-300 bg-base-100 text-sm leading-5 shadow-sm" role="note"><span aria-hidden="true">🌿</span><span>Achievements sind Erinnerungen an deinen Weg – keine Bewertung deiner Leistung.</span></div>
+      ) : null}
       <Link to="/profile" className="btn btn-outline min-h-11 w-full">← Zurück zu Ich</Link>
     </section>
   );
