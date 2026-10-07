@@ -164,6 +164,12 @@ export function MiniHpCheck() {
             Dein Mini-HP-Check konnte gerade nicht in der Datenbank gespeichert werden.
           </div>
         ) : null}
+        {saving ? (
+          <div className="alert border-primary/20 bg-primary/10 text-sm text-primary" role="status" aria-live="polite">
+            <span className="loading loading-spinner loading-sm" aria-hidden="true" />
+            Mini-HP-Check wird gespeichert.
+          </div>
+        ) : null}
 
         <div className="grid grid-cols-4 gap-1.5" aria-label="Deine aktuellen Werte">
           {areas.map(({ id, label, icon }) => {
@@ -241,7 +247,19 @@ export function MiniHpCheck() {
         ))}
       </div>
 
-      <button type="button" className="btn btn-primary min-h-11 w-full" disabled={saving} onClick={() => void saveCheck()}>{saving ? "Speichern..." : "Aufgabe vorschlagen"}</button>
+      <button type="button" className="btn btn-primary min-h-11 w-full" disabled={saving} onClick={() => void saveCheck()}>
+        {saving ? (
+          <>
+            <span className="loading loading-spinner loading-sm" aria-hidden="true" />
+            Speichern...
+          </>
+        ) : "Aufgabe vorschlagen"}
+      </button>
+      {saving ? (
+        <p className="text-center text-xs font-semibold text-primary" role="status" aria-live="polite">
+          Dein Mini-HP-Check wird gespeichert.
+        </p>
+      ) : null}
       <p className="text-center text-xs leading-4 text-base-content/45">Dein Check ist eine persönliche Einschätzung und keine medizinische Diagnose.</p>
     </section>
   );
