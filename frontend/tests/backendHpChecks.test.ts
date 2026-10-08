@@ -1,6 +1,14 @@
-import { describe, expect, it } from "vitest";
-import { buildBackendHpCheckInput, buildBackendMiniHpCheckInput } from "../src/lib/backendHpChecks";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+  buildBackendHpCheckInput,
+  buildBackendMiniHpCheckInput,
+  listBackendHpChecks,
+} from "../src/lib/backendHpChecks";
 import type { HpAnswer } from "../src/types/hp";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe("backend hp-check input", () => {
   it("averages frontend questionnaire answers for the backend hp-check endpoint", () => {
@@ -39,6 +47,30 @@ describe("backend hp-check input", () => {
       energy: 1,
       focus: 3,
       mood: 5,
+    });
+  });
+
+  it("loads hp-checks from the backend with the auth token", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({ data: [], meta: { count: 0 } }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(
+      listBackendHpChecks({
+        getToken: () => Promise.resolve("session-token"),
+      }),
+    ).resolves.toEqual({ data: [], meta: { count: 0 } });
+
+    expect(fetchMock).toHaveBeenCalledWith("http://localhost:3000/api/hp-checks", {
+      body: undefined,
+      headers: {
+        Authorization: "Bearer session-token",
+        "Content-Type": "application/json",
+      },
+      method: "GET",
     });
   });
 });

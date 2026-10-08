@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   buildHpHistoryChartPoints,
+  collectBackendHpHistoryPoints,
   collectHpHistoryPoints,
   countHpHistoryCheckDays,
   filterHpHistoryPoints,
   getHpHistoryRangeDayCount,
 } from "../src/lib/hpHistory";
+import type { BackendHpCheck } from "../src/lib/backendHpChecks";
 import type { DayJournalEntry } from "../src/types/dayJournal";
 
 const journals: DayJournalEntry[] = [
@@ -95,6 +97,35 @@ describe("hpHistory", () => {
     const points = collectHpHistoryPoints(journals);
 
     expect(countHpHistoryCheckDays(points)).toBe(2);
+  });
+
+  it("collects backend HP checks as history points", () => {
+    const points = collectBackendHpHistoryPoints([
+      {
+        id: "backend-hp-1",
+        userProfileId: "profile-1",
+        type: "FULL",
+        body: 70,
+        energy: 30,
+        focus: 45,
+        mood: 75,
+        overallScore: 55,
+        createdAt: "2026-10-08T07:30:00.000Z",
+      },
+    ] satisfies BackendHpCheck[]);
+
+    expect(points).toEqual([
+      {
+        areas: {
+          body: 70,
+          energy: 30,
+          focus: 45,
+          mood: 75,
+        },
+        createdAt: "2026-10-08T07:30:00.000Z",
+        overall: 55,
+      },
+    ]);
   });
 
   it("returns dynamic day counts for selected ranges", () => {

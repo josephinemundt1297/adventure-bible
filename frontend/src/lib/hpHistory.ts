@@ -1,5 +1,6 @@
 import type { DayJournalEntry, DayJournalEvent } from "../types/dayJournal";
 import type { HpCheckArea } from "../types/hp";
+import type { BackendHpCheck } from "./backendHpChecks";
 
 export type HpHistoryRange = "day" | "week" | "month" | "year";
 export type HpHistoryMetric = "overall" | HpCheckArea;
@@ -64,6 +65,27 @@ export function collectHpHistoryPoints(journals: DayJournalEntry[]): HpHistoryPo
     .flatMap((journal) => journal.events)
     .map(eventToPoint)
     .filter((point): point is HpHistoryPoint => point !== null)
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+}
+
+export function collectBackendHpHistoryPoints(hpChecks: BackendHpCheck[]): HpHistoryPoint[] {
+  return hpChecks
+    .map((hpCheck) => ({
+      areas: {
+        body: hpCheck.body,
+        energy: hpCheck.energy,
+        focus: hpCheck.focus,
+        mood: hpCheck.mood,
+      },
+      createdAt: hpCheck.createdAt,
+      overall: hpCheck.overallScore,
+    }))
+    .filter((point) => {
+      return (
+        isValidScore(point.overall) &&
+        Object.values(point.areas).every(isValidScore)
+      );
+    })
     .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }
 

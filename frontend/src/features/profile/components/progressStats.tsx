@@ -1,5 +1,6 @@
+import { useAuth } from "@clerk/react";
 import { Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getLevel, getLevelProgress, readProgress } from "../../../lib/progress";
 import {
   ACHIEVEMENTS,
@@ -7,12 +8,15 @@ import {
   type Achievement,
   type UnlockedAchievement,
 } from "../../../lib/achievements";
+import { listBackendHpChecks } from "../../../lib/backendHpChecks";
 import { readAllDayJournals } from "../../../lib/dayJournal";
 import {
   buildHpHistoryChartPoints,
+  collectBackendHpHistoryPoints,
   collectHpHistoryPoints,
   countHpHistoryCheckDays,
   filterHpHistoryPoints,
+  type HpHistoryPoint,
   getHpHistoryRangeDayCount,
   type HpHistoryMetric,
   type HpHistoryRange,
@@ -67,8 +71,11 @@ interface ProgressStatsProps {
 }
 
 export function ProgressStats({ view = "all" }: ProgressStatsProps) {
+  const { getToken, isLoaded, isSignedIn } = useAuth();
   const [historyRange, setHistoryRange] = useState<HpHistoryRange>("year");
   const [historyMetric, setHistoryMetric] = useState<HpHistoryMetric>("overall");
+  const [backendHistoryPoints, setBackendHistoryPoints] = useState<HpHistoryPoint[] | null>(null);
+  const [historyLoadFailed, setHistoryLoadFailed] = useState(false);
   const [selectedAchievementId, setSelectedAchievementId] = useState<string | null>(null);
   const [achievementDialogOpen, setAchievementDialogOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(true);
@@ -86,7 +93,8 @@ export function ProgressStats({ view = "all" }: ProgressStatsProps) {
   const selectedUnlockedAchievement = selectedAchievement ? unlockedById.get(selectedAchievement.id) : null;
   const level = getLevel(progress.xp);
   const levelProgress = getLevelProgress(progress.xp);
-  const historyPoints = useMemo(() => collectHpHistoryPoints(readAllDayJournals()), []);
+  const localHistoryPoints = useMemo(() => collectHpHistoryPoints(readAllDayJournals()), []);
+  const historyPoints = backendHistoryPoints ?? localHistoryPoints;
   const visibleHistoryPoints = filterHpHistoryPoints(historyPoints, historyRange);
   const selectedMetric = historyMetrics.find((metric) => metric.id === historyMetric) ?? historyMetrics[0];
   const chartData = buildHpHistoryChartPoints(visibleHistoryPoints, historyMetric);
@@ -101,6 +109,33 @@ export function ProgressStats({ view = "all" }: ProgressStatsProps) {
   const lastLabel = chartData.at(-1) ? formatHistoryLabel(chartData.at(-1)!.createdAt, historyRange) : "";
   const showProgress = view !== "achievements";
   const showAchievements = view !== "progress";
+
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn || !showProgress) return;
+
+    let isCurrent = true;
+
+    async function loadBackendHpHistory() {
+      try {
+        const response = await listBackendHpChecks({ getToken });
+        if (!isCurrent) return;
+
+        setBackendHistoryPoints(collectBackendHpHistoryPoints(response.data));
+        setHistoryLoadFailed(false);
+      } catch {
+        if (!isCurrent) return;
+
+        setBackendHistoryPoints(null);
+        setHistoryLoadFailed(true);
+      }
+    }
+
+    void loadBackendHpHistory();
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [getToken, isLoaded, isSignedIn, showProgress]);
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4" aria-labelledby="stats-heading">
@@ -146,11 +181,21 @@ export function ProgressStats({ view = "all" }: ProgressStatsProps) {
 
         <div className="space-y-3 border-t border-base-300 px-4 py-4">
           <div className="flex items-start justify-between gap-3">
-            <p className="text-sm leading-5 text-base-content/65">Nur tatsächlich gespeicherte Checks fließen in diese Auswertung ein.</p>
+            <p className="text-sm leading-5 text-base-content/65">
+              {backendHistoryPoints
+                ? "Live gespeicherte Checks fließen in diese Auswertung ein."
+                : "Nur tatsächlich gespeicherte Checks fließen in diese Auswertung ein."}
+            </p>
             <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
               {selectedMetric.emoji} {selectedMetric.label}
             </span>
           </div>
+
+          {historyLoadFailed ? (
+            <p className="rounded-xl border border-warning/30 bg-warning/10 p-3 text-sm leading-5 text-base-content/70">
+              Live-HP-Daten konnten gerade nicht geladen werden. Die lokale Auswertung bleibt als Fallback sichtbar.
+            </p>
+          ) : null}
 
           <details className="rounded-xl border border-base-300 bg-base-100/70">
             <summary className="flex min-h-11 cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm font-bold text-base-content">
