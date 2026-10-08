@@ -28,3 +28,13 @@ export async function saveBackendProfile(input: {
     },
   });
 }
+
+export async function getBackendProfile(input: {
+  authUserId?: string;
+  getToken?: () => Promise<string | null>;
+}) {
+  return apiRequest<{ data: BackendProfile }>("/api/profile", {
+    authUserId: input.authUserId,
+    getToken: input.getToken,
+  });
+}

@@ -68,7 +68,7 @@ export function CharacterView({ name }: CharacterViewProps) {
       </div>
 
       <div className="grid gap-3" aria-label="Profilbereiche">
-        <Link to="/stats" hash="hp-history-heading" className="adventure-card flex min-h-14 items-center justify-between rounded-2xl border px-4 py-3 text-left shadow-sm">
+        <Link to="/stats" className="adventure-card flex min-h-14 items-center justify-between rounded-2xl border px-4 py-3 text-left shadow-sm">
           <span>
             <span className="block text-sm font-bold">Fortschritt anzeigen</span>
             <span className="block text-xs text-base-content/60">HP-Verlauf und Werte</span>

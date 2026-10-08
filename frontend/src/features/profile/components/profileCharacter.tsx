@@ -1,11 +1,14 @@
 import { Link } from "@tanstack/react-router";
+import type { BackendProfile } from "../../../lib/backendProfile";
 import { getLevel, getLevelProgress, readProgress } from "../../../lib/progress";
 import { ProfileAvatar } from "./profileAvatar";
 
-export function ProfileCharacter({ name }: { name: string }) {
+export function ProfileCharacter({ backendProfile, name }: { backendProfile?: BackendProfile | null; name: string }) {
   const progress = readProgress();
-  const level = getLevel(progress.xp);
-  const levelProgress = getLevelProgress(progress.xp);
+  const displayedXp = backendProfile?.xp ?? progress.xp;
+  const displayedQuestPoints = backendProfile?.questPoints ?? progress.questPoints;
+  const level = backendProfile?.level ?? getLevel(displayedXp);
+  const levelProgress = getLevelProgress(displayedXp);
 
   return (
     <section className="mx-auto flex max-w-md flex-col gap-5" aria-labelledby="character-heading">
@@ -32,7 +35,7 @@ export function ProfileCharacter({ name }: { name: string }) {
             <span className="text-sm font-semibold">Level {level}</span>
           </div>
           <div className="flex items-center justify-between text-sm text-base-content/70">
-            <span>{progress.xp} XP gesamt</span>
+            <span>{displayedXp} XP gesamt</span>
             <span>{levelProgress}/100 XP</span>
           </div>
           <progress className="progress progress-primary w-full" value={levelProgress} max={100} aria-label={`${levelProgress} von 100 XP bis zum nächsten Level`} />
@@ -43,14 +46,14 @@ export function ProfileCharacter({ name }: { name: string }) {
             </div>
             <div className="rounded-xl bg-primary/8 px-3 py-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-base-content/55">Quest Points</p>
-              <p className="text-lg font-bold">{progress.questPoints}</p>
+              <p className="text-lg font-bold">{displayedQuestPoints}</p>
             </div>
           </div>
         </div>
       </div>
 
       <div className="grid gap-3" aria-label="Profilbereiche">
-        <Link to="/stats" hash="hp-history-heading" className="adventure-card flex min-h-14 items-center justify-between rounded-2xl border px-4 py-3 text-left shadow-sm">
+        <Link to="/stats" className="adventure-card flex min-h-14 items-center justify-between rounded-2xl border px-4 py-3 text-left shadow-sm">
           <span>
             <span className="block text-sm font-bold">Fortschritt anzeigen</span>
             <span className="block text-xs text-base-content/60">HP-Verlauf und Werte</span>
