@@ -100,7 +100,7 @@ function selectSideQuest(state: HpState): Quest | null {
 }
 
 export function QuestRecommendation({ state }: QuestRecommendationProps) {
-  const { getToken } = useAuth();
+  const { getToken, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const name = user?.fullName ?? user?.firstName ?? user?.username ?? "Abenteurer";
   const [progress, setProgress] = useState<QuestProgress | null>(readQuestProgress);
@@ -112,6 +112,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
   const sideQuest = miniSelectedQuest ?? selectSideQuest(state);
   const planQuest = readPlanQuest(state);
   const selectedQuest = progress?.status === "active" || progress?.status === "completed" ? progress.quest : sideQuest;
+  const canSyncBackend = isLoaded && isSignedIn;
 
   if (!selectedQuest && !planQuest) {
     return <p>Aktuell ist keine Quest verfügbar.</p>;
@@ -120,7 +121,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
   const quest = selectedQuest ?? planQuest!;
 
   async function ensureProfile() {
-    if (!user) return;
+    if (!canSyncBackend) return;
 
     await saveBackendProfile({
       displayName: name,
@@ -138,7 +139,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
     appendDayJournalEvent({ type: "quest-started", quest: nextQuest });
     setProgress(nextProgress);
 
-    if (!user) return;
+    if (!canSyncBackend) return;
 
     setSyncing(true);
     setSyncError(false);
@@ -192,7 +193,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
     notifyAchievements(recordQuestCompletion());
     setProgress(completedProgress);
 
-    if (!user) return;
+    if (!canSyncBackend) return;
 
     setSyncing(true);
     setSyncError(false);
@@ -273,7 +274,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
             <span>+{quest.rewardXp} XP</span>
           </div>
             {syncError ? <div className="alert alert-warning text-sm" role="status">Deine Quest konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
-            <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing} onClick={() => void completeQuest()}>{syncing ? "Speichern..." : "Quest abschließen"}</button>
+            <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing || !canSyncBackend} onClick={() => void completeQuest()}>{syncing ? "Speichern..." : "Quest abschließen"}</button>
           </div>
         </article>
       </section>
@@ -299,7 +300,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
               <h2 className="app-heading text-xl font-bold leading-7">{sideQuest.title}</h2>
               <p className="text-sm leading-6 text-base-content/70">{sideQuest.description}</p>
               {syncError ? <div className="alert alert-warning text-sm" role="status">Deine Quest konnte gerade nicht in der Datenbank gespeichert werden.</div> : null}
-              <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing} onClick={() => void startQuest(sideQuest)}>{syncing ? "Speichern..." : "Sidequest starten"}</button>
+              <button type="button" className="btn btn-primary min-h-11 w-full" disabled={syncing || !canSyncBackend} onClick={() => void startQuest(sideQuest)}>{syncing ? "Speichern..." : "Sidequest starten"}</button>
             </div>
           </article>
         ) : null}
@@ -313,7 +314,7 @@ export function QuestRecommendation({ state }: QuestRecommendationProps) {
               </div>
               <h2 className="app-heading text-xl font-bold leading-7">{planQuest.title}</h2>
               <p className="text-sm leading-6 text-base-content/70">{planQuest.description}</p>
-              <button type="button" className="btn btn-outline min-h-11 w-full" disabled={syncing} onClick={() => void startQuest(planQuest)}>{syncing ? "Speichern..." : "Plan-Aufgabe starten"}</button>
+              <button type="button" className="btn btn-outline min-h-11 w-full" disabled={syncing || !canSyncBackend} onClick={() => void startQuest(planQuest)}>{syncing ? "Speichern..." : "Plan-Aufgabe starten"}</button>
             </div>
           </article>
         ) : null}
