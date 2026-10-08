@@ -9,6 +9,7 @@ import {
   type UnlockedAchievement,
 } from "../../../lib/achievements";
 import { listBackendHpChecks } from "../../../lib/backendHpChecks";
+import { getBackendProfile, type BackendProfile } from "../../../lib/backendProfile";
 import { readAllDayJournals } from "../../../lib/dayJournal";
 import {
   buildHpHistoryChartPoints,
@@ -75,6 +76,7 @@ export function ProgressStats({ view = "all" }: ProgressStatsProps) {
   const [historyRange, setHistoryRange] = useState<HpHistoryRange>("year");
   const [historyMetric, setHistoryMetric] = useState<HpHistoryMetric>("overall");
   const [backendHistoryPoints, setBackendHistoryPoints] = useState<HpHistoryPoint[] | null>(null);
+  const [backendProfile, setBackendProfile] = useState<BackendProfile | null>(null);
   const [historyLoadFailed, setHistoryLoadFailed] = useState(false);
   const [selectedAchievementId, setSelectedAchievementId] = useState<string | null>(null);
   const [achievementDialogOpen, setAchievementDialogOpen] = useState(false);
@@ -91,8 +93,10 @@ export function ProgressStats({ view = "all" }: ProgressStatsProps) {
   const unlockedById = new Map<string, UnlockedAchievement>(achievements.map((achievement) => [achievement.id, achievement]));
   const selectedAchievement = ACHIEVEMENTS.find((achievement) => achievement.id === selectedAchievementId) ?? null;
   const selectedUnlockedAchievement = selectedAchievement ? unlockedById.get(selectedAchievement.id) : null;
-  const level = getLevel(progress.xp);
-  const levelProgress = getLevelProgress(progress.xp);
+  const displayedXp = backendProfile?.xp ?? progress.xp;
+  const displayedQuestPoints = backendProfile?.questPoints ?? progress.questPoints;
+  const level = backendProfile?.level ?? getLevel(displayedXp);
+  const levelProgress = getLevelProgress(displayedXp);
   const localHistoryPoints = useMemo(() => collectHpHistoryPoints(readAllDayJournals()), []);
   const historyPoints = backendHistoryPoints ?? localHistoryPoints;
   const visibleHistoryPoints = filterHpHistoryPoints(historyPoints, historyRange);
@@ -117,15 +121,20 @@ export function ProgressStats({ view = "all" }: ProgressStatsProps) {
 
     async function loadBackendHpHistory() {
       try {
-        const response = await listBackendHpChecks({ getToken });
+        const [hpChecksResponse, profileResponse] = await Promise.all([
+          listBackendHpChecks({ getToken }),
+          getBackendProfile({ getToken }),
+        ]);
         if (!isCurrent) return;
 
-        setBackendHistoryPoints(collectBackendHpHistoryPoints(response.data));
+        setBackendHistoryPoints(collectBackendHpHistoryPoints(hpChecksResponse.data));
+        setBackendProfile(profileResponse.data);
         setHistoryLoadFailed(false);
       } catch {
         if (!isCurrent) return;
 
         setBackendHistoryPoints(null);
+        setBackendProfile(null);
         setHistoryLoadFailed(true);
       }
     }
@@ -153,13 +162,13 @@ export function ProgressStats({ view = "all" }: ProgressStatsProps) {
             <div className="card-body gap-4">
               <div className="flex items-end justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-base-content/60">LV-Info</p><p className="mt-1 text-3xl font-bold">Level {level}</p></div><p className="text-sm font-semibold text-base-content/70">{levelProgress}/100 XP</p></div>
               <progress className="progress progress-primary w-full" value={levelProgress} max={100} aria-label={`${levelProgress} von 100 XP bis zum nächsten Level`} />
-              <p className="text-sm text-base-content/65">{progress.xp} XP insgesamt</p>
+              <p className="text-sm text-base-content/65">{displayedXp} XP insgesamt</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3" aria-label="Abenteuerwerte">
             <div className="card border border-base-300 bg-base-100 shadow-sm"><div className="card-body gap-1 p-4"><p className="text-xs font-semibold uppercase tracking-wide text-base-content/60">Quests</p><p className="text-2xl font-bold">{progress.completedQuests}</p><p className="text-xs text-base-content/55">abgeschlossen</p></div></div>
-            <div className="card border border-base-300 bg-base-100 shadow-sm"><div className="card-body gap-1 p-4"><p className="text-xs font-semibold uppercase tracking-wide text-base-content/60">Quest Points</p><p className="text-2xl font-bold">{progress.questPoints}</p><p className="text-xs text-base-content/55">gesammelt</p></div></div>
+            <div className="card border border-base-300 bg-base-100 shadow-sm"><div className="card-body gap-1 p-4"><p className="text-xs font-semibold uppercase tracking-wide text-base-content/60">Quest Points</p><p className="text-2xl font-bold">{displayedQuestPoints}</p><p className="text-xs text-base-content/55">gesammelt</p></div></div>
           </div>
         </>
       ) : null}

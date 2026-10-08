@@ -2,7 +2,7 @@ import { Show, SignInButton, SignUpButton, useAuth, useUser } from "@clerk/react
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ProfileCharacter } from "../features/profile/components/profileCharacter";
-import { saveBackendProfile } from "../lib/backendProfile";
+import { saveBackendProfile, type BackendProfile } from "../lib/backendProfile";
 
 export const Route = createFileRoute("/profile")({ component: ProfilePage });
 
@@ -56,6 +56,7 @@ function ProfileSignedIn() {
   const { user } = useUser();
   const name = user?.fullName ?? user?.firstName ?? user?.username ?? "Abenteurer";
   const [syncError, setSyncError] = useState(false);
+  const [backendProfile, setBackendProfile] = useState<BackendProfile | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -65,8 +66,14 @@ function ProfileSignedIn() {
       characterName: name,
       getToken,
     })
-      .then(() => setSyncError(false))
-      .catch(() => setSyncError(true));
+      .then((response) => {
+        setBackendProfile(response.data);
+        setSyncError(false);
+      })
+      .catch(() => {
+        setBackendProfile(null);
+        setSyncError(true);
+      });
   }, [getToken, name, user]);
 
   return (
@@ -76,7 +83,7 @@ function ProfileSignedIn() {
           Profil konnte gerade nicht mit dem Backend synchronisiert werden.
         </div>
       ) : null}
-      <ProfileCharacter name={name} />
+      <ProfileCharacter name={name} backendProfile={backendProfile} />
     </>
   );
 }
