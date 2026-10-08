@@ -99,3 +99,13 @@ export async function saveBackendMiniHpCheck(input: {
     body: buildBackendMiniHpCheckInput(input.state),
   });
 }
+
+export async function listBackendHpChecks(input: {
+  authUserId?: string;
+  getToken?: () => Promise<string | null>;
+}) {
+  return apiRequest<{ data: BackendHpCheck[]; meta: { count: number } }>("/api/hp-checks", {
+    authUserId: input.authUserId,
+    getToken: input.getToken,
+  });
+}
